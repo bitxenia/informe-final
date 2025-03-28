@@ -1,0 +1,80 @@
+\section{Estado del Arte}
+En esta sección describiremos en qué se diferencian las aplicaciones descentralizadas de aquellas centralizadas, cuáles son las ventajas (y desventajas) del modelo de aplicación distribuido, y qué tecnologías existen actualmente para asistir en la creación de dichas aplicaciones. 
+
+\subsection{Introducción a arquitecturas de red}
+Comunicar distintas computadoras es un trabajo que requiere coordinación por parte de todas las partes, protocolos para estandarizar la información que se transmite, e infraestructura para poder envíar cada bit de origen a destino. Entonces, se debe diseñar una red coordinada para poder ofrecer los distintos servicios a través de Internet. Para ello, existen dos arquitecturas principales.
+
+\subsubsection*{Cliente-Servidor}
+
+Presente en la gran mayoría las aplicaciones de Internet, el modelo \textit{Cliente-Servidor} consiste en mantener un nodo central (servidor), quién se encarga de manejar la interacción entre los demás nodos (clientes), y entre clientes y el mismo servidor. Este modelo se clasifica como \textbf{centralizado}, debido a que la subred de sistemas depende del nodo servidor, y los clientes no tienen manera de comunicarse sin él ante una eventual caída del servidor.
+
+Entre los servicios de Internet más utilizados que utilizan esta arquitectura se encuentra la World Wide Web, el servicio de e-mail (SMTP), el servicio de DNS, entre otros.
+
+\subsubsection*{Peer-to-Peer}
+El modelo \textbf{peer-to-peer(P2P)} consiste en una red \textbf{descentralizada} que tiene distintos nodos (pares) capaces de comunicarse sin necesidad de un nodo central, por lo que se puede considerar que cada nodo cumple la función tanto de servidor como de cliente a la vez.
+
+\paragraph{BitTorrent} El servicio más utilizado que implementa este modelo es la red de BitTorrent, que implementa el protocolo del mismo nombre para compartir archivos entre pares. Esta red logra que el mismo nodo que descarga un contenido de la red sea a la vez el servidor para otro nodo que quiera acceder a ese contenido. 
+
+\subsection{Diferencias y ventajas de cada arquitectura}
+Ambos modelos tienen ventajas y desventajas, y por lo tanto distintos casos de uso. El modelo cliente-servidor actualmente es la arquitectura mas utilizada,
+
+\paragraph{Resiliencia}
+Cuando un servidor se encuentra fuera de servicio, toda la red que depende de él no funcionará en tanto no se restaure el servidor. Para contrarrestar esta vulnerabilidad del modelo, se desarrollaron métodos a lo largo de los años. Una manera de evitar que la red se vuelva inoperativa es la de alojar diferentes instancias del servidor en diferentes zonas geográficas. Además, se pueden implementar medidas para evitar la caída del servidor, como los técnicas de balanceo de cargas y fuentes de energía alternativas para evitar eventuales cortes de electricidad.
+
+No obstante, una red peer-to-peer puede ser incluso más robusta. Si hay suficientes pares en la misma y están lo suficientemente dispersos geográficamente, la desconexión de uno de ellos no desactiva toda la red. Esto permite que el modelo peer-to-peer pueda ser resistente a cortes de energía masivos y desastres naturales, lo que lo hace un modelo ideal para servicios prioritarios.
+
+Cabe destacar que en una red de una cantidad limitada de pares, en donde no hay redundancia del contenido que se distribuye, es posible que al desconectar uno de los pares parte del contenido se vuelva no disponible. Por lo tanto, si bien la red seguirá activa, no tendrá toda la funcionalidad que si puede ofrecer un servidor mientras siga en línea.
+
+\paragraph{Escalabilidad}
+La escalabilidad de una red peer-to-peer aumenta con la cantidad de nodos disponibles, dado que hay más recursos y, en una red bien diseñada, la carga se distribuye equitativamente. En un modelo cliente-servidor, garantizar escalabilidad se puede tornar costoso. Un servidor con mayor capacidad para comunicaciones entrantes y volumen de información tiene hardware de un costo mayor. En casos de aplicaciones de uso masivo puede ser necesario multiplicar la cantidad de nodos servidores para satisfacer la demanda de clientes.
+
+\paragraph{Control del contenido}
+Un servidor, al ser la pieza central de la red a la cuál pertenece, debe soportar múltiples conexiones en simultáneo. Para aplicaciones de alto tráfico, esto requiere una infraestructura que los usuarios suelen no poseer. Una solución es tercerizar el alojamiento de la aplicación servidor en plataformas de Cloud Hosting como pueden ser AWS, Azure, Google Cloud, entre otras. Estos servicios mantienen los servidores de numerosas aplicaciones de Internet, y por lo tanto, tienen la capacidad de modificar, censurar, o remover cualquiera de ellas si así lo desean.
+
+Una red P2P no sufre de estos problemas, ya que por naturaleza los usuarios son quienes la alojan. Por lo tanto, remover contenido de ella resulta mucho mas complejo. Esto evita la censura en zonas donde el acceso a Internet es controlado y/o limitado, pero también puede incentivar a la distribución de contenido ilegal.
+
+\paragraph{Seguridad}
+La seguridad en las aplicaciones cliente-servidor se ha investigado por mucho más tiempo debido a la popularidad de este modelo. Además, al ser centralizado, el propietario del servidor puede bloquear conexiones y eliminar contenido malicioso de su plataforma de forma transparente para los usuarios.
+
+El modelo descentralizado, en cambio, no cuenta con el desarrollo en términos de seguridad. En este caso, el cliente es el responsable de conectarse a redes de confianza, o de hacerlo mediante VPNs (Virtual Private Networks) para mantener el anonimato mientras se integre una red P2P. Sin embargo, cualquiera sea el modelo utilizado por una aplicación, la mayor parte de la seguridad dependerá de que tan segura sea la aplicación.
+
+\paragraph{Persistencia}
+Como varias otras propiedades del modelo cliente-servidor, depende de la integridad del servidor. Si el almacenamiento físico de este se ve afectado, los datos pueden perderse definitivamente. Por esta razón, es común tener un respaldo de los datos de la aplicación en otro disco u otro nodo para evitar la pérdida total de datos.
+
+En una red descentralizada, la persistencia depende de la aplicación utilizada. En el caso de BitTorrent, cada nodo que se conecte y descargue un archivo, podrá compartir ese archivo con otros nodos, y por lo tanto ese archivo contará con una redundancia adicional, la cuál crece a medida que más personas descargan ese archivo. A pesar de esto, en casos donde el archivo es poco compartido, puede volverse inaccesible si los nodos que lo contienen se desconectan de la red.
+
+\paragraph{Latencia}
+Dada una conexión a Internet promedio, las velocidades manejadas por las aplicaciones cliente-servidor suelen ser aceptables. Sin embargo, en zonas en donde la conexión es escasa, o en casos en donde el servidor está lejos del cliente, la velocidad de transferencia de la aplicación puede verse afectada. Además, no es infrecuente encontrar cortes en videollamadas, juegos, y demás aplicaciones de tiempo real que siguen esta arquitectura. Como en la mayoría de defectos del modelo cliente-servidor, se puede solucionar agregando múltiples instancias del servidor. Por ejemplo, es común almacenar  películas, videos y demás contenido de aplicaciones de streaming en distintos servidores de CDN (Content Delivery Network). Estas redes minimizan la distancia entre el usuario y el servidor, agilizando así la transferencia del contenido.
+
+A pesar de los avances en la optimización del modelo cliente-servidor, las redes descentralizadas, cuando son eficientes y están bien pobladas, suelen ofrecer incluso mejores resultados. Esto se debe a que la fuente de un contenido puede estar presente en múltiples nodos, lo que aumenta la probabilidad de que un nodo cercano tenga el contenido solicitado. La velocidad de transferencia que puede proporcionar un vecino con el contenido que requerimos generalmente superará la ofrecida por un servidor.
+
+\paragraph{Costos}
+Los costos de alojar una aplicación peer-to-peer suele ser nulo, ya que los mismos usuarios de ella son los encargados de proporcionar la infraestructura de la red.
+
+Al contrario, alojar la aplicación en un servidor conlleva tener un servidor disponible, o bien contratar un servicio de web hosting, cuya tarifa suele aumentar a medida que la aplicación escala. En la mayoría de los casos, el costo termina siendo significativo, por lo que una aplicación descentralizada es una opción viable en escenarios en los que no se desee invertir mucho dinero.
+
+\subsection{Ambientes y herramientas}
+Existen varios ecosistemas que apuntan a proveer un marco con el cuál desarrollar una aplicación descentralizada. A su vez, cada uno de ellos cuenta con herramientas especializadas para los diferentes tipos de aplicaciones.
+
+\subsubsection{IPFS}
+Un suite modular de protocolos para organizar y transferir datos, diseñado con los principios de 'content addressing' (recuperación de archivos en base a contenido y no en base al nombre o id) y una red peer-to-peer. Su principal caso de uso es para publicar datos como archivos, directorios y páginas web descentralizadas.\cite{ipfs}
+
+\paragraph{Fleek} Plataforma centralizada para alojar servicios. También es utilizada para almacenar datos, y hacer accesible contenido para el resto de la web mediante gateways de IPFS.\cite{fleek}
+
+\paragraph{OrbitDB} Base de datos peer-to-peer descentralizada. Cuenta con diferentes modelos de datos, incluyendo documentos, eventos, y diccionarios clave-valor. Utiliza IPFS para guardar y sincronizar automáticamente los datos. \cite{orbitdb}
+
+\paragraph{libp2p} Colección de protocolos y utilidades para facilitar la conexión y comunicación entre pares en IPFS. Entre sus herramientas, se encuentran diferentes mecanismos de seguridad, de transporte, y para descubrimiento de pares. \cite{libp2p}
+
+\subsubsection{Blockchain}
+Tecnología basada en una cadena de bloques de operaciones descentralizada y pública.  Esta tecnología genera una base de datos compartida a la que tienen acceso sus participantes, los cuáles pueden rastrear cada transacción que hayan realizado.\parencite{blockchain}
+
+
+% \footnote{https://www.iebschool.com/blog/blockchain-cadena-bloques-revoluciona-sector-financiero-finanzas/}
+
+
+\subsubsection{Alternativas}
+\paragraph{Freenet/Hyphanet}
+Programa de código abierto para compartir datos peer-to-peer con enfoque en la protección de la privacidad. Opera en una red descentralizada, promocionando la libertad de expresión facilitando la anonimidad de los datos compartidos y eludiendo la censura.\cite{freenet}\cite{hyphanet}
+
+% \subsubsection{Hyphanet}
+% Plataforma peer-to-peer resistente a la censura, respetando la privacidad de las comunicaciones.
