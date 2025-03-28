@@ -1,0 +1,21 @@
+name: Build and release PDF
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Github Action for LaTeX
+        uses: xu-cheng/latex-action@3.2.0
+        with:
+          root_file: main.tex
+      - name: Move and rename
+        run: |
+          mkdir out
+          mv ./main.tex ./out/informe-final.pdf
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ./out/informe-final.pdf
