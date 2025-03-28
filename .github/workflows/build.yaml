@@ -22,7 +22,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: ./out/informe-final.pdf
-      - name: actions/upload-artifact@v4
+      - name: Upload
+        uses: actions/upload-artifact@v4
         with:
           name: informe-final
           path: out/informe-final.pdf
