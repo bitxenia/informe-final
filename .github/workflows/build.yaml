@@ -5,9 +5,10 @@ on:
     tags:
       - "*.*.*"
 
-
 jobs:
   build:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -24,3 +25,13 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: ./out/informe-final.pdf
+      - name: actions/upload-artifact@v4
+        with:
+          name: informe-final
+          path: out/informe-final.pdf
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4.7.3
+        with:
+          folder: out
+          branch: gh-pages
+
