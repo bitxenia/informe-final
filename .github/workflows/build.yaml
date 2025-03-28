@@ -1,9 +1,6 @@
 name: Build and release PDF
 
-on:
-  push:
-    tags:
-      - "*.*.*"
+on: push
 
 jobs:
   build:
@@ -34,4 +31,3 @@ jobs:
         with:
           folder: out
           branch: gh-pages
-
