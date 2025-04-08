@@ -1,0 +1,27 @@
+\subsection{Caso de uso 2: Repositorio de conocimiento}
+
+Con este caso analizamos la capacidad de creación y modificación de contenido existente. La idea es que sea un servicio comunitario donde agregar información de distinta índole, similar a Wikipedia.
+
+\subsubsection{Requisitos funcionales}
+
+\begin{itemize}
+    \item \textbf{Edición:} los artículos dentro del repositorio deben ser editables por cualquier persona que ingrese al sitio, y este cambio debe verse reflejado (eventualmente) en las demás personas que accedan a ese artículo.
+    \item \textbf{Historial de versiones:} cada artículo debe tener una lista de versiones anteriores, junto con hipervínculos con los cuáles acceder a ellas (mientras estén disponibles en la red).
+    \item \textbf{Búsqueda:} una persona debe poder realizar una búsqueda global de todos los artículos.
+\end{itemize}
+
+\subsubsection{Implementación en IPFS}
+
+...
+
+\subsubsection{Implementación en Blockchain}
+
+Para el frontend de ese caso de uso se realizó una aplicación web que fue desplegada tanto en Swarm como en IPFS. En el backend se utilizó la blockchain Ethereum para almacenar la información de cada artículo.
+
+Consiste de dos *Smart Contract*, uno llamado `ArticuloFactory` y otro llamado `Articulo`.
+
+`ArticuloFactory` se encarga de crear cada `Articulo` y almacenar la dirección de los mismos en un mapping para luego encontrarlos fácilmente.
+
+\textbf{Métricas}
+
+Las siguientes métricas fueron medidas en un entorno local levantando un nodo de Hardhat.
