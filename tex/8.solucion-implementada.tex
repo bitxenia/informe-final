@@ -49,9 +49,11 @@ La \textbf{infraestructura de despliegue} es la encargada del "hosting" de una a
 
 La \textbf{infraestructura de aplicación} es la encargada de la lógica de la aplicación, como es el almacenamiento de datos. Aplicaciones que requieran de mantener un estado y permitir la modificación de parte de los usuarios van a necesitar hacer uso de esta infraestructura, como es el caso del repositorio de conocimiento y mensajero en tiempo real.
 
-Al lograr encontrar estas abstracciones, se permite que generar nuevos casos de uso sea mucho más fácil, ya que la mayoría de la lógica sobre el el ecosistema se encuentra encapsulada dentro de ellas, logrando que el desarrollo de un nuevo caso de uso se concentre únicamente en sus requisitos y no en el ecosistema en el que se encuentra.
+(Mover a IPFS esto, ya que no se hicieron abstracciones en blockchain) Al lograr encontrar estas abstracciones, se permite que generar nuevos casos de uso sea mucho más fácil, ya que la mayoría de la lógica sobre el el ecosistema se encuentra encapsulada dentro de ellas, logrando que el desarrollo de un nuevo caso de uso se concentre únicamente en sus requisitos y no en el ecosistema en el que se encuentra.
 
 A continuación se va a explicar como se componen y funcionan ambas infraestructuras en cada ecosistema.
+
+(Explicar que lo que hicimos son packages)
 
 \subsection{IPFS}
 
@@ -144,7 +146,7 @@ Es por esto que el proceso de despliegue también debe incluir este archivo. Deb
 En base a este análisis, podemos concluir que la mejor forma de desplegar una página web estática en IPFS es a través del uso de un cluster colaborativo compuesto por nodos confiables y nodos colaboradores, así como una dirección IPNS a la cuál actualizar cada vez que hay un cambio, y un registro ENS para traducir la dirección IPNS a un nombre legible.
 
 Este enfoque tiene, sin embargo, desventajas o aspectos a mejorar:
-tlu
+
 \subparagraph{Necesidad de tener nodos confiables} Estos nodos van a ser los encargados de administrar el cluster, y actualizar el IPNS. La distinción entre nodos confiables y nodos colaborativos es necesaria para evitar que un potencial atacante pueda modificar el CID al que apunta el \textit{IPNS name} o modificar el contenido que pinea el cluster colaborativo.
  
 \subparagraph{Actualización del contenido} Por cada cambio que se realice en el directorio de la página, se deberá pinear el nuevo contenido al cluster, y por lo tanto todos los colaboradores tendrán que obtener todo el directorio nuevamente. Esto puede claramente volverse costoso con contenido de tamaño considerable.
