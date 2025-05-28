@@ -77,7 +77,7 @@
 
 \renewcommand{\headrulewidth}{1pt}
 \renewcommand{\footrulewidth}{1pt}
-\rhead{\footnotesize \textsc {Propuesta de Trabajo Profesional}} % Trabajo práctico
+\rhead{\footnotesize \textsc {Informe de Trabajo Profesional}} % Trabajo práctico
 \lhead{\includegraphics[width=2.5cm]{logo.pdf}}
 \cfoot{\small \textsc {Página \thepage\ de \pageref*{LastPage}}}
 \lfoot{Inneo Veiga, Prada,\\ Sotelo Guerreño, Velazquez }
@@ -103,7 +103,7 @@
 \begin{center}
 \includegraphics[width=7cm]{img/logofiuba.png}
 \\[1cm]
-	\textsc{\Large Propuesta de Trabajo Profesional}\\[1cm]           % Materia
+	\textsc{\Large Informe de Trabajo Profesional}\\[1cm]           % Materia
 	{ \huge \bfseries Análisis de ecosistemas para la implementación de plataformas como servicio para despliegue de aplicaciones comunitarias, distribuidas y descentralizadas}\\[2cm]      % Título
     \begin{minipage}{0.4\textwidth}
         \begin{center}
