@@ -1,41 +1,29 @@
 \section{Riesgos materializados}
 
-% Poner la tabla, hay una en el notion 
-
-% \setlength\tabcolsep{3pt}
-% \begin{center}
-%     % \begin{tabularx}{\linewidth}{*{8}{|c}{>\RaggedRight\arraybackslash}X}
-%     % \begin{tabularx}{\textwidth}{|l|c|*{8}{>{\RaggedRight\arraybackslash}X}}
-%     \begin{tabular}{*{5}{|p{80pt}}|}
-%     \hline
-%     \textbf{Descripción} & \textbf{Causa}  & \textbf{Plan \break de Respuesta} & Umbral & Plan de Contingencia \\
-%     \hline\hline
-%     Incapacidad de utilizar Hyphanet como ecosistema & Documentación desactualizada y/o API poco documentada & Tomar como referencia otras aplicaciones & Las aplicaciones de referencia no siguen un estándar & Descartar Hyphanet y reemplazar por Freenet \\
-%     \hline
-%     % \end{tabularx}
-%     \end{tabular}
-% \end{center}
-
-\renewcommand\theadfont{\bfseries}
-
+\setlength\tabcolsep{3pt}
 \begin{table}[!htbp]
     \centering
-    \begin{tabular}{*{5}{|p{70pt}}|}
-         \hline
-         \thead{Descripción} & \thead{Causa} & \thead{Plan \break de Respuesta} & \thead{Umbral} & \thead{Plan \break de Contingencia} \\
-         \hline
-         Incapacidad de utilizar Hyphanet como ecosistema & Documentación desactualizada y/o API poco documentada & Tomar como referencia otras aplicaciones & Las aplicaciones de referencia no siguen un estándar & Descartar Hyphanet y reemplazar por Freenet \\
-         \hline
+    % \begin{tabularx}{\linewidth}{*{8}{|c}{>\RaggedRight\arraybackslash}X}
+    % \begin{tabularx}{\textwidth}{|l|c|*{8}{>{\RaggedRight\arraybackslash}X}}
+    \begin{tabular}{*{5}{|p{80pt}}|}
+    \hline
+    \textbf{Descripción} & \textbf{Causa} & \textbf{Plan \break de \break Respuesta} & \textbf{Umbral} & \textbf{Plan \break de \break Contingencia} \\
+    \hline\hline
+    Incapacidad de utilizar Hyphanet como ecosistema & Documentación desactualizada y/o API poco documentada & Tomar como referencia otras aplicaciones & Las aplicaciones de referencia no siguen un estándar & Descartar Hyphanet y reemplazar por Freenet \\
+    \hline
+    Incapacidad de utilizar Freenet como ecosistema & Ecosistema inestable debido al desarrollo activo & Esperar por versión estable & Versión estable para febrero de 2025 & Dar de baja Freenet y agregar métricas de performance para los otros ecosistemas \\
+    \hline
+    % \end{tabularx}
     \end{tabular}
-    \caption{Caption}
-    \label{tab:my_label}
+    \caption{Riesgos materializados}
+    % \label{tab:my_label}
 \end{table}
 
 \paragraph{Cambio de Hyphanet a Freenet}
-A mitad del proyecto resolvimos cambiar el tercer ecosistema elegido (Hyphanet) por su versión más moderna (Freenet). Esto fue debido a que encontramos que la documentación era escasa, los programas realizados para el ecosistema eran unos pocos y cada uno tenía una forma distinta de implementar ciertas cosas. La API tampoco provee facilidades a la hora de gestionar archivos, manejo de comunicaciones, entre otras cosas que consideramos necesarias para los casos de uso.
+Aproximadamente un mes luego del inicio del proyecto resolvimos cambiar el tercer ecosistema elegido (Hyphanet) por su versión más moderna (Freenet). Esto fue debido a que encontramos que la documentación era escasa, los programas realizados para el ecosistema eran unos pocos y cada uno tenía una forma distinta de implementar ciertas partes. La API tampoco provee facilidades a la hora de gestionar archivos, manejo de comunicaciones, entre otras cosas que consideramos necesarias para los casos de uso.
 
 \paragraph{Freenet en desarrollo}
 Un riesgo que teníamos en cuenta eran las modificaciones que podría sufrir Freenet al estar aún en desarrollo. Esto fue de la mano con que la documentación publicada no está actualizada a la última versión.
 
 \paragraph{Baja de Freenet como ecosistema}
-Dada la promesa del equipo de Freenet de lanzar una versión estable en el corto plazo -pero que ya llevaba más de un año en ese estado- decidimos poner como límite el mes de febrero de 2025. Llegada la fecha, no hubo ningún anuncio de la versión estable por lo que decidimos descartar el ecosistema y, en cambio, agregar métricas de performance a los otros ecosistemas.
+Dada la promesa del equipo de Freenet de lanzar una versión estable en el corto plazo -pero que ya llevaba más de un año en ese estado- decidimos poner como límite el mes de febrero de 2025. Llegada la fecha, no hubo ningún anuncio de la versión estable (y al momento de redactar este informe tampoco lo hay) por lo que decidimos descartar el ecosistema y, en cambio, agregar métricas de performance a los otros ecosistemas.
