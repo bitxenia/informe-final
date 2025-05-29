@@ -11,18 +11,18 @@
 De los casos de uso esperamos responder las siguientes incógnitas: %obtener las siguientes métricas:
 
 \paragraph{Swarm}
-Al deployar el sitio web es necesario contar con *postage stamps* que son la manera de pagar por el uso del almacenamiento en Swarm. Cada actualización que se realice al sitio requiere de *postage stamps* y, además, estos tienen fecha de vencimiento por lo que es necesario volver a pagar frecuentemente. Hay que tener en cuenta que dichos *postage stamps* se pagan en la criptomoneda BZZ que fluctúa de valor con respecto al dólar estadounidense.
+Al deployar el sitio web es necesario contar con \textit{postage stamps} que son la manera de pagar por el uso del almacenamiento en Swarm. Cada actualización que se realice al sitio requiere de \textit{postage stamps} y, además, estos tienen fecha de vencimiento por lo que es necesario volver a pagar frecuentemente. Hay que tener en cuenta que dichos \textit{postage stamps} se pagan en la criptomoneda BZZ que fluctúa de valor con respecto al dólar estadounidense.
 
 La obtención del sitio web no requiere de costo alguno, por lo que desde el punto de vista de un usuario de la aplicación no sería necesario pagar.
 
 <TODO: medir cuánto es el costo aproximado en USD o BZZ>
 
 \paragraph{Ethereum}
-Se utiliza la moneda ETH para pagar por el despliegue de cada transacción, esto incluye tanto el despliegue de cada *smart contract* como también la edición de un artículo (en el caso del repositorio de conocimiento). Por lo tanto, el usuario final de la aplicación termina pagando por creación y edición de cada artículo en el repositorio de conocimiento, y por cada mensaje enviado en el mensajero en tiempo real. Por otro lado, para las operaciones de lectura no se tiene que pagar nada.
+Se utiliza la moneda ETH para pagar por el despliegue de cada transacción, esto incluye tanto el despliegue de cada \textit{smart contract} como también la edición de un artículo (en el caso del repositorio de conocimiento). Por lo tanto, el usuario final de la aplicación termina pagando por creación y edición de cada artículo en el repositorio de conocimiento, y por cada mensaje enviado en el mensajero en tiempo real. Por otro lado, para las operaciones de lectura no se tiene que pagar nada.
 
 <TODO: medir cuánto es el costo aproximado en USD o ETH>
 
-\subsection{Facilidad de desarrollo}
+\subsection{Experiencia de desarrollo} % Developer Experience
 
 ¿Qué tan fácil es desplegar en cada ecosistema?
 
@@ -31,12 +31,12 @@ Se utiliza la moneda ETH para pagar por el despliegue de cada transacción, esto
 \subsubsection{Blockchain}
 
 \paragraph{Swarm}
-En Swarm existe la herramienta de terminal [`swarm-cli`](https://github.com/ethersphere/swarm-cli) con la cual se puede interactuar con un nodo de Swarm. También el equipo de Swarm provee una *Github Action* que permite la posibilidad de automatizar el despliegue generando un pipeline que utilice dicha herramienta.
+En Swarm existe la herramienta de terminal \href{https://github.com/ethersphere/swarm-cli}{swarm-cli} con la cual se puede interactuar con un nodo de Swarm. También el equipo de Swarm provee una Github Action que permite la posibilidad de automatizar el despliegue generando un pipeline que utilice dicha herramienta.
 
-En cuanto a un ambiente de pruebas o staging, si bien no existe un gateway público que interactúe con la *testnet*, es posible levantar uno propio que sí lo haga apuntando a la *testnet* de Sepolia usando la herramienta [`gateway-proxy`](https://github.com/ethersphere/gateway-proxy).
+En cuanto a un ambiente de pruebas o staging, si bien no existe un \textit{gateway} público que interactúe con la \textit{testnet}, es posible levantar uno propio que sí lo haga apuntando a la \textit{testnet} de Sepolia usando la herramienta \href{https://github.com/ethersphere/gateway-proxy}{gateway-proxy}.
 
 \paragraph{Ethereum}
-Con la librería web3.js se puede interactuar con un nodo de Ethereum y realizar un despliegue de la aplicación. Además, existen las herramientas de Hardhat con las cuales se puede levantar una red de prueba que facilita el desarrollo local.
+Con la librería web3.js se puede interactuar con un nodo de Ethereum y realizar un despliegue de la aplicación. Además, con las herramientas de Hardhat se puede levantar una red de prueba que facilita el desarrollo local.
 
 \subsection{Viabilidad} 
 

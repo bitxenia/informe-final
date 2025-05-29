@@ -47,7 +47,7 @@ Para cada ecosistema hay 2 principales infraestructuras en acción. La infraestr
 
 La \textbf{infraestructura de despliegue} es la encargada del "hosting" de una aplicación web. Con esta se distribuye y permite el acceso a lo que es el "front end" de las aplicaciones, como también el código para el funcionamiento de la aplicación, si se trata de una aplicación no estática. Cualquier aplicación que desee ser accedida por la web va a hacer uso de esta infraestructura, como es el caso del sitio web informativo.
 
-La \textbf{infraestructura de aplicación} es la encargada de la lógica de la aplicación, como es el almacenamiento de datos. Aplicaciones que requieran de mantener un estado y permitir la modificación de parte de los usuarios van a necesitar hacer uso de esta infraestructura, como es el caso del repositorio de conocimiento y mensajero en tiempo real.
+La \textbf{infraestructura de aplicación} es la encargada de la lógica de la aplicación, como es el almacenamiento de datos, como la conexión entre pares. Aplicaciones que requieran de mantener un estado y permitir la modificación de parte de los usuarios van a necesitar hacer uso de esta infraestructura, como es el caso del repositorio de conocimiento y mensajero en tiempo real.
 
 (Mover a IPFS esto, ya que no se hicieron abstracciones en blockchain) Al lograr encontrar estas abstracciones, se permite que generar nuevos casos de uso sea mucho más fácil, ya que la mayoría de la lógica sobre el el ecosistema se encuentra encapsulada dentro de ellas, logrando que el desarrollo de un nuevo caso de uso se concentre únicamente en sus requisitos y no en el ecosistema en el que se encuentra.
 
@@ -89,11 +89,9 @@ Este problema puede ser resuelto con la ayuda de \textit{punteros mutables}. Est
 
 \subparagraph{IPNS}
 
-El InterPlanetary Name System (IPNS) \cite{ipns} es un sistema que permite crear  punteros mutables y obtener su dirección en forma de CIDs conocidos como \textit{names} o \textit{nombres de IPNS}. Estos nombres de IPNS pueden considerarse como enlaces que pueden actualizarse, conservando al mismo tiempo la verificabilidad del content addressing.
+InterPlanetary Name System (IPNS) \cite{ipns} es un sistema que permite crear  punteros mutables y obtener su dirección en forma de CIDs conocidos como \textit{names} o \textit{nombres de IPNS}. Estos nombres de IPNS pueden considerarse como enlaces que pueden actualizarse, conservando al mismo tiempo la verificabilidad del content addressing.
 
-Un nombre de IPNS es un hash de una clave pública. Está asociado a un \textit{IPNS record} que contiene la ruta a la que se vincula, entre otra información. El titular de la clave privada puede firmar y publicar nuevos registros en cualquier momento.
-
-*Gráfico de IPNS*
+Un nombre de IPNS es un hash de una \cite{ipns-hash} clave pública. Está asociado a un \textit{IPNS record} \cite{ipns-record} que contiene la ruta a la que se vincula, entre otra información. El titular de la clave privada puede firmar y publicar nuevos registros en cualquier momento.
 
 Es posible utilizar IPNS con uno de estos posibles enfoques:
 \begin{itemize}
@@ -101,11 +99,15 @@ Es posible utilizar IPNS con uno de estos posibles enfoques:
     \item \textbf{Disponibilidad:} resolver un registro de IPNS válido, a costa de potencialmente resolver un registro desactualizado -o sea, con un CID previo.
 \end{itemize}
 
-El registro IPNS se encuentra a través de la \textbf{Distributed Hash Table} (DHT). Todos los nodos de IPFS participan alojando colaborativamente el contenido de la DHT. Por lo tanto, el DHT actúa como un "directorio" descentralizado, donde la clave pública es un identificador. Esta tabla ayuda a localizar el registro IPNS que apunta al contenido deseado, entre otras funciones. Para entender mejor cómo IPNS funciona se puede consultar la documentación de IPFS.
+El registro IPNS se encuentra a través de la \textbf{Distributed Hash Table} (DHT) \cite{dht}. Todos los nodos de IPFS participan alojando colaborativamente el contenido de la DHT. Por lo tanto, el DHT actúa como un "directorio" descentralizado, donde la clave pública es un identificador. Esta tabla ayuda a localizar el registro IPNS que apunta al contenido deseado, entre otras funciones. Para entender mejor cómo IPNS funciona se puede consultar la documentación de IPFS.
 
-IPNS es una buena forma de obtener mutabilidad dentro de IPFS. Una vez que se aloja un contenido en IPFS y se apunta a él mediante un \textit{IPFS name}, el mayor problema pasa a ser la manera de acceder a IPNS en sí. El hecho de que los names sean hashes alfanuméricos, y no nombres legibles o memorables para humanos, representa una dificultad adicional a la hora de alojar un sitio web al cuál los usuarios puedan acceder fácilmente. A continuación se analizará dos alternativas para solucionar este problema.
+IPNS es una buena forma de obtener mutabilidad dentro de IPFS. Una vez que se aloja un contenido en IPFS y se apunta a él mediante un \textit{nombre} de IPNS, el mayor problema pasa a ser la manera de acceder a IPNS en sí. El hecho de que los names sean hashes alfanuméricos, y no nombres legibles o memorables para humanos, representa una dificultad adicional a la hora de alojar un sitio web al cuál los usuarios puedan acceder fácilmente. A continuación se analizará dos alternativas para solucionar este problema.
 
-(explicar como se puede utilizar con un cluster colaborativo a traves de pub sub)
+\begin{figure}[h]
+\centering
+\fbox{\texttt{/ipns/k51qzi5uqu5dhkdbjdsauuyk5iyq82uzpjb0is3x6oy9dcmmr8dbcezv7v9fya}}
+\caption{Ejemplo de una dirección de un nombre de IPNS}
+\end{figure}
 
 \subparagraph{DNSLink}
 
@@ -137,9 +139,7 @@ Como ya se ha mencionado, si dos nodos suben el mismo contenido, obtendrán el m
 
 \paragraph{Compilación} Las herramientas de compilado no siempre son deterministas en los archivos compilados que genera. Next.js, por ejemplo, genera diferentes archivos estáticos en dos compilaciones basadas en el mismo código fuente. Esto es un problema para el enfoque propuesto, debido a que si dos nodos compilan el mismo código, el CID puede ser diferente. Para mitigar esto, se decidió hacer uso de un \textit{hook} que compile el código con cada \textit{commit} en la rama principal una única vez por cambio realizado. De esta manera, los nodos confiables pueden detectar el cambio en la rama utilizada para alojar los archivos estáticos, y hacer \textit{pull} sobre esos archivos y, por lo tanto, obtener un mismo CID.
 
-\paragraph{service.json} Para que un usuario pueda conectarse y contribuir como colaborador a un cluster, la herramienta de terminal \textit{\textbf{ipfs-cluster-follow}} requiere una dirección de IPFS de la cuál obtener el archivo \textit{service.json}. Este archivo de configuración contiene todos los datos necesarios para que un colaborador pueda unirse. Además, está sujeto a modificaciones, debido a que el archivo contiene las \textit{multiaddresses} de cada nodo confiable en forma de lista, por lo que agregar o remover un nodo confiable implica modificar el archivo.
-
-Es por esto que el proceso de despliegue también debe incluir este archivo. Debe incluirse la detección de una actualización, el pineo del nuevo \textit{service.json} al cluster, 
+\paragraph{service.json} Para que un usuario pueda conectarse y contribuir como colaborador a un cluster, la herramienta de terminal \textit{\textbf{ipfs-cluster-follow}} \cite{ipfs-cluster-follow} requiere una dirección de IPFS de la cuál obtener el archivo \textit{service.json} \cite{service-json}. Este archivo de configuración contiene todos los datos necesarios para que un colaborador pueda unirse. Además, está sujeto a modificaciones, debido a que el archivo contiene las \textit{multiaddresses} \cite{multiaddr} de cada nodo confiable en forma de lista, por lo que agregar o remover un nodo confiable implica modificar el archivo. Es por esto que el proceso de despliegue también debe incluir este archivo. Desde la detección de una actualización en un repositorio de Git que lo contenga, el pineo del nuevo \textit{service.json} al cluster, hasta la actualización de un nombre de IPNS que pueda distribuirse a los usuarios que quieran colaborar.
 
 \paragraph{Enfoque}
 
@@ -157,9 +157,44 @@ Este enfoque tiene, sin embargo, desventajas o aspectos a mejorar:
 
 \subparagraph{Necesidad de re-publicar el nombre de IPNS cada cierto tiempo} Kubo (una de las implementaciones de un nodo de IPFS) actualiza el nombre de IPNS cada hora para asegurarse de que siga estando en la DHT. Pero si se cae el nodo que publicó último puede que no se actualice mas, esto se tiene que tener en cuenta
 
-\subparagraph{Apertura de puertos} IPFS cluster utiliza el puerto 9096 para la comunicación entre nodos, el cual se tiene que abrir para un correcto funcionamiento. Se podría usar hole punching (?).
+\subparagraph{Apertura de puertos} IPFS cluster utiliza el puerto 9096 para la comunicación entre nodos, el cual se tiene que abrir para un correcto funcionamiento.
+
+\paragraph{Implementación}
+
+Una vez explicado el análisis inicial y las decisiones que se tomaron para poder lograr un servicio que automatice y facilite parte del despliegue de una aplicación web, se detallará la solución realizada para el \textbf{nodo confiable}. El resultado es una herramienta que se puede levantar utilizando un comando, y automáticamente publique el contenido ubicado en el repositorio de Git dado, encargándose de mantenerlo disponible, de orquestar el \textit{pin set} del cluster, y detectar cambios.
+
+El proyecto hace uso de las imágenes de Docker creadas por IPFS para Kubo \cite{kubo-container} e IPFS Cluster \cite{cluster-container}. Kubo es el nodo de IPFS en si, encargado de conectarse a la red de IPFS para luego subir y obtener el contenido necesario. A su vez, el contenedor de IPFS Cluster se encarga de comunicarse con el nodo de Kubo y así manejar el contenido que pinea.
+
+Además de los dos contenedores ya mencionados, se creó un tercer contenedor llamado \textit{watcher}, cuya finalidad es observar los repositorios de Git del proyecto en si y el de service.json, y realizar acciones sobre los otros dos contenedores para mantener el cluster con el último contenido. Para este container se utilizó scripts de shell portable, y se basó en la imagen de Linux llamada Alpine. La comunicación entre \textit{watcher} y cada contenedor se hace mediante sus APIs de HTTP \cite{kubo-api} \cite{cluster-api}.
+
+\subparagraph{watcher} Este módulo del nodo confiable utiliza Git para comparar el último commit de la rama remota contra una copia local que se clona cada vez que se inicia. De esta manera, puede detectar cuando un nuevo cambio ocurre (tanto en el contenido como en el service.json), e iniciar el proceso para obtener el nuevo cambio y desplegarlo. Dicho proceso se compone de los siguientes pasos:
+\begin{enumerate}
+    \item Subir el contenido y el \textit{service.json} al Cluster, y obtener ambos CIDs.
+    \item En base a los CIDs obtenidos, publicar ambos manualmente utilizando Kubo.
+    \item Esperar a que todos los nodos dentro del cluster hayan pinneado los nuevos CIDs.
+    \item Actualizar los dos nombres de IPNS para que apunten a los nuevos CIDs.
+    \item Eliminar los pins antiguos del cluster.
+\end{enumerate}
+
+\subparagraph{Disponibilidad} En el proceso mencionado para desplegar los cambios, hay dos factores que pueden afectar a la disponibilidad del contenido luego de recibir una actualización.
+
+Por un lado, el nombre de IPNS puede no actualizado en todos los puntos de la DHT, y por lo tanto apunten a la versión anterior del contenido. Esto se resuelve asegurándose de publicar el nuevo valor del nombre de IPNS antes de instruir al cluster para dejar de pinnear la versión anterior.
+
+Por otro lado, el contenido nuevo puede no estar disponible inmediatamente, ya que la publicación del CID en la DHT por parte del cluster se hace de manera asíncrona. Para solucionar esto, se decidió publicar el CID manualmente con Kubo, en serie, antes de publicar el nuevo nombre de IPNS. La desventaja de este enfoque es el tiempo extra que se utiliza en publicar el contenido, a cambio de tener el contenido disponible en todo momento (sea la versión actual o la nueva).
+
+\subparagraph{Identidad del nodo cluster} Sabiendo que para ser un nodo confiable se debe tener su \textit{multiaddress} en el archivo de \textit{service.json}, es conveniente mantener el mismo PeerID a lo largo del tiempo y en distintas ejecuciones de la herramienta. Para ello, se debe indicar una \textit{identidad} que consiste de un PeerID, y una clave privada. Esto asegura que el nodo siempre se inicie con la misma idetificación.
+
+\subparagraph{Acceso al nombre de IPNS} Debido a la naturaleza de IPNS, un nombre solo puede ser modificado por un nodo que posea una clave privada determinada. Por ello, todos los nodos confiables deben tener las mismas clave privada de IPNS, una para el contenido y otra para \textit{service.json}.
+
+Para facilitar la inicialización, la herramienta provee un script que detecta la configuración faltante y la genera paso a paso. Esta configuración incluye una identificación para el nodo, claves para IPNS, y la IP pública necesaria para conectar los nodos a la red de IPFS.
 
 \subsubsection{Infraestructura de aplicación}
+
+Para aplicaciones que requieran mantener un estado y permitir que usuarios puedan modificarlo, no es suficiente con la infraestructura que explicamos anteriormente, ya que no hay una noción de estado y solo se le permite cambiar lo que se muestra a los dueños de lo que se despliega. Es por eso que es necesaria otra infraestructura aparte, la cual se encargue del almacenamiento de datos y la conexión entre pares.
+
+Esta infraestructura tiene que estar enfocada al tipo de aplicaciones que venimos a analizar, aplicaciones comunitarias, distribuidas y descentralizadas.
+
+
 
 \input{tex/solucion-blockchain}
 
