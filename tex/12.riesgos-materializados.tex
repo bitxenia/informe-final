@@ -2,6 +2,35 @@
 
 % Poner la tabla, hay una en el notion 
 
+% \setlength\tabcolsep{3pt}
+% \begin{center}
+%     % \begin{tabularx}{\linewidth}{*{8}{|c}{>\RaggedRight\arraybackslash}X}
+%     % \begin{tabularx}{\textwidth}{|l|c|*{8}{>{\RaggedRight\arraybackslash}X}}
+%     \begin{tabular}{*{5}{|p{80pt}}|}
+%     \hline
+%     \textbf{Descripción} & \textbf{Causa}  & \textbf{Plan \break de Respuesta} & Umbral & Plan de Contingencia \\
+%     \hline\hline
+%     Incapacidad de utilizar Hyphanet como ecosistema & Documentación desactualizada y/o API poco documentada & Tomar como referencia otras aplicaciones & Las aplicaciones de referencia no siguen un estándar & Descartar Hyphanet y reemplazar por Freenet \\
+%     \hline
+%     % \end{tabularx}
+%     \end{tabular}
+% \end{center}
+
+\renewcommand\theadfont{\bfseries}
+
+\begin{table}[!htbp]
+    \centering
+    \begin{tabular}{*{5}{|p{70pt}}|}
+         \hline
+         \thead{Descripción} & \thead{Causa} & \thead{Plan \break de Respuesta} & \thead{Umbral} & \thead{Plan \break de Contingencia} \\
+         \hline
+         Incapacidad de utilizar Hyphanet como ecosistema & Documentación desactualizada y/o API poco documentada & Tomar como referencia otras aplicaciones & Las aplicaciones de referencia no siguen un estándar & Descartar Hyphanet y reemplazar por Freenet \\
+         \hline
+    \end{tabular}
+    \caption{Caption}
+    \label{tab:my_label}
+\end{table}
+
 \paragraph{Cambio de Hyphanet a Freenet}
 A mitad del proyecto resolvimos cambiar el tercer ecosistema elegido (Hyphanet) por su versión más moderna (Freenet). Esto fue debido a que encontramos que la documentación era escasa, los programas realizados para el ecosistema eran unos pocos y cada uno tenía una forma distinta de implementar ciertas cosas. La API tampoco provee facilidades a la hora de gestionar archivos, manejo de comunicaciones, entre otras cosas que consideramos necesarias para los casos de uso.
 

@@ -34,3 +34,9 @@ De esta manera el \textit{Factory} tiene un \textit{mapping} con todos los artic
     \caption{Obtención del contenido de un artículo}
     \label{fig:ds-aw-eth-obtener-contenido-articulo}
 \end{figure}
+
+La principal diferencia entre el repositorio de conocimiento y el mensajero en tiempo real está en que los mensajes del mensajero tienen que ser vistos por los demás usuarios que participan de la conversación en el momento que se envían. Esto no es estrictamente necesario en el repositorio de conocimiento pero sí lo es en el mensajero.
+
+Para afrontar este requisito se utilizaron los eventos de Solidity (el lenguaje de programación en el que se desarrollan los \textit{smart contract} de Ethereum). Funciona de la siguiente manera, al momento de enviar un mensaje se emite un evento. Este evento se recibe en un listener que fue previamente inicializado al instante previo de haber obtenido el Chat en el frontend. Al recibir este evento el frontend puede actualizar la pantalla mostrando el mensaje nuevo sin necesidad de obtener todos los mensajes.
+
+% TODO: insertar gráfico del flujo de un evento al enviar un mensaje 
