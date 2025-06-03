@@ -249,7 +249,7 @@ De esta manera ya tenemos una representación para los artículos, pero faltarí
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.5\linewidth]{img/solucion-ipfs/bdd-wiki.png}
-    \caption{Representación de la base de datos de la wiki.}
+    \caption{Representación del repositorio de artículos como base de datos.}
     \label{fig:bdd-wiki}
 \end{figure}
 
@@ -265,11 +265,11 @@ Ahora bien, como podemos acceder a la base de datos. En OrbitDB las bases de dat
 
 En orbitdb, al ser una base de datos peer-to-peer, distribuida y sin un servidor central, significa que la base de datos existe en cada peer que la componga, por lo tanto conectarse a una base de datos significa replicar la totalidad de su información de otros peers que nos la provean. De no estar esos peers, significaría que la base de datos no puede ser accedida y su información podría perderse, tal como sucedía cuando explicamos la infraestructura anterior. Es por eso que una gran parte de la arquitectura está pensada al rededor de peers que opten por ser colaboradores, estos peers van a replicar todas las bases de datos que existan actualmente en la base de datos central, pensandolo en el caso del repositorio, van a preservar todos los articulos que existan. De esta manera logramos que mientras haya por lo menos un colaborador en linea, la wiki va a poder ser accedida.
 
-Estos peers colaboradores son el punto más importante que diferencia esta solución con el resto y que sigue con la filosofía de las aplicaciones comunitarias que estamos analizando, permitiendo que la disponibilidad de la información se este logrando a traves de la donación de almacenamiento en vez de dinero.
+Estos peers colaboradores son el punto más importante que diferencia esta solución con el resto y que sigue con la filosofía de las aplicaciones comunitarias que estamos analizando, permitiendo que la disponibilidad de la información se este logrando a través de la donación de almacenamiento en vez de dinero.
+
+Entonces, un usuario que quiera conectarse a la base de datos y obtener su información, por ejemplo querer conectarse a la wiki y ver artículos, debe primero conectarse a alguno de estos colaboradores, de los cuales puede replicar la información a su base de datos propia. Sin embargo esto no es tan trivial como parece, pasemos a ver como se resuelve este problema.
 
 \paragraph{Manejo de conexión}
-
-Entonces, un usuario que quiera conectarse a la base de datos y obtener su información, por ejemplo querer conectarse a la wiki y ver artículos, debe primero conectarse a alguno de estos colaboradores, de los cuales puede replicar la información a su base de datos propia.
 
 OrbitDB no se responsabiliza de manejar las conexiones, tampoco le importa, ya que te asegura que eventualmente la base de datos va a estar sincronizada entre peers, aunque se caigan las conexiones o te conectes mas tarde, todo se va a sincronizar sin conflictos. Por lo tanto delega esa responsabilidad a \textbf{Helia}\cite{helia} la cual es la implementación de IPFS en los lenguajes javascript/typescript, que a su vez delega la responsabilidad a \textbf{LibP2P}\cite{libp2p} y de la cual tenemos que hacer uso nosotros para manejar las conexiones.
 
@@ -277,18 +277,20 @@ LibP2P es una colección de protocolos y utilidades para facilitar la implementa
 Al crear un nodo de LibP2P se tiene que elegir como conformarlo en base a un conjunto modular de herramientas,
 dentro de los que se encuentran mecanismos de seguridad, de transporte, descubrimiento de pares, entre otros. Cada una de estas herramientas es importante y hace que el nodo funcione como queramos, más adelante explicaremos la decisión para cada herramienta elegida, sin embargo ahora nos vamos a centrar en dos protocolos de interés necesarios para solucionar el problema de manejo de conexión. Los protocolos de transporte y de descubrimiento de peers.
 
-Los protocolos de transporte son los encargados de la comunicación entre nodos, de manera similar a la capa de transporte presente en toda red convencional. Se basan en tipos de transporte ya existentes, adaptados al uso peer-to-peer. Como son TCP, WebSockets, entre otros.
+Los protocolos de transporte son los encargados de la comunicación entre nodos, de manera similar a la capa de transporte presente en toda red convencional. Se basan en tipos de transporte ya existentes, adaptados al uso peer-to-peer. Como lo son TCP, QUIC o WebSockets. Sin embargo no todos los transportes nos son útiles y la decisión de cual protocolo utilizar no es sencilla.
 
+Una de los requisitos de esta infraestructura era la posibilidad de utilizarla para crear aplicaciones que se puedan utilizar desde un entorno web, como es el caso de un usuario queriendo acceder a la wiki desde un navegador. Lo que sucede es que el entorno web no es muy amigable con las conexiones. Los navegadores están construidos sobre HTTP(S), un protocolo sin estado basado en solicitudes y respuestas. El cliente (navegador) envía una solicitud y luego espera una respuesta. Este modelo unidireccional y síncrono da como resultado una transferencia de datos lenta. Las conexiones se manejan en la capa de transporte y no mediante HTTP(S). Una conexión TCP subyacente es utilizada por HTTP/1.1 y HTTP/2, o una conexión QUIC en el caso de HTTP/3. Para mantener la seguridad de los usuarios, los navegadores imponen reglas estrictas, como los requisitos de certificados y el bloqueo de políticas de origen cruzado (cross-origin).
 
+Es por esto que por razones de seguridad, no es posible que un navegador establezca una conexión TCP o QUIC sin procesar directamente desde el navegador, ya que todas las conexiones deben cumplir con los requisitos de Contexto Seguro (Secure Context), como por ejemplo que los mensajes se entreguen a través de TLS.
 
+Es por esta razón que la infraestructura debe hacer una diferenciación entre nodos que se ejecuten desde un entorno independiente, como es el caso de \textbf{node.js}\cite{nodejs} y nodos que se ejecuten en un entorno web, únicamente para asignarle los protocolos de transporte correspondientes a su entorno.
 
+Hay 2 conexiones que se tienen que resolver, la conexión entre nodos independientes y la conexión desde un nodo web a un nodo independiente.
 
+Para los nodos independientes el protocolo utilizado es TCP, con el cual pueden comunicarse entre sí y con otros nodos independientes de la red. El problema viene que, como explicamos, TCP no nos sirve para comunicar desde un nodo web a un nodo independiente, por lo tanto hay que explorar alternativas.
 
+Al momento de comenzar con el desarrollo del repositorio de conocimiento, la implementación de LibP2P en javascript soportaba 
 
-
-Colección de protocolos y utilidades para facilitar la implementación de una red peer-to-peer \cite{libp2p}. Entre sus herramientas, se encuentran diferentes mecanismos de seguridad, de transporte, y para descubrimiento de pares. Se creó con IPFS en mente, pero luego se expandió a un conjunto de protocolos independiente, el cual es utilizado por Ethereum actualmente. Los protocolos de interés para este proyecto son:
-\subparagraph{Protocolos de transporte} Son los encargados de la comunicación entre nodos, de manera similar a la capa de transporte presente en toda red convencional. Se basan en tipos de transporte ya existentes, adaptados al uso peer-to-peer. Los protocolos principales son TCP, WebSockets y WebRTCDirect.
-\subparagraph{Protocolos de descubrimiento de peers} Para encontrar un contenido en IPFS, se necesita saber la dirección del nodo que tiene dicho contenido. El principal protocolo para lograr esto se denomina Distributed Hash Table (DHT) \cite{dht}. Es un registro clave-valor distribuido en todos los nodos que soporten este protocolo, que contiene la información necesaria para encontrar el contenido deseado. Cada nodo tiene una parte de esta tabla, y deberá preguntar a otros nodos hasta conseguir la dirección del nodo asociada a la dirección del contenido buscado.
 
 
 

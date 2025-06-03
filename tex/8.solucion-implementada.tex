@@ -241,8 +241,6 @@ Su propósito es, por un lado demostrar la versatilidad del modelo de paquetes u
     \label{fig:astrawiki-cli}
 \end{figure}
 
-% TODO: Agregar imágenes de la terminal con ejecuciones de astrawiki-cli.
-
 \paragraph{Astrachat CLI}
 
 Frontend de terminal, desarrollado para el caso de uso de mensajero en tiempo real y para el ecosistema de Blockchain.
@@ -253,3 +251,11 @@ Frontend de terminal, desarrollado para el caso de uso de mensajero en tiempo re
     \caption{Página principal de \texttt{astrachat-cli}}
     \label{fig:astrachat-cli-main-page}
 \end{figure}
+
+\subparagraph{Tecnología}
+
+Se utilizó \texttt{React} \cite{react} y \texttt{Ink} \cite{ink} como \textit{frameworks} para crear la interfaz de este frontend.
+
+\subparagraph{Limitaciones}
+
+Debido a que se ejecuta en la terminal no es posible hacer uso de una wallet como Metamask \cite{metamask} ya que la misma sólo funciona en web. Debido a esto, se \textit{hardcodearon} algunas de las wallets que provee Hardhat \cite{hardhat}.

@@ -117,7 +117,7 @@
 	\end{minipage}
 	\begin{minipage}{0.4\textwidth}
         \begin{center}
-            \large{Sebastián Bento Inneo Veiga \\ \textit{100998} \\ \href{mailto:sinneo@fi.uba.ar}{sinneo@fi.uba.ar}}
+            \large{Sebastian Bento Inneo Veiga \\ \textit{100998} \\ \href{mailto:sinneo@fi.uba.ar}{sinneo@fi.uba.ar}}
         \end{center}
 	\end{minipage}\\[1cm]
 	\begin{minipage}{0.4\textwidth}
