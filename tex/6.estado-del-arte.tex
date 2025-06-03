@@ -6,7 +6,7 @@ Comunicar distintas computadoras es un trabajo que requiere coordinación por pa
 
 \subsubsection*{Cliente-Servidor}
 
-Presente en la gran mayoría las aplicaciones de Internet, el modelo \textit{Cliente-Servidor} consiste en mantener un nodo central (servidor), quién se encarga de manejar la interacción entre los demás nodos (clientes), y entre clientes y el mismo servidor. Este modelo se clasifica como \textbf{centralizado}, debido a que la subred de sistemas depende del nodo servidor, y los clientes no tienen manera de comunicarse sin él ante una eventual caída del servidor.
+Presente en la gran mayoría de las aplicaciones de Internet, el modelo \textit{Cliente-Servidor} consiste en mantener un nodo central (servidor), quién se encarga de manejar la interacción entre los demás nodos (clientes), y entre clientes y el mismo servidor. Este modelo se clasifica como \textbf{centralizado}, debido a que la sub-red de sistemas depende del nodo servidor, y los clientes no tienen manera de comunicarse sin él ante una eventual caída del servidor.
 
 Entre los servicios de Internet más utilizados que utilizan esta arquitectura se encuentra la World Wide Web, el servicio de e-mail (SMTP), el servicio de DNS, entre otros.
 
@@ -57,13 +57,21 @@ Al contrario, alojar la aplicación en un servidor conlleva tener un servidor di
 Existen varios ecosistemas que apuntan a proveer un marco con el cuál desarrollar una aplicación descentralizada. A su vez, cada uno de ellos cuenta con herramientas especializadas para los diferentes tipos de aplicaciones.
 
 \subsubsection{IPFS}
-Un suite modular de protocolos para organizar y transferir datos, diseñado con los principios de 'content addressing' (recuperación de archivos en base a contenido y no en base al nombre o id) y una red peer-to-peer. Su principal caso de uso es para publicar datos como archivos, directorios y páginas web descentralizadas.\cite{ipfs}
+Un suite modular de protocolos para organizar y transferir datos, diseñado con los principios de \textit{content addressing} (recuperación de archivos en base a contenido y no en base al nombre o id) y una red peer-to-peer. Su principal caso de uso es para publicar datos como archivos, directorios y páginas web descentralizadas.\cite{ipfs}
 
-\paragraph{Fleek} Plataforma centralizada para alojar servicios. También es utilizada para almacenar datos, y hacer accesible contenido para el resto de la web mediante gateways de IPFS.\cite{fleek}
+\paragraph{libp2p} Colección de protocolos y utilidades para facilitar la implementación de una red peer-to-peer \cite{libp2p}. Entre sus herramientas, se encuentran diferentes mecanismos de seguridad, de transporte, y para descubrimiento de pares. Se creó con IPFS en mente, pero luego se expandió a un conjunto de protocolos independiente, el cual es utilizado por Ethereum actualmente. Los protocolos de interés para este proyecto son:
+\subparagraph{Protocolos de transporte} Son los encargados de la comunicación entre nodos, de manera similar a la capa de transporte presente en toda red convencional. Se basan en tipos de transporte ya existentes, adaptados al uso peer-to-peer. Los protocolos principales son TCP, WebSockets y WebRTCDirect.
+\subparagraph{Protocolos de descubrimiento de peers} Para encontrar un contenido en IPFS, se necesita saber la dirección del nodo que tiene dicho contenido. El principal protocolo para lograr esto se denomina Distributed Hash Table (DHT) \cite{dht}. Es un registro clave-valor distribuido en todos los nodos que soporten este protocolo, que contiene la información necesaria para encontrar el contenido deseado. Cada nodo tiene una parte de esta tabla, y deberá preguntar a otros nodos hasta conseguir la dirección del nodo asociada a la dirección del contenido buscado.
+\subparagraph{Protocolos de mensaje}
 
-\paragraph{OrbitDB} Base de datos peer-to-peer descentralizada. Cuenta con diferentes modelos de datos, incluyendo documentos, eventos, y diccionarios clave-valor. Utiliza IPFS para guardar y sincronizar automáticamente los datos. \cite{orbitdb}
+\paragraph{Kubo} La implementación principal de IPFS es Kubo \cite{kubo}, una solución hecha en Go. Tiene su propio comando en la terminal, llamado \texttt{ipfs}, y también es utilizado en los demás frontends de IPFS como IPFS desktop, la aplicación de escritorio de IPFS. Es la más madura y desarrollada de las dos implementaciones de IPFS, y cuenta con más funcionalidades.
 
-\paragraph{libp2p} Colección de protocolos y utilidades para facilitar la conexión y comunicación entre pares en IPFS. Entre sus herramientas, se encuentran diferentes mecanismos de seguridad, de transporte, y para descubrimiento de pares. \cite{libp2p}
+\paragraph{IPFS Cluster} Herramienta para orquestar distintos nodos de IPFS, con el objetivo de mantener disponible un contenido en la red de IPFS, aumentando su disponibilidad. Por defecto, cualquier nodo puede modificar la lista de archivos que mantiene el \textit{cluster}.
+\subparagraph{Clusters colaborativos} Son clusters que permiten que usuarios puedan colaborar con su nodo y aumentar la disponibilidad del contenido, sin tener permiso para modificar los archivos que se están manteniendo \cite{collaborative-clusters}. Esto es ideal para una aplicación comunitaria debido a esta medida de seguridad que permite al cluster ser apoyado por cualquier usuario de una comunidad.
+
+\paragraph{OrbitDB} Base de datos peer-to-peer descentralizada \cite{orbitdb}. Utiliza por debajo IPFS para el almacenamiento de los datos, y \textit{libp2p} como soporte para sincronizar cada base de datos entre todos los peers. Es \textit{evetualmente consistente}, lo que significa que modificar una base de datos no asegura que este cambio esté disponible en el resto de los nodos bajo un tiempo específico. Esta herramienta tiene una implementación en Javascript, y otra mayormente abandonada en Go. Sin embargo, un nodo de OrbitDB puede ser utilizado en el entorno de un navegador con los parámetros correctos, lo cuál es útil para crear una aplicación web.
+
+\paragraph{Helia} Para crear una instancia de un nodo de OrbitDB se debe pasar como parámetro una instancia de Helia. Helia \cite{helia} es la implementación de IPFS para Javascript, y, como OrbitDB, también puede ejecutarse en un navegador. A diferencia de Kubo, Helia tiene un enfoque mucho más abierto, permitiendo la configuración del nodo libp2p utilizado internamente de manera abierta. Esto implica un trade-off claro: más configuración permite un nodo de IPFS que se puede adaptar a diferentes escenarios, pero también implica una mayor complejidad a la hora de lograr un funcionamiento correcto del nodo.
 
 \subsubsection{Blockchain}
 Tecnología basada en una cadena de bloques de operaciones descentralizada y pública.  Esta tecnología genera una base de datos compartida a la que tienen acceso sus participantes, los cuáles pueden rastrear cada transacción que hayan realizado.\parencite{blockchain}
@@ -75,6 +83,3 @@ Tecnología basada en una cadena de bloques de operaciones descentralizada y pú
 \subsubsection{Alternativas}
 \paragraph{Freenet/Hyphanet}
 Programa de código abierto para compartir datos peer-to-peer con enfoque en la protección de la privacidad. Opera en una red descentralizada, promocionando la libertad de expresión facilitando la anonimidad de los datos compartidos y eludiendo la censura.\cite{freenet}\cite{hyphanet}
-
-% \subsubsection{Hyphanet}
-% Plataforma peer-to-peer resistente a la censura, respetando la privacidad de las comunicaciones.
