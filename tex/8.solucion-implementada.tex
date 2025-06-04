@@ -193,14 +193,15 @@ A continuación se va a explicar como se componen y funcionan ambas infraestruct
 
 % TODO: (Explicar que lo que hicimos son packages)
 
-\input{tex/solucion-ipfs}
-\input{tex/solucion-blockchain}
+\input{tex/8a.solucion-ipfs}
+\input{tex/8b.solucion-blockchain}
+\input{tex/8c.solucion-hyphanet-freenet}
 
 % \newpage
 
 \subsection{Front-end}
 
-% TODO: Mostrar un diagrama de cómo todos los paquetes de bitxenia se utilizan y interactuan entre sí para que el front-end los termine usando. 
+% TODO: Mostrar un diagrama de cómo todos los paquetes de bitxenia se utilizan e interactuan entre sí para que el front-end los termine usando. 
 
 Como prueba de la versatilidad de los ecosistemas, y aprovechando la creación de paquetes, se desarrollaron diferentes front-ends para las aplicaciones realizadas.
 
@@ -230,7 +231,7 @@ El servidor fue creado en \texttt{Node.js} con \texttt{Express.js} como framewor
 
 Front-end de terminal, desarrollado para el caso de uso del repositorio de conocimiento y para el ecosistema de IPFS en específico. Cuenta con todas las funcionalidades del repositorio de conocimiento, como crear, editar y ver artículos, consultar versiones pasadas, e incluso colaborar, lo cual se verá en el apartado de IPFS. Además, cuenta con un contenedor \texttt{Docker} publicado, con el fin de fácilmente iniciar un nodo sin necesitar una instalación de \texttt{Node} y demás dependencias. Funciona como un \texttt{daemon} \cite{daemon}, es decir, se inicia y funciona en segundo plano hasta que se indique lo contrario.
 
-Su propósito es, por un lado demostrar la versatilidad del modelo de paquetes utilizado para crear distintos front-ends. Y por otro lado, el contenedor es útil para el nodo colaborador desarrollado para IPFS, el cual se basa en diferentes contenedores y se verá más adelante.
+Su propósito es, por un lado demostrar la versatilidad del modelo de paquetes utilizado para crear distintos front-ends. Y por otro lado, el contenedor es útil para el nodo colaborador desarrollado para IPFS visto previamente.
 
 \subparagraph{Arquitectura} Se compone de un cliente, el cuál se inicia con cada comando (\texttt{start}, \texttt{add}, \texttt{get}, \texttt{edit}, \texttt{list}, etc.) y un servidor que se ejecuta por detrás, el cual inicia la instancia del repositorio de conocimiento de IPFS y utiliza su API cuando recibe \texttt{requests HTTP}.
 

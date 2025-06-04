@@ -62,6 +62,29 @@ Los eventos pueden resultar útil para la interacción en tiempo real requerida 
 
 \subsubsection{IPFS}
 
+La performance en IPFS depende de algunas variables que están fuera de nuestro alcance. Entre ellas se encuentran:
+ - Uso de cache por parte de nodos de IPFS o gateways cuando se recupera un archivo.
+ - Cercanía al nodo correspondiente a la hora de publicar un CID en la Distributed Hash Table.
+ - Configuración y capacidades del nodo que tiene el contenido que se requiere.
+ - Cantidad de nodos alojando el contenido que se requiere.
+
+ Pese a esto, se puede minimizar el efecto de estas variables en la medida final sin distorsionar las métricas obtenidas. Más adelante se verán las maneras en las que se puede lidiar con estas variables.
+
+\paragraph{Sitio Web Informativo}
+La métrica que se decidió medir es la del \textbf{tiempo que tarda un nodo en desplegar un sitio web o contenido}. Para ello, se creó un clúster con un único nodo y un repositorio Git con contenido de distinta forma.
+
+\subparagraph{Obtención de las métricas} En este caso, el proceso de despliegue se contiene dentro del contenedor \texttt{watcher}. Para medir el tiempo real que transcurre en cada paso del despliegue, se utilizó el comando de GNU \texttt{time} para cada paso, y el resultado es sumado para obtener el tiempo total que tardó desplegar el contenido.
+
+\subparagraph{Archivos de prueba utilizados} Las métricas obtenidas se lograron ajustando dos variables: el tamaño total del contenido, y la cantidad de archivos del mismo. Los archivos en sí fueron generados repitiendo un \texttt{UUID} hasta alcanzar el número de bytes deseados. Se utilizó este tipo de identificador para asegurar de que ningún archivo permanezca en alguna caché, y a su vez no se repitan los CID entre archivos de la misma prueba.
+
+%TODO: Agregar métricas de IPFS y una conclusión al respecto.
+
+\paragraph{Astrawiki}
+
+Las métricas tanto de Astrawiki como Astrachat se ven muy relacionadas, debido a que el grueso del trabajo relacionado a IPFS se realiza con su biblioteca en común, AstraDB. Por ejemplo, el tiempo que tarda un nodo en obtener una nueva versión de un articulo es el similar al que tarda un nodo en recibir un mensaje. Por ello, se prefirió complementar las métricas obtenidas para acentuar el uso específico de AstraDB de cada caso de uso, y evitar métricas repetidas. 
+
+\paragraph{Astrachat}
+
 \subsubsection{Blockchain}
 
 \paragraph{Astrachat-eth}
@@ -100,7 +123,7 @@ La siguiente tabla muestra el valor (en ETH y USD) de enviar el mismo mensaje co
     \centering
     \begin{tabular}{|m{5em}|m{6em}|m{3em}|}
     \hline
-    & ETH & USD \\
+    & \textbf{ETH} & \textbf{USD} \\
     \hline
     \textbf{Max} & 0.00049158 & 1.25 \\
     \hline
