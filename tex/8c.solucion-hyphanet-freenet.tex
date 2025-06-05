@@ -1,1 +1,119 @@
-% TODO: Agregar lo que se desarrolló en Hyphanet/Freenet
+\subsection{Hyphanet}
+
+Hyphanet \cite{hyphanet} es una plataforma peer-to-peer para publicar y comunicar, resistente a la censura y respetuosa de la privacidad.
+
+Originalmente conocido como Freenet y creado como un trabajo profesional de fin de carrera por Ian Clarke, Hyphanet es una plataforma de software libre que permite compartir archivos, navegar y publicar sitios de forma anónima. Es descentralizado para hacerlo menos vulnerable a ataques, y de ser usado sólo con personas de confianza lo hace difícil de detectar.
+
+\paragraph{Aplicaciones comunitarias}
+
+La plataforma se basa en conexiones por nodos que gestionan la información que hay en la red. Estos nodos pueden conectarse a una red abierta llamada \textit{Opennet} en la cual las conexiones se harán con nodos de cualquier persona de cualquier parte del mundo. Por otro lado es posible configurar el nodo para que se conecte sólo con aquellas personas que uno conozca, creando así una red ''privada'' (o \textit{darknet}) en la que sólo personas de confianza puedan conectarse.
+
+El contenido que se publica en los nodos permanece de forma encriptada y repartido en varias partes por distintos nodos. Siempre que un archivo sea solicitado el mismo será cacheado en los distintos nodos que lo soliciten.
+
+No es posible ''borrar'' un archivo como tampoco es posible guardarlo a voluntad. Si un archivo no es suficientemente solicitado eventualmente no se puede recuperar más. Los nodos tampoco pueden elegir qué contenido (partes de un archivo) guardar o no ya que los mismos están encriptados. Si un archivo es subido por un nodo que no está disponible en este momento el archivo no se pierde porque ya fue distribuido por los demás nodos que estaban conectados a él.
+
+% Para acceder a un archivo es necesario conectarse a la red e ingresar el hash correspondiente.
+
+\subsubsection{Plugins}
+
+Es posible crear aplicaciones de comunicación con los llamados \textit{plugins}. Estos \textit{plugins} deben ser hechos en el lenguaje Java (o al menos el \texttt{main} debe estarlo) por decisión de diseño (alegando que Java es ''más seguro''). No están aislados del sistema \textit{host} por lo que pueden acceder a toda la información que quieran. Se deben compilar y proveer el \texttt{.jar} correspondiente y cada usuario que quiera utilizarlo debe instalarlo en su respectivo nodo.
+
+Entre los plugins más usados en el ecosistema podemos nombrar:
+
+\subparagraph{WebOfTrust}\cite{hyphanet-web-of-trust}
+Se autodenomina un spam filter pudiendo puntuar (\textit{trust values}) a cada usuario de forma que los que tienen puntaje muy bajo son catalogados como spammers y cualquier contenido que los involucre será filtrado.
+
+\subparagraph{Sone}\cite{hyphanter-sone}
+Red social similar a Facebook en el que se pueden subir imágenes, comentar, conectarse con otras personas. Usa WebOfTrust para identificar a cada usuario.
+
+\subparagraph{Freemail}\cite{hyphanet-freemail}
+Un servicio de email dentro de Hyphanet que también depende de WebOfTrust.
+
+\subparagraph{Freetalk}\cite{hyphanet-freetalk}
+Sistema de foro.
+
+No hay una receta para implementar estos plugins ya que la guía que existe está incompleta y hace años que no se actualiza (lo mismo pasa con los plugins en sí, llevan años sin actualizarse).
+
+La documentación brilla por su ausencia y cada plugin hace uso de la librería de \textit{Freenet} de una forma distinta lo cual hace difícil saber cuál es la forma correcta (de haberla) para crear un plugin desde cero.
+
+Toda información que deba guardarse se debe hacer en una base de datos local administrada por el plugin (ya sea usando un archivo o una librería como podría ser \textit{sqlite}\cite{sqlite}) ya que no existe una base de datos distribuida en el ecosistema que lo facilite. Esto hace que cada nodo tenga la información sólo de aquellos nodos con los que interactúa, mientras más lo haga más datos va a tener que persistir. Además es necesario que el plugin tenga forma de garantizar la integridad de los datos sino podrían ser fácilmente manipulados por algún nodo generando inconsistencias para la aplicación (que a su vez debería poder manejar).
+
+\subsubsection{Sitio web estático}
+
+Hyphanet posee un software propio para poder agregar sitios llamado \textit{jSite}\cite{hyphanet-jsite}. Con el mismo, basta con seguir las instrucciones en la \href{https://www.hyphanet.org/pages/documentation.html}{documentación oficial}. Una vez finalizada la creación del sitio, el programa devolverá un \textit{hash} el cual será necesario para poder acceder al sitio.
+
+
+\paragraph{Caso de uso}
+
+Se logró levantar un sitio web estático que sólo contenía un HTML con un ''Hello World'' utilizando \textit{jSite}\cite{hyphanet-jsite} en el ecosistema.
+
+\subsubsection{Otros casos de uso}
+
+Debido a la escasa documentación y falta de estándares para desarrollar aplicaciones en el ecosistema, no se prosiguió con los demás casos de uso y se optó por investigar el ecosistema \textit{Freenet}.
+
+
+\subsection{Freenet}
+
+\textit{Freenet}\cite{freenet} es una red peer-to-peer para servicios descentralizados, sin censura, en donde los usuarios tengan el control del contenido.
+
+Creado por Ian Clarke, el mismo creador de \textit{Hyphanet}\cite{hyphanet}, es una plataforma nueva que busca ser una computadora descentralizada en reemplazo de servidores centralizados. Está hecha en Rust y utiliza WebAssembly para ejecutar las aplicaciones.
+
+Siguiendo las bases de Hyphanet, y a diferencia de IPFS, Freenet busca ser una \textit{computadora distribuida} donde cada peer es capaz de ejecutar código que contenga estado el cual tendrá eventual consistencia con los demás peers. Parecido a su antecesor, un contrato puede cachearse en varios peers si este es lo suficientemente popular y dejará de cachearse si deja de serlo.
+
+\subsubsection{Arquitectura}
+
+\paragraph{Key-value}
+
+Freenet es un \textit{global key-value store} que se basa en la idea del \textit{small-world routing}\cite{freenet-small-world-routing} para la descentralización y escalabilidad. Las \textit{keys} son código WebAssembly en dónde se especifican:
+
+\begin{itemize}
+    \item Qué valores están permitidos en la \textit{key}.
+    \item Bajo qué circunstancias el valor puede ser modificado.
+    \item Cómo se puede sincronizar el valor eficientemente entre los \textit{peers} de la red.
+\end{itemize}
+
+\paragraph{Contracts}
+
+La base de la comunicación de las aplicaciones distribuidas son los \textit{contracts}. Estos \textit{contracts} son código Rust compilado a WebAssembly donde una clase debe cumplir con la interfaz del contrato (\texttt{ContractInterface}). Este es encargado de mantener la consistencia del estado de la aplicación en los distintos \textit{peers}. Está pensado para que la actualización sea eficiente de modo que los \textit{contracts} se actualizan en base a las diferencias.
+
+\paragraph{Contracts vs Smart Contracts}
+
+Los \textit{contracts} de Freenet poseen ciertas similitudes y diferencias con los \textit{smart contracts} de Blockhain.
+
+\setlength\tabcolsep{1pt}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|m{21em}|m{10em}|m{10em}|}
+        \hline
+         & \textbf{Contracts (Freenet)} & \textbf{Smart Contracts (Blockchain)} \\
+        \hline
+        \textbf{¿Descentralizado?} & Si & Si \\
+        \hline
+        \textbf{¿Mantiene estado?} & Si & Si \\
+        \hline
+        \textbf{¿Puede ejecutar código arbitratiamente?} & Si (limitación local) & Si (limitación global) \\
+        \hline
+        \textbf{¿Se distribuye el estado entre distintas instancias?} & Si & No \\
+        \hline
+        \textbf{¿Pago?} & No & Si \\
+        \hline
+    \end{tabular}
+    \caption{Comparativa entre Contracts de Freenet y Smart Contracts de Blockchain}
+    \label{tab:contracts-vs-smart-contracts}
+\end{table}
+
+\paragraph{Comunicación}
+
+Al momento de probar el ecosistema, una aplicación podía comunicarse con un contrato a través de un \textit{web socket}. De esta forma se busca mantener el estado actualizado en la aplicación local ante un eventual cambio hecho por otro \textit{peer}.
+
+\subsubsection{Diferencias con Hyphanet}
+
+\paragraph{Funcionalidad} Hyphanet es un disco duro descentralizado mientras que Freenet busca ser una computadora descentralizada.
+
+\paragraph{Intercacción en tiempo real} Freenet permite a los usuarios subscribirse a los datos y ser notificado inmediatamente ante algún cambio del mismo. Esencial para aplicaciones de chat o interacción en tiempo real.
+
+\paragraph{Lenguaje de programación} Hyphanet fue desarrollado en Java. Freenet está implementado en Rust haciéndolo más eficiente y pudiéndose integrar mejor a los distintos sistemas operativos (Windows, Mac, Android, etc).
+
+\paragraph{Transparencia} Freenet está pensado como un posible reemplazo a World Wide Web.
+
+\paragraph{Anonimato} La versión anterior fue diseñada con foco en el anonimato. La nueva versión no ofrece esta opción \textit{out of the box} sin embargo es posible crear un sistema por encima que provea cierta anonimidad.

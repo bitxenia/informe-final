@@ -239,7 +239,7 @@ Gracias a que es un tipo append-only ya no se tiene el problema de posible perdi
 
 La solución es separarnos de la idea de que se tiene que tener una única base de datos que albergue toda la información. Al pensarlo desde el punto de vista del repositorio de reconocimiento, podemos representar cada articulo como su única base de datos de eventos y cada valor que se le agrega puede ser el cambio que se le hizo al articulo y al leer su historia se puede reconstruir a su última versión.. Esto resulta de una práctica muy común en estas arquitecturas distribuidas.
 
-\begin{figure}[h!]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{img/solucion-ipfs/bdd-articulos.png}
     \caption{Representación de cada articulo como su propia base de datos.}
@@ -248,7 +248,7 @@ La solución es separarnos de la idea de que se tiene que tener una única base 
 
 De esta manera ya tenemos una representación para los artículos, pero faltaría una forma de saber que artículos existen actualmente. Es por eso que tenemos que agregar una última base de datos, también de eventos, que represente la wiki en si, con los nombres de los artículos existentes. De esta manera un usuario puede saber, al acceder a esta base de datos representando un repositorio de artículos, cuales son los artículos que existen y solo acceder a la base de datos correspondiente a ese articulo, sin necesidad de replicar la totalidad de los artículos existentes, algo que sería inviable.
 
-\begin{figure}[h!]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{img/solucion-ipfs/bdd-wiki.png}
     \caption{Representación del repositorio de artículos como base de datos.}
@@ -257,7 +257,7 @@ De esta manera ya tenemos una representación para los artículos, pero faltarí
 
 Ahora bien, como podemos acceder a la base de datos. En OrbitDB las bases de datos tienen una dirección que las identifica, formada en su creación. Esta dirección está conformada por el nombre de la base de datos, su tipo y su \textit{Access Controller}. Este último sirve para indicar quien tiene acceso y permisos sobre la base de datos. Como en nuestro caso estamos permitiendo que todos tengan permiso, el controller va a ser siempre el mismo. Esto nos es importante, ya que significa que al crear la base de datos siempre vamos a tener una misma dirección y es por eso que con solo saber el nombre de un articulo podemos saber la dirección de la base de datos que la compone, no necesitamos guardarnos ninguna dirección especifica. Lo mismo sucede con la base de datos representando la wiki, con saber el nombre de la wiki podemos acceder a ella.
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
 \fbox{\texttt{/orbitdb/zdpuAmrcSRUhkQcnRQ6p4bphs7DJWGBkqczSGFYynX6moTcDL}}
 \caption{Ejemplo de un \textit{address} de una base de datos de OrbitDB.}
@@ -269,11 +269,13 @@ En orbitdb, al ser una base de datos peer-to-peer, distribuida y sin un servidor
 
 Estos peers colaboradores son el punto más importante que diferencia esta solución con el resto y que sigue con la filosofía de las aplicaciones comunitarias que estamos analizando, permitiendo que la disponibilidad de la información se este logrando a través de la donación de almacenamiento en vez de dinero.
 
+Es importante remarcar que los colaboradores no tienen ningúna responsabilidad o permisos extra que los usuarios normales no tengan, su única función es ayudar con la disponibilidad de la base de datos, cualquiera que quiera puede colaborar.
+
 Entonces, un usuario que quiera conectarse a la base de datos y obtener su información, por ejemplo querer conectarse a la wiki y ver artículos, debe primero conectarse a alguno de estos colaboradores, de los cuales puede replicar la información a su base de datos propia. Sin embargo esto no es tan trivial como parece, pasemos a ver como se resuelve este problema.
 
 \paragraph{Manejo de conexión}
 
-OrbitDB no se responsabiliza de manejar las conexiones, tampoco le importa, ya que te asegura que eventualmente la base de datos va a estar sincronizada entre peers, aunque se caigan las conexiones o te conectes mas tarde, todo se va a sincronizar sin conflictos. Por lo tanto delega esa responsabilidad a \textbf{Helia}\cite{helia} la cual es la implementación de IPFS en los lenguajes javascript/typescript, que a su vez delega la responsabilidad a \textbf{LibP2P}\cite{libp2p} y de la cual tenemos que hacer uso nosotros para manejar las conexiones.
+OrbitDB no se responsabiliza de manejar las conexiones, tampoco le importa, ya que te asegura que eventualmente la base de datos va a estar sincronizada entre peers, aunque se caigan las conexiones o te conectes mas tarde, todo se va a sincronizar sin conflictos eventualmente. Por lo tanto delega esa responsabilidad a \textbf{Helia}\cite{helia} la cual es la implementación de IPFS en los lenguajes javascript/typescript, que a su vez delega la responsabilidad a \textbf{LibP2P}\cite{libp2p} y de la cual tenemos que hacer uso nosotros para manejar las conexiones.
 
 LibP2P es una colección de protocolos y utilidades para facilitar la implementación de una red peer-to-peer. Al crear un nodo de LibP2P se tiene que elegir como conformarlo en base a un conjunto modular de herramientas, dentro de los que se encuentran mecanismos de seguridad, de transporte, descubrimiento de pares, entre otros. Cada una de estas herramientas es importante y hace que el nodo funcione como queramos, más adelante explicaremos la decisión para cada herramienta elegida, sin embargo ahora nos vamos a centrar en dos protocolos de interés necesarios para solucionar el problema de manejo de conexión. Los protocolos de transporte y de descubrimiento de peers.
 
@@ -293,7 +295,7 @@ Al momento de comenzar con el desarrollo del repositorio de conocimiento, la imp
 
 La primera alternativa analizada y más conocida es la de utlizar \textbf{WebSockets}\cite{websocket}. El protocolo WebSocket permite “secuestrar” una conexión HTTP y tras una solicitud para asegurar la conexión, el navegador obtiene acceso directo a la conexión TCP subyacente, permitiendo comunicación bidireccional persistente. Sin embargo esta alternativa no nos de fue de utilidad ya que para lograr esta mejora de conexión es necesario contar con un dominio o certificado por una autoridad certificadora, cosa que muy probablemente los nodos y usuarios utilizando la infraestructura no tengan.
 
-La otra alternativa adicional considerada fue el uso de la técnica conocida como \textbf{Hole Punching}\cite{hole-punching}, una técnica muy interesante que permite que nodos privados —es decir, aquellos ubicados detrás de un firewall o en redes donde no pueden recibir conexiones entrantes, como hogares, redes corporativas o dispositivos móviles— puedan establecer conexiones con otros nodos. Para lograrlo, un nodo público actúa como intermediario, escuchando por ellos. Esto nos sirve ya que un nodo web actua como un nodo privado ya que, aunque no pueden aceptar conexiones entrantes, sí pueden iniciarlas; así, todo el tráfico pasa a través del nodo intermediario, permitiendo una comunicación efectiva. No obstante, esta opción presenta una limitación relevante: el soporte para esta funcionalidad aún se encuentra en desarrollo en la implementación de libp2p para JavaScript, y no fue posible obtener un funcionamiento estable en el contexto de nuestro proyecto.
+La otra alternativa adicional considerada fue el uso de la técnica conocida como \textbf{Hole Punching}\cite{hole-punching}, una técnica muy interesante que permite que nodos privados —es decir, aquellos ubicados detrás de un firewall o en redes donde no pueden recibir conexiones entrantes, como hogares, redes corporativas o dispositivos móviles— puedan establecer conexiones con otros nodos. Para lograrlo, un nodo público actúa como intermediario, escuchando por ellos, este nodo es denominado como \textbf{Relay}. Esto nos sirve ya que un nodo web actua como un nodo privado ya que, aunque no pueden aceptar conexiones entrantes, sí pueden iniciarlas; así, todo el tráfico pasa a través del nodo intermediario, permitiendo una comunicación efectiva. No obstante, esta opción presenta una limitación relevante: el soporte para esta funcionalidad aún se encuentra en desarrollo en la implementación de libp2p para JavaScript, y no fue posible obtener un funcionamiento estable en el contexto de nuestro proyecto.
 
 Al ver que ambas formas provistas no nos eran de utilidad nos puso en un lugar difícil, dado que de no poder lograr la conexión significaría que esta infraestructura no iba a poder funcionar, sin embargo el desarrollo e investigación continuó aunque no sabíamos si se iba a poder lograr una forma exitosa, lo cual era un riesgo. Sin embargo en al rededor de la mitad del proyecto, el soporte para una nueva alternativa se implementó.
 
@@ -303,10 +305,25 @@ Un tiempo después surge el soporte de una nueva alternativa, la cual ya teniamo
 
 WebRTC es un conjunto de estándares abiertos y APIs web que permiten a las aplicaciones web establecer conectividad directa para conferencias de audio y video, así como para intercambiar datos arbitrarios. LibP2P lo utiliza para lograr una conexión directa y sin necesidad de usar un certificado TLS. De esta manera logramos que ya no sea necesario utilizar AutoTLS y podemos conectarnos corrementamente desde un nodo web a un nodo independiente usando WebRTC-Direct.
 
-De esta manera la topología de conexiones queda de la siguiente manera: 
+De esta manera la topología de conexiones resultante entre nodos independientes y nodos web resulta de la siguiente forma: 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{img/solucion-ipfs/topologia.png}
+    \caption{Topología de conexiones entre nodos independientes y nodos web.}
+    \label{fig:bdd-articulos}
+\end{figure}
+
+Algo a notar es la falta de una conexión entre nodos web, lo cual sería algo muy útil, ya que los mismos usuarios web utilizando la aplicación en un determinado momento, podrian ayudar a proveer de las bases de datos a nuevos usuarios que se conecten y no dejar que solo los nodos independientes puedan hacerlo, lo cual seguría muy bien la filosofía de IPFS, sin embargo esto requeriría que los nodos web puedan escuchar conexiones entrantes y esto es únicamente posible haciendo uso de un \textbf{Relay} como explicamos anteriormente y que actualmente no fue posible obtener un funcionamiento estable en el contexto de nuestro proyecto. Igualmente sería algo muy fácil de implementar una vez que su funcionamiento sea estable y agregaría esta característica que mejoraría la infraestructura.
+
+\paragraph{Búsqueda de colaboradores}
+
+Hasta ahora explicamos cómo se conectan y que protocolos de transporte utilizan los distintos nodos de nuestra infraestructura, sin embargo aún falta algo muy importante del manejo de conexión, el cual es cómo un nodo sabe a que nodo debe conectarse para poder sincronizarse y obtener la base de datos, en esencia, cómo encuentra a los colaboradores a los que deber conectarse.
 
 
-La conexión entre nodos seria una muy buena adición, sin embargo..
+
+
+
 
 
 
