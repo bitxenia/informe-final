@@ -316,16 +316,17 @@ De esta manera la topología de conexiones resultante entre nodos independientes
 
 Algo a notar es la falta de una conexión entre nodos web, lo cual sería algo muy útil, ya que los mismos usuarios web utilizando la aplicación en un determinado momento, podrian ayudar a proveer de las bases de datos a nuevos usuarios que se conecten y no dejar que solo los nodos independientes puedan hacerlo, lo cual seguría muy bien la filosofía de IPFS, sin embargo esto requeriría que los nodos web puedan escuchar conexiones entrantes y esto es únicamente posible haciendo uso de un \textbf{Relay} como explicamos anteriormente y que actualmente no fue posible obtener un funcionamiento estable en el contexto de nuestro proyecto. Igualmente sería algo muy fácil de implementar una vez que su funcionamiento sea estable y agregaría esta característica que mejoraría la infraestructura.
 
-\paragraph{Búsqueda de colaboradores}
+\paragraph{Descubrimiento de colaboradores}
 
-Hasta ahora explicamos cómo se conectan y que protocolos de transporte utilizan los distintos nodos de nuestra infraestructura, sin embargo aún falta algo muy importante del manejo de conexión, el cual es cómo un nodo sabe a que nodo debe conectarse para poder sincronizarse y obtener la base de datos, en esencia, cómo encuentra a los colaboradores a los que deber conectarse.
+Hasta ahora explicamos cómo se conectan y que protocolos de transporte utilizan los distintos nodos de nuestra infraestructura, sin embargo aún falta algo muy importante del manejo de conexión, el cual es cómo un nodo sabe a que nodo debe conectarse para poder sincronizarse y obtener la base de datos, en esencia, cómo descubre a los colaboradores a los que debe conectarse.
 
+Una primera idea puede venir de dejar públicos algunas direcciones de nodos que sepamos que son colaboradores, por ejemplo nodos creados por nosotros, lo cual traería bastantes problemas. El problema más importante con este enfoque es que se estaría rompiendo completamente la descentralización de la infraestructura, ya que su disponibilidad pasaría a depender únicamente de la disponibilidad de estos \textit{bootstrap nodes}, por lo tanto hay que lograr encontrar otro enfoque que respete con la descentralización que estamos buscando lograr.
 
+Una alternativa más alineada con los principios de descentralización puede encontrarse al analizar cómo el sistema IPFS resuelve el problema de descubrimiento de contenido en su red. Como se explicó previamente, IPFS se basa en el concepto de content addressing \cite{content-addressing}, es decir, los datos son accedidos mediante su contenido (identificado de forma única por un Content Identifier o CID) en lugar de su ubicación específica. La localización del contenido se realiza a través de una Distributed Hash Table (DHT), donde los nodos que poseen determinado contenido se anuncian como proveedores de su correspondiente CID.
 
+La DHT de IPFS funciona como una base de datos distribuida que permite localizar contenido de forma descentralizada. En lugar de un servidor central, cada nodo almacena una fracción del índice global que vincula CIDs con los nodos que los proveen. Así, cuando un nodo desea acceder a un determinado contenido, consulta la DHT para identificar los proveedores del CID correspondiente.\cite{dht}
 
-
-
-
+Este mecanismo puede aprovecharse directamente para resolver el problema del descubrimiento de nodos colaboradores. Si consideramos que el CID representa la base de datos y los colaboradores son los proveedores de dicho CID, entonces basta con realizar una búsqueda en la DHT para obtener una lista de nodos actualmente activos que están ofreciendo ese contenido. De este modo, se logra un enfoque completamente descentralizado en el que los nodos colaboradores pueden anunciar su disponibilidad, y los nuevos nodos pueden descubrirlos e iniciar la sincronización sin depender de un punto central.
 
 \paragraph{AstraDB}
 
