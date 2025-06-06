@@ -330,9 +330,11 @@ Este mecanismo puede aprovecharse directamente para resolver el problema del des
 
 \paragraph{AstraDB}
 
-Para entender cómo funciona AstraDB, primero entendamos resumidamente qué es.
+Hasta este momento y gracias al análisis anterior, se logró construir una implementación para el repositorio de conocimiento que mantuviera un estado y permitiera su modificación de una manera distribuida y descentralizada. Esta implementación era parte de la solución del repositorio de conocimiento y formaba una gran parte de su arquitectura, sin embargo al empezar con el desarrollo del mensajero en tiempo real, nos dimos cuenta que se podía crear una abstracción para que ambos casos de uso la utilicen, ya que todos los principios iban a ser los mismos, tanto la representación de los datos, como el manejo de conexión y uso de colaboradores. Es así como surge AstraDB.
 
-AstraDB es una abstracción de una base de datos \textit{key-value like} orientada para aplicaciones comunitarias en el ecosistema de IPFS. Es una base de datos descentralizada y distribuída, peer-to-peer, la cual hace uso de tecnologías como \textbf{OrbitDB} \cite{orbitdb} para el manejo de datos y \textbf{LibP2P} \cite{libp2p} para la comunicación peer-to-peer entre usuarios.
+AstraDB es la abstracción resultante de pensar la representación de los datos como pares clave valor. Donde en vez de tener un repositorio de artículos general, en donde se encuentre el nombre de todos los articulos y cada artículo como su propia base de datos, tengamos un base de datos general en donde se encuentren todas las claves que existen actualmente y una base de datos por cada clave con el contenido de dicha clave. Si bien sería similar a como se utiliza una base de datos clave valor, esta tiene una importante diferencia, la cual es que los valores de clave se agregan a los anteriores en vez de remplzarla el valor actual, esto sucede ya que se sigue respetando el uso de \textit{append only} que nos permitia no tener que generar permisos para evitar el borrado de información.
+
+AstraDB es una abstracción de una base de datos \textit{key-value like} orientada para aplicaciones comunitarias en el ecosistema de IPFS. Construída como una capa superior a \textbf{OrbitDB}\cite{orbitdb}, se encarga de manejar todo la sincronización y descubrimiento de colaboradores.
 
 Su arquitectura tiene 2 grandes responsabilidades. Por un lado tiene que encargarse del manejo de lo datos, permitir que la aplicación tenga un estado y este pueda ser modificado por parte de cualquier usuario. Por otro lado debe proveer la forma de conectar y proveer de información a los distintos usuarios, para que estos puedan comunicarse y notificarse de nuevos cambios.
 
