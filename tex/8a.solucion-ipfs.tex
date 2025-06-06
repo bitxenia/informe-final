@@ -237,7 +237,7 @@ OrbitDB nos provee de otro tipo de base de datos, el tipo de events. Un tipo de 
 
 Gracias a que es un tipo append-only ya no se tiene el problema de posible perdida de información, ya que un usuario solo puede agregar un nuevo valor a la base de datos y no eliminar valores agregados previamente, sin embargo nos surge otro problema, como representamos la información con una base de datos que solo se puede agregar?
 
-La solución es separarnos de la idea de que se tiene que tener una única base de datos que albergue toda la información. Al pensarlo desde el punto de vista del repositorio de reconocimiento, podemos representar cada articulo como su única base de datos de eventos y cada valor que se le agrega puede ser el cambio que se le hizo al articulo y al leer su historia se puede reconstruir a su última versión.. Esto resulta de una práctica muy común en estas arquitecturas distribuidas.
+La solución es separarnos de la idea de que se tiene que tener una única base de datos que albergue toda la información. Al pensarlo desde el punto de vista del repositorio de reconocimiento, podemos representar cada articulo como su única base de datos de eventos y cada valor que se le agrega puede ser el cambio que se le hizo al articulo y al leer su historia se puede reconstruir a su última versión. Esto resulta de una práctica muy común en estas arquitecturas distribuidas.
 
 \begin{figure}[H]
     \centering
@@ -250,17 +250,37 @@ De esta manera ya tenemos una representación para los artículos, pero faltarí
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\linewidth]{img/solucion-ipfs/bdd-wiki.png}
+    \includegraphics[width=0.6\linewidth]{img/solucion-ipfs/bdd-wiki.png}
     \caption{Representación del repositorio de artículos como base de datos.}
     \label{fig:bdd-wiki}
 \end{figure}
 
-Ahora bien, como podemos acceder a la base de datos. En OrbitDB las bases de datos tienen una dirección que las identifica, formada en su creación. Esta dirección está conformada por el nombre de la base de datos, su tipo y su \textit{Access Controller}. Este último sirve para indicar quien tiene acceso y permisos sobre la base de datos. Como en nuestro caso estamos permitiendo que todos tengan permiso, el controller va a ser siempre el mismo. Esto nos es importante, ya que significa que al crear la base de datos siempre vamos a tener una misma dirección y es por eso que con solo saber el nombre de un articulo podemos saber la dirección de la base de datos que la compone, no necesitamos guardarnos ninguna dirección especifica. Lo mismo sucede con la base de datos representando la wiki, con saber el nombre de la wiki podemos acceder a ella.
+Ahora bien, cómo podemos acceder a la base de datos? En OrbitDB las bases de datos tienen una dirección que las identifica, formada en su creación. Esta dirección está conformada por el nombre de la base de datos, su tipo y su \textit{Access Controller}. Este último sirve para indicar quien tiene acceso y permisos sobre la base de datos. Como en nuestro caso estamos permitiendo que todos tengan permiso, el \textit{controller} va a ser siempre el mismo. Esto nos es importante, ya que, como el tipo de la base de datos y su \textit{controller} van a ser siempre los mismos, con solo saber el nombre identificador, al crear la base de datos, vamos a tener siempre la misma dirección, y en consecuencia, vamos a tener siempre la misma base de datos. 
 
 \begin{figure}[H]
 \centering
 \fbox{\texttt{/orbitdb/zdpuAmrcSRUhkQcnRQ6p4bphs7DJWGBkqczSGFYynX6moTcDL}}
 \caption{Ejemplo de un \textit{address} de una base de datos de OrbitDB.}
+\end{figure}
+
+Esto nos es de mucha utilidad ya que con saber únicamente el nombre identificador de la wiki, podemos acceder su base de datos, como también a las bases de datos de sus artículos al componer ambos nombres, el de la wiki con el del articulo, y asi acceder a la base de datos del artículo.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{img/solucion-ipfs/bdd-names.png}
+    \caption{Representación de los nombres identificadores de la wiki y sus artículos.}
+    \label{fig:bdd-names}
+\end{figure}
+
+Es importante notar que en ningún momento vamos a estar abriendo explícitamente una base de datos desde un nodo nuevo, sino que vamos a estar creando la misma base de datos vacia desde cero para luego sincronizarla con el resto de nodos. Esto sucede ya que, si recordamos, OrbitDB es una base de datos \textbf{eventualmente consistente}, lo que significa que OrbitDB te asegura que en algún momento todos los nodos van a converger a la misma información, pero no te da la certeza de cuando va a suceder. Esto también nos ayuda ya que no podemos nunca estar seguros si somos los primeros al crear una base de datos o si ya existe y aún no fuimos sincronizados, generandose como si fuera un \textit{chicken egg problem}, por lo tanto al tener en cuenta se evita hacer asumiciones que pueden generar problemas.
+
+Otro punto importante es que al estar identificando a las bases de datos con su nombre, significa que es muy fácil crear una wiki alternativa que sea totalmente independiente a otras existentes, permitiendo asi total libertad de crear y mantener otras wikis que se quiera, cada una con sus articulos correspondientes y persistida por sus propios colaboradores. Esto nos va a ser de especial utilidad cuando este enfoque no solo lo utlicemos para wikis, el cual explicaremos con detalle más adelante.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{img/solucion-ipfs/bdd-multiple.png}
+    \caption{Representación de múltiples wikis independientes.}
+    \label{fig:bdd-multiple}
 \end{figure}
 
 \paragraph{Colaboradores}
@@ -340,7 +360,6 @@ Su arquitectura tiene 2 grandes responsabilidades. Por un lado tiene que encarga
 
 \paragraph{Manejo de los datos}
 
-% Sin embargo en ningún momento vamos a estar abriendo explícitamente una base de datos con esa dirección, sino que vamos a estar creando la misma base de datos vacia desde cero y sincronizandola con el resto. Esto sucede ya que, si recordamos, orbitdb es una base de datos \textbf{eventualmente consistente} esto significa que orbitdb te asegura que en algún momento todas los nodos van a tener la misma información, pero no tenes certeza de cuando va a suceder. Es por esto que desde la arquitectura se toman ciertos recaudos teniendo en cuenta esto, y es por eso que no podemos nunca estar seguros si somos los primeros en crear una base de datos o ya existe y aun no fuimos sincronizos, generando como un chicken-egg problem
 
 \subsubsection{Colaboración}
 
