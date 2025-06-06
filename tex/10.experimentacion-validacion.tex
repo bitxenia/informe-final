@@ -87,9 +87,9 @@ Las métricas tanto de Astrawiki como Astrachat se ven muy relacionadas, debido 
 
 \subsubsection{Blockchain}
 
-\paragraph{Astrachat-eth}
+\paragraph{Astrachat}
 
-Las siguientes métricas corresponden a Astrachat. Se obtuvieron levantando una instancia local de Hardhat \cite{hardhat} y ejecutando 850 muestras, 3 veces cada una y con 3 mensajes de largo distinto:
+Las siguientes métricas se obtuvieron levantando una instancia local de Hardhat \cite{hardhat} y ejecutando 850 muestras, 3 veces cada una y con 3 mensajes de largo distinto:
 
 \begin{itemize}
     \item \textit{short}: mensaje de 1 palabra. \textit{Lorem}
@@ -99,17 +99,19 @@ Las siguientes métricas corresponden a Astrachat. Se obtuvieron levantando una 
 
 El tamaño de las palabras elegidas representa el largo de los mensajes más comunes que suelen enviarse en un chat.
 
+Hay que tener en cuenta que los tiempos obtenidos corresponden al que le toma a la transacción ejecutarse en una máquina local. En un caso real, existe un tiempo mayor de red y de iteracción del usuario con la \textit{wallet} para confirmar la transacción.
+
 A partir de los datos obtenidos se calcularon el máximo (\textbf{Max}), mínimo (\textbf{Min}), la media (\textbf{Mean}), el desvío estándar (\textbf{Std}) y la mediana (\textbf{Median}).
 
 \subparagraph{Tiempo en enviar un mensaje}
 
 La primer métrica tomada corresponde al tiempo que tarda en enviarse un mensaje.
 
-\setlength\tabcolsep{1pt}
+\setlength\tabcolsep{10pt}
 \begin{table}[!htbp]
     \centering
     % \begin{tabular}{|m{5em}|m{5em}|}
-    \begin{tabular}{|*4{m{5em}|}}
+    \begin{tabular}{|*4{c|}}
     \hline
     & \textbf{short} & \textbf{medium} & \textbf{large} \\
     \hline
@@ -127,16 +129,16 @@ La primer métrica tomada corresponde al tiempo que tarda en enviarse un mensaje
     \caption{Tiempo en enviar un mensaje}
 \end{table}
 
-Los tiempos entre los tamaños de mensajes no varían demasiado.
+Se puede observar que los tiempos entre los tamaños de mensajes no varían demasiado.
 
 \subparagraph{Gas usado para enviar un mensaje}
 
 La siguiente tabla muestra el valor (en ETH y USD) de enviar el mismo mensaje corto. El precio tomado para la conversión de ETH a dólar es el de la fecha del 5 de junio de 2025 a las 19:00hs de \$2439.17 de la página \href{https://coinmarketcap.com/currencies/ethereum/}{Coinmarketcap}.
 
-\setlength\tabcolsep{1pt}
+\setlength\tabcolsep{10pt}
 \begin{table}[H]
     \centering
-    \begin{tabular}{|l|ll|ll|ll|}
+    \begin{tabular}{|c|cc|cc|cc|}
     \hline
      & \multicolumn{2}{c|}{\textbf{short}} & \multicolumn{2}{c|}{\textbf{medium}} & \multicolumn{2}{c|}{\textbf{large}} \\ \hline
      & \multicolumn{1}{c|}{\textbf{ETH}} & \multicolumn{1}{c|}{\textbf{USD}} & \multicolumn{1}{c|}{\textbf{ETH}} & \multicolumn{1}{c|}{\textbf{USD}} & \multicolumn{1}{c|}{\textbf{ETH}} & \multicolumn{1}{c|}{\textbf{USD}} \\
@@ -147,7 +149,7 @@ La siguiente tabla muestra el valor (en ETH y USD) de enviar el mismo mensaje co
     \hline
     \textbf{Min} & \multicolumn{1}{l|}{0.00034221} & 0.83 & \multicolumn{1}{l|}{0.00051274} & 1.25 & \multicolumn{1}{l|}{0.00074264} & 1.81 \\
     \hline
-    \textbf{Std} & \multicolumn{1}{l|}{3.31e-06} & 0.01 & \multicolumn{1}{l|}{4.34e-06} & 0.01 & \multicolumn{1}{l|}{5.79e-06} & 0.01 \\
+    \textbf{Std} & \multicolumn{1}{l|}{0.00000331} & 0.01 & \multicolumn{1}{l|}{0.00000434} & 0.01 & \multicolumn{1}{l|}{0.00000579} & 0.01 \\
     \hline
     \textbf{Median} & \multicolumn{1}{l|}{0.00034221} & 0.83 & \multicolumn{1}{l|}{0.00051274} & 1.25 & \multicolumn{1}{l|}{0.00074264} & 1.81 \\
     \hline
@@ -155,11 +157,11 @@ La siguiente tabla muestra el valor (en ETH y USD) de enviar el mismo mensaje co
     \caption{Precio y gas usado para enviar un mensaje}
 \end{table}
 
-Según los resultados obtenidos se puede decir que costaría 1 dólar cada mensaje enviado.
+Según los resultados obtenidos se puede decir que para enviar un mensaje cuesta más de 1 dólar.
 
 \subparagraph{Tiempo en obtener mensajes}
 
-Para esta métrica se tomó el tiempo en obtener todos los mensajes para un chat el cual iba teniendo cada vez más mensajes (desde 0 hasta 1000 mensajes). El gráfico muestra como el tiempo (en milisegundos) se va incrementando a medida que hay más mensajes en el chat.
+Para esta métrica se tomó el tiempo en obtener todos los mensajes para un chat el cual iba teniendo cada vez más mensajes (desde 0 hasta 850 mensajes). El gráfico muestra para los 3 tipos de mensajes, cómo el tiempo (en milisegundos) se va incrementando a medida que hay más mensajes en el chat.
 
 \begin{figure}[h!]
     \centering
@@ -168,17 +170,14 @@ Para esta métrica se tomó el tiempo en obtener todos los mensajes para un chat
     \label{fig:blockchain-get-message-graphic.png}
 \end{figure}
 
-% TODO: Cambiar imagen
-
 \subparagraph{Tiempo entre enviar y recibir un mensaje (mismo usuario)}
 
 En esta métrica se midió el tiempo que tarda en un mensaje desde que es enviado a ser recibido por el canal de escucha de nuevos mensajes para un mismo usuario.
 
-\setlength\tabcolsep{1pt}
-
+\setlength\tabcolsep{10pt}
 \begin{table}[H]
     \centering
-    \begin{tabular}{|*4{m{5em}|}}
+    \begin{tabular}{|*4{c|}}
     \hline
      & \textbf{short} & \textbf{medium} & \textbf{large} \\
     \hline
@@ -194,16 +193,17 @@ En esta métrica se midió el tiempo que tarda en un mensaje desde que es enviad
     \hline
     \end{tabular}
     \caption{Tiempo en enviar y recibir un mensaje (mismo usuario)}
+    \label{tab:tiempo-send-recv-same-user}
 \end{table}
 
 \subparagraph{Tiempo entre enviar y recibir un mensaje (distintos usuarios)}
 
 Esta métrica calcula el tiempo que tarda un segundo usuario en recibir un mensaje enviado por un primer usuario.
 
-\setlength\tabcolsep{1pt}
+\setlength\tabcolsep{10pt}
 \begin{table}[H]
     \centering
-    \begin{tabular}{|*4{m{5em}|}}
+    \begin{tabular}{|*4{c|}}
     \hline
      & \textbf{short} & \textbf{medium} & \textbf{large} \\
     \hline
@@ -219,35 +219,20 @@ Esta métrica calcula el tiempo que tarda un segundo usuario en recibir un mensa
     \hline
     \end{tabular}
     \caption{Tiempo en enviar y recibir un mensaje (distintos usuarios)}
+    \label{tab:tiempo-send-recv-diff-user}
 \end{table}
 
-% \begin{table}[!htbp]
-%     \centering
-%     \begin{tabular}{|m{5em}|m{5em}|}
-%     \hline
-%     \textbf{Max} & 13.46 ms \\
-%     \hline
-%     \textbf{Mean} & 5.75 ms \\
-%     \hline
-%     \textbf{Min} & 4.68 ms \\
-%     \hline
-%     \textbf{Std} & 0.93 ms \\
-%     \hline
-%     \textbf{Median} & 5.27 ms \\
-%     \hline
-%     \end{tabular}
-%     \caption{Tiempo en enviar y recibir un mensaje (distintos usuarios)}
-% \end{table}
+Si comparamos las tablas de tiempos de enviar y recibir un mensaje (\ref{tab:tiempo-send-recv-same-user} y \ref{tab:tiempo-send-recv-diff-user}) vemos que los tiempos son parecidos. Si bien los máximos de la primer tabla son mayores que los de la segunda y los datos están más dispersos, para los demás valores de la segunda tabla estos tienden a ser ligeramente mayores. En este caso particular, si se hiciera una prueba entre 2 usuarios de distintas partes del mundo el tiempo de conexión seguramente pesaría más.
 
 \subsection{Resumen}
 
 \setlength\tabcolsep{1pt}
 \begin{table}[H]
     \centering
-    \begin{tabular}{||m{7em}|m{14em}|m{14em}||}
+    \begin{tabular}{|m{7em}|m{14em}|m{14em}|}
     \hline
      & \textbf{IPFS} & \textbf{Blockchain} \\
-    \hline\hline
+    \hline
     \textbf{Costos} & Bajos o nulos & Escala con el uso de la aplicación \\
     \hline
     \textbf{Desarrollo} &  & Existen herramientas que facilitan el desarrollo y el despliegue \\
