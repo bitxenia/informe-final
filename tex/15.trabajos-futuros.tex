@@ -6,11 +6,9 @@ A continuación se proponen mejoras para los casos de uso implementados, los cua
 
 \subsubsection{Astrachat-eth}
 
-Una de las principales mejoras que se pueden implementar sobre este caso de uso es respecto a la experiencia de uso, al menos en el navegadores. El hecho que cada mensajes enviado implique firmar una transacción por medio de la wallet hace que la aplicación pierda el factor de \textit{real time}. Una posible solución a este problema es que se pueda crear un balance en un fondo común (con dinero de los usuarios) de forma que cada vez que se envíe un mensaje se tome de este fondo para pagar la transacción.
+Una de las principales mejoras que se pueden implementar sobre este caso de uso es respecto a la experiencia de uso, al menos en el navegadores. El hecho que cada mensajes enviado implique firmar una transacción por medio de la wallet hace que la aplicación pierda el factor de \textit{real time}. Una posible solución a este problema es que se pueda crear un balance en un fondo común (con dinero de los usuarios) de forma que cada vez que se envíe un mensaje se tome de este fondo para pagar la transacción. % Mencionar ayuda a otros frontends que no son web-based
 
-Por otro lado, usar otra red cuyo
-
-%(además de costoso según las métricas vistas en \ref{performance-blockchain})
+Por otro lado, en base al costo por transacción (visto en la sección \ref{performance-blockchain}) se podría utilizar alguna red cuyos precios de gas por transacción sean menores. Una de estas redes --basada en Ethereum-- es la \textit{Ronin Network}\cite{ronin-network}\cite{ronin-network-whitepaper} que a principio de este año abrió su red para que cualquier usuario pueda implementar aplicaciones en la red.
 
 \subsection{Análisis del consumo de energía en la red de IPFS}
 
