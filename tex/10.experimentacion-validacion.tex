@@ -62,20 +62,156 @@ Los eventos pueden resultar útil para la interacción en tiempo real requerida 
 
 \subsubsection{IPFS}
 
-La performance en IPFS depende de algunas variables que están fuera de nuestro alcance. Entre ellas se encuentran:
- - Uso de cache por parte de nodos de IPFS o gateways cuando se recupera un archivo.
- - Cercanía al nodo correspondiente a la hora de publicar un CID en la Distributed Hash Table.
- - Configuración y capacidades del nodo que tiene el contenido que se requiere.
- - Cantidad de nodos alojando el contenido que se requiere.
+La performance en IPFS se ve afectada por algunas variables. Entre ellas se encuentran:
 
- Pese a esto, se puede minimizar el efecto de estas variables en la medida final sin distorsionar las métricas obtenidas. Más adelante se verán las maneras en las que se puede lidiar con estas variables.
+\begin{itemize}
+    \item Uso de cache por parte de nodos de IPFS o gateways cuando se recupera un archivo.
+    \item Cercanía al nodo correspondiente a la hora de publicar un CID en la Distributed Hash Table.
+    \item Configuración y capacidades del nodo que tiene el contenido que se requiere.
+    \item Cantidad de nodos alojando el contenido que se requiere.
+\end{itemize}
+
+ Se puede minimizar  el efecto de estas variables en la medida final sin distorsionar las métricas obtenidas. Más adelante se verán las maneras en las que se puede lidiar con estas variables.
 
 \paragraph{Sitio Web Informativo}
 La métrica que se decidió medir es la del \textbf{tiempo que tarda un nodo en desplegar un sitio web o contenido}. Para ello, se creó un clúster con un único nodo y un repositorio Git con contenido de distinta forma.
 
 \subparagraph{Obtención de las métricas} En este caso, el proceso de despliegue se contiene dentro del contenedor \texttt{watcher}. Para medir el tiempo real que transcurre en cada paso del despliegue, se utilizó el comando de GNU \texttt{time} para cada paso, y el resultado es sumado para obtener el tiempo total que tardó desplegar el contenido.
 
-\subparagraph{Archivos de prueba utilizados} Las métricas obtenidas se lograron ajustando dos variables: el tamaño total del contenido, y la cantidad de archivos del mismo. Los archivos en sí fueron generados repitiendo un \texttt{UUID} hasta alcanzar el número de bytes deseados. Se utilizó este tipo de identificador para asegurar de que ningún archivo permanezca en alguna caché, y a su vez no se repitan los CID entre archivos de la misma prueba.
+\subparagraph{Variables consideradas} Las métricas obtenidas se lograron ajustando dos variables: el tamaño total del contenido, y la cantidad de archivos del mismo. Los archivos en sí fueron generados repitiendo un \texttt{UUID} hasta alcanzar el número de bytes deseados. Se utilizó este tipo de identificador para asegurar de que ningún archivo permanezca en alguna caché de la red o en la DHT, y a su vez no se repitan los CID entre archivos de la misma prueba.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{img/metricas-ipfs/metricas-ipfs-caso1-1.png}
+    \caption{Distribución del tiempo promedio para desplegar el contenido para cada caso}
+    \label{fig:metricas-ipfs-caso1-1.png}
+\end{figure}
+
+De este gráfico podemos concluir que la operación más significante en términos de tiempo en el despliegue es la \textit{providing} del contenido. Esto es, la publicación de todos los CIDs en la DHT. Luego, le siguen el providing del \texttt{service.json}, y las operaciones para actualizar el valor al que apunta el nombre de IPNS, tanto del contenido como del \texttt{service.json}. Las demás operaciones se pueden despreciar.
+
+
+
+\setlength\tabcolsep{10pt}
+\begin{table}[!htbp]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}
+    \hline
+    & \textbf{Max} & \textbf{Mean} & \textbf{Min} & \textbf{Std} & \textbf{Median} \\
+    \hline
+    \textbf{1KiB-50files} & 23.65 s & 17.66 s & 7.70 s & 6.39 s & 21.71 s \\
+    \hline
+    \textbf{25KiB-50files} & 67.29 s & 25.92 s & 8.96 s & 15.24 s & 22.95 s \\
+    \hline
+    \textbf{50KiB-1files} & 78.75 s & 66.09 s & 61.48 s & 5.83 s & 62.93 s \\
+    \hline
+    \textbf{50KiB-10files} & 30.57 s & 12.93 s & 7.10 s & 7.42 s & 8.96 s \\
+    \hline
+    \textbf{50KiB-25files} & 23.79 s & 22.65 s & 21.94 s & 0.46 s & 22.57 s \\
+    \hline
+    \textbf{50KiB-50files} & 23.36 s & 20.95 s & 8.17 s & 4.27 s & 22.43 s \\
+    \hline
+    \end{tabular}
+    \caption{Estadísticas para \texttt{publish-content}}
+\end{table}
+
+\setlength\tabcolsep{10pt}
+\begin{table}[!htbp]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}
+    \hline
+    & \textbf{Max} & \textbf{Mean} & \textbf{Min} & \textbf{Std} & \textbf{Median} \\
+    \hline
+    \textbf{1KiB-50files} & 17.76 s & 10.30 s & 7.54 s & 3.39 s & 8.79 s \\
+    \hline
+    \textbf{25KiB-50files} & 23.03 s & 12.76 s & 7.31 s & 6.37 s & 8.74 s \\
+    \hline
+    \textbf{50KiB-1files} & 23.08 s & 15.37 s & 7.52 s & 6.71 s & 15.25 s \\
+    \hline
+    \textbf{50KiB-10files} & 23.31 s & 13.31 s & 7.34 s & 6.86 s & 8.44 s \\
+    \hline
+    \textbf{50KiB-25files} & 23.02 s & 12.17 s & 7.43 s & 5.80 s & 8.97 s \\
+    \hline
+    \textbf{50KiB-50files} & 22.85 s & 13.91 s & 7.28 s & 6.43 s & 11.32 s \\
+    \hline
+    \end{tabular}
+    \caption{Estadísticas para \texttt{publish-service}}
+\end{table}
+
+\setlength\tabcolsep{10pt}
+\begin{table}[!htbp]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}
+    \hline
+    & \textbf{Max} & \textbf{Mean} & \textbf{Min} & \textbf{Std} & \textbf{Median} \\
+    \hline
+    \textbf{1KiB-50files} & 851.26 s & 740.32 s & 682.64 s & 41.45 s & 734.15 s \\
+    \hline
+    \textbf{25KiB-50files} & 918.36 s & 868.11 s & 815.43 s & 26.57 s & 872.25 s \\
+    \hline
+    \textbf{50KiB-1files} & 42.09 s & 21.84 s & 10.79 s & 7.49 s & 20.14 s \\
+    \hline
+    \textbf{50KiB-10files} & 419.87 s & 372.47 s & 327.86 s & 25.09 s & 377.78 s \\
+    \hline
+    \textbf{50KiB-25files} & 412.30 s & 364.53 s & 306.15 s & 26.53 s & 366.01 s \\
+    \hline
+    \textbf{50KiB-50files} & 921.54 s & 830.06 s & 744.83 s & 41.12 s & 826.65 s \\
+    \hline
+    \end{tabular}
+    \caption{Estadísticas para \texttt{content-provide}}
+\end{table}
+
+\setlength\tabcolsep{10pt}
+\begin{table}[!htbp]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}
+    \hline
+    & \textbf{Max} & \textbf{Mean} & \textbf{Min} & \textbf{Std} & \textbf{Median} \\
+    \hline
+    \textbf{1KiB-50files} & 27.62 s & 14.83 s & 8.84 s & 6.12 s & 11.41 s \\
+    \hline
+    \textbf{25KiB-50files} & 34.34 s & 15.67 s & 10.99 s & 6.64 s & 11.66 s \\
+    \hline
+    \textbf{50KiB-1files} & 25.71 s & 13.63 s & 6.49 s & 5.26 s & 11.34 s \\
+    \hline
+    \textbf{50KiB-10files} & 20.88 s & 12.86 s & 10.84 s & 3.11 s & 11.30 s \\
+    \hline
+    \textbf{50KiB-25files} & 20.78 s & 12.42 s & 9.78 s & 3.47 s & 11.26 s \\
+    \hline
+    \textbf{50KiB-50files} & 20.27 s & 11.31 s & 6.82 s & 3.17 s & 10.97 s \\
+    \hline
+    \end{tabular}
+    \caption{Estadísticas para \texttt{service-provide}}
+\end{table}
+
+
+
+
+Teniendo en cuenta esto, se puede observar cuál es la causa de la variación del tiempo de providing ajustando las dos variables mencionadas.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{img/metricas-ipfs/tiempo-por-cant-archivos.png}
+    \caption{Tiempo promedio por cantidad de archivos}
+    \label{fig:tiempo-por-cant-archivos.png}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{img/metricas-ipfs/tiempo-por-tamano.png}
+    \caption{Tiempo promedio por tamaño del contenido}
+    \label{fig:tiempo-por-tamano.png}
+\end{figure}
+
+La cantidad de archivos que tiene el contenido a publicar es la variable que modifica drásticamente el tiempo que tarda un nodo confiable para desplegarlo, como se ve en las figuras. Esto se debe a que la publicación del CID del directorio no es suficiente para que otro nodo pueda obtener el contenido de ese directorio. En cambio, se requiere que se publique todos los archivos y directorios que componen el contenido. Esto también se demuestra con el tiempo constante para publicar el archivo \texttt{service.json}, ya que en todos los casos sigue siendo un sólo archivo. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{img/metricas-ipfs/tendencia-desplegar.png}
+    \caption{Tendencia del tiempo total promedio para desplegar el contenido en ejecuciones consecutivas.}
+    \label{fig:tendencia-desplegar.png}
+\end{figure}
+
+Por último, se ve como la tendencia en ejecuciones consecutivas no afecta el tiempo que se tarda en desplegar.
 
 %TODO: Agregar métricas de IPFS y una conclusión al respecto.
 
@@ -85,7 +221,7 @@ Las métricas tanto de Astrawiki como Astrachat se ven muy relacionadas, debido 
 
 \paragraph{Astrachat}
 
-\subsubsection{Blockchain}
+\subsubsection{Blockchain\label{performance-blockchain}}
 
 \paragraph{Astrachat}
 

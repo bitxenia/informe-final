@@ -1,1 +1,28 @@
 \section{Trabajos futuros}
+
+\subsection{Mejoras a los casos de uso}
+
+A continuación se proponen mejoras para los casos de uso implementados, los cuales, por temas de tiempo, no se llegaron a implementar.
+
+\subsubsection{Astrachat-eth}
+
+Una de las principales mejoras que se pueden implementar sobre este caso de uso es respecto a la experiencia de uso, al menos en el navegadores. El hecho que cada mensajes enviado implique firmar una transacción por medio de la wallet hace que la aplicación pierda el factor de \textit{real time}. Una posible solución a este problema es que se pueda crear un balance en un fondo común (con dinero de los usuarios) de forma que cada vez que se envíe un mensaje se tome de este fondo para pagar la transacción.
+
+Por otro lado, usar otra red cuyo
+
+%(además de costoso según las métricas vistas en \ref{performance-blockchain})
+
+\subsection{Análisis del consumo de energía en la red de IPFS}
+
+Como se mencionó anteriormente, no hay análisis detallados del uso de energía en la red de IPFS. Un posible trabajo involucra calcular una huella de carbono aproximada, el consumo promedio de energía, entre otras métricas. De ello puede desprenderse un análisis comparativo entre diferentes ecosistemas como Blockchain, y cloud hosting tradicional.
+
+\subsection{Blockchain para aplicaciones comunitarias}
+
+En la búsqueda de una blockchain comunitaria nos encontramos con un servicio llamado \textit{Filecoin}\cite{filecoin} el cual provee de incentivos monetarios para aquellos que cedan espacio en sus discos a guardar archivos de otras personas. Es abierto para que cualquier persona pueda unirse a la red peer-to-peer que proveen. Funciona por arriba de IPFS, utiliza tecnologías de Blockchain para los incentivos y dar garantía que los datos están realmente guardados en los nodos. Nuestra propuesta de trabajo futuro es que se cree una tecnología basada en Blockchain que no necesite del incentivo monetario para funcionar y que además permita la ejecución de código.
+
+
+% Por parte de Blockchain, un posible trabajo futuro sería el de crear una blockchain específicamente para este tipo de aplicaciones parecido a \textit{Filecoin}\cite{filecoin} pero sin el incentivo monetario. Esto no significa que no pueda tener una moneda para la utilización de la red. La idea sería crear una red que cualquier persona pueda hostear en su computadora o servidor personal, accesible para todos y donde se puedan crear aplicaciones como el repositorio de conocimiento y el mensajero en tiempo real.
+
+\subsection{Análisis de Freenet como ecosistema}
+
+Si en un futuro Freenet finalmente sale en una versión estable, creemos que sería un buen ecosistema al cual realizar un análisis como el de este trabajo y hasta más en profundidad con otro tipo de aplicaciones distribuidas y descentralizadas.

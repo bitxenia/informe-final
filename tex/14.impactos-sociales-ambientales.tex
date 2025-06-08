@@ -1,5 +1,44 @@
 \section{Impactos sociales y ambientales}
 
-En las soluciones de IPFS hay impactos sociales por la imposibilidad de moderación de contenido...
+A continuación se realizará un análisis del posible impacto que pueda tener el uso de estas herramientas, manteniendo la distinción entre ecosistemas.
 
-Ambiental puede ser por el uso de almacenamiento?...
+\subsection{Aplicaciones en IPFS}
+
+\subsubsection{Moderación y Censura}
+
+Nuestras aplicaciones desarrolladas con IPFS carecen de moderación para los artículos y chats. Esto es debido a la falta de roles, necesarios para una moderación efectiva dentro de cada comunidad. Como se vio previamente, las bases de datos que representan artículos o chats son \textit{append-only}, y por lo tanto no hay una manera de eliminar un contenido en particular sin eliminar la base de datos.
+
+Tampoco es sencillo eliminar la base de datos. Tanto en Astrawiki como en Astrachat, cada chat/artículo es único, y por lo tanto no se puede simplemente sobrescribir el contenido con otra base de datos. Por otro lado, la base de datos siempre estará disponible mientras otras personas la alojen.
+
+La manera más factible de eliminar un artículo o chat por completo es a nivel de front-end, o sea, manualmente eliminando resultados de las búsquedas, y no permitiendo la carga de esos artículos o chats específicos. Esto se puede realizar siempre y cuando se tenga acceso al código fuente del front-end utilizado, y se tenga permisos para modificarlo de manera que los usuarios obtengan la nueva versión al usarlo.
+
+Todas las ventajas y limitaciones de IPFS abarcan nuestras implementaciones. En el caso en que un individuo o entidad -como un gobierno, o un ISP- quiera censurar estos recursos, no basta con prohibir un dominio en particular, ya que IPFS es abierto y los CIDs y nombres de IPNS seguirán disponibles. Existen maneras de censurar por CID que explotan componentes de IPFS como la Distributed Hash Table, pero pueden ser mitigados. \cite{censorship-ipfs} Tampoco es útil inhabilitar un gateway en específico, ya que los usuarios pueden optar por usar otra gateway, o directamente acceder mediante su propio nodo de IPFS.
+
+Por otro lado, los nodos de IPFS no son anónimos. El \texttt{PeerID} de cada nodo es permanente y se mantiene cada vez que se inicia. A la vez, se puede relacionar el \texttt{PeerID} de un nodo con una \textit{multiaddress}, y por lo tanto, la IP pública del nodo \cite{privacy-ipfs}. No obstante, incluso obteniendo la IP de uno de los nodos que aloja el contenido, este suele estar disponible en múltiples nodos. Esto incluye a cualquier usuario que utilice la aplicación y gateways que la recuperen, ya que por la naturaleza de IPFS, el contenido se mantendrá en la caché del nodo por un tiempo.
+
+La contra-cara de estas dificultades para censurar un contenido alojado en IPFS es la facilidad para confirmar que un contenido ya no está disponible. Un nodo puede saber con certeza que un contenido no está disponible simplemente intentando recuperarlo, lo cuál es difícil de lograr con servidores HTTP \cite{doan2022decentralisedcloudstorageipfs}.
+
+Además, un estudio realizado en Septiembre de 2023 \cite{Balduf_2023} afirma que gran parte de los nodos presentes en la red de IPFS provienen de servicios de cloud, los cuáles son propietarios y fáciles de manipular para censurar o restringir el acceso a un contenido en específico. Entre otras estadísticas, se resalta que un 79,6\% de los nodos en la DHT provienen de datacenters, y un 80\% de los nodos que están detrás de una red con NAT, obtienen contenido mediante relays alojados en servicios de cloud. 
+
+Los servicios desarrollados con IPFS como infraestructura son muy resilientes a posibles ataques. A su vez, la dificultad para eliminar contenido no deseado presenta un posible problema, ya que se puede utilizar para alojar contenido malicioso, ilegal, o simplemente no acorde a una comunidad que aloje una wiki o chat.
+
+\paragraph{Acceso a información en regiones con censura o poca conexión} Un beneficio claro del uso de IPFS es su tolerancia a la partición de la red \cite{doan2022decentralisedcloudstorageipfs}. Debido a que el contenido puede ser replicado en múltiples nodos, no se puede completamente limitar el acceso y publicación de contenido. Por otro lado, una vez que un nodo en una red local o regional obtiene el contenido, este estará disponible en esa red mientras el nodo lo ofrezca, lo cuál es útil para lugares en donde la conexión a Internet es limitada, ya que para obtener dicho contenido no se requiere recuperar archivos fuera de la red local.
+
+\subsubsection{Impacto ambiental}
+
+No hay análisis realizados acerca de la utilización de energía por parte de la red de IPFS en comparación con soluciones centralizadas. Sin embargo, hay varios factores que diferencian el uso de energía de una solución centralizada con una realizada con IPFS como infraestructura.
+
+\paragraph{Recuperación de contenido} En un escenario óptimo, el contenido requerido está disponible en un nodo cercano. Por ejemplo, si otro usuario en un área especifico accede a un contenido, el resto de los nodos en ese área podrán recuperar el contenido desde ese nodo. En cambio, un contenido alojado en un servidor HTTP siempre requiere acceso al servidor, el cuál puede estar a mayor distancia. Esto implica un uso mayor de ISPs regionales y de \textit{tier 1}, y en general requiere infraestructura de red de mayor capacidad.
+
+\paragraph{Eficiencia} Dado que parte de los nodos proveedores de contenido están ubicados en la \textit{periferia} de la red (dispositivos móviles, computadoras de hogar, etc.), los métodos de lectura y escritura de contenido no es óptimo. Los nodos pueden estar utilizando discos duros en vez de unidades de estado sólido, o en general componentes ineficientes comparados con un servidor dedicado a proveer contenido HTTP. Esto puede resultar en un mayor uso de energía.
+
+\paragraph{Escalabilidad} Si bien los servicios de cloud proveen escalabilidad para variar la cantidad de máquinas dedicadas a proveer un contenido especifico, la naturaleza de IPFS hace que esta red sea incluso más optimizada. Cuando muchos nodos requieren de un contenido, se replica por la red fácilmente y sin cargas altas para ningún nodo en particular.
+
+Realizar un análisis detallado del impacto ambiental de IPFS es uno de los trabajos futuros propuestos.
+
+\subsection{Aplicaciones en Ethereum}
+
+\subsubsection{Moderación y Censura}
+
+\subsubsection{Impacto ambiental}
+

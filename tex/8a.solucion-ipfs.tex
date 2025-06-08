@@ -10,13 +10,19 @@ Al subir un archivo —por ejemplo, código HTML— su contenido se inserta en u
 
 No obstante, fijar un archivo o directorio no asegura su disponibilidad indefinida en el tiempo, ya a que esta depende de que el nodo que que fije el contenido esté activo, o de que otros nodos que hayan accedido al archivo y aún lo tengan en su caché. Para mejorar la disponibilidad de un archivo, lo ideal es que varios nodos fijen el contenido, de modo que otro nodo que desee obtener el contenido pueda hacerlo desde cualquiera de ellos.
 
-Para lograr que el contenido persista en la red sin necesidad de que el nodo local esté activo, existen opciones para delegar el pinning del archivo o directorio. Existen servicios de pinning y clústeres colaborativos, que actúan fijando los archivos en múltiples nodos, aumentando no solo su disponibilidad sino también su distribución, y por ende logrando un acceso más rápido al contenido.
+Para lograr que el contenido persista en la red sin necesidad de que el nodo local esté activo, existen opciones para delegar el pinning del archivo o directorio. Existen servicios de pinning, el servicio ofrecido por Filecoin, y clústeres colaborativos, que actúan fijando los archivos en múltiples nodos, aumentando no solo su disponibilidad sino también su distribución, y por ende logrando un acceso más rápido al contenido.
 
 \paragraph{Servicios de \textit{pinning}}
 
-La manera más fácil de asegurarse que los datos estén disponibles y se persistan es usar un servicio de \textit{pinning} \cite{pinning-services}. Estos servicios cuentan con varios nodos que fijan archivos. De esta manera, ya no es necesario contar con un nodo local que los aloje. Algunos ejemplos de servicios de pinning incluyen Fleek \cite{fleek} y Pinata \cite{pinata}.
+La manera más fácil de asegurarse que los datos estén disponibles y se persistan es usar un servicio de \textit{pinning} \cite{pinning-services}. Estos servicios cuentan con varios nodos que fijan archivos. De esta manera, ya no es necesario contar con un nodo local que los aloje. Algunos ejemplos de servicios de pinning incluyen Fleek \cite{fleek}, Filebase\cite{filebase} y Pinata \cite{pinata}.
 
 Estos servicios no van de la mano con la filosofía de aplicaciones estrictamente comunitarias. Por un lado, los servicios de \textit{pinning} tienen un modelo gratis con funcionalidad limitada o capacidad de almacenamiento limitado. Por otro lado, se depende de estos servicios, lo que en esencia centraliza el proceso de despliegue de la aplicación o sitio web. Si por algún motivo el servicio dejara de fijar los archivos, estos pueden dejar de estar disponibles en la red IPFS, e incluso pueden perderse por completo. Esto rompe completamente con la naturaleza de aplicaciones descentralizadas y pasa a tener una centralización tercerizada similar a utilizar un \textit{cloud hosting}.
+
+\paragraph{Filecoin}
+
+Filecoin \cite{filecoin} es una Blockchain creada por IPFS que ofrece una red en la cuál un nodo puede proporcionar almacenamiento a cambio de un incentivo económico en forma de criptomoneda. Utilizando esta alternativa, un cliente puede ofrecer FIL, la criptomoneda de Filecoin a cambio de asegurar que el contenido está alojado en un nodo proveedor de almacenamiento. Este nodo proveedor debe proporcionar diariamente prueba de que el contenido indicado está disponible.
+
+Es distinto de los servicios de pinning vistos, ya que los nodos que proveen almacenamiento dentro de Filecoin no pertenecen necesariamente a una misma organización, sino que se distribuyen a lo largo de su red. Sin embargo, requiere una inversión constante para mantener la persistencia del contenido, y por lo tanto no es ideal como solución de almacenamiento permanente para una aplicación comunitaria.
 
 \paragraph{Clústeres colaborativos}
 
@@ -241,7 +247,7 @@ La solución es separarnos de la idea de que se tiene que tener una única base 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\linewidth]{img/solucion-ipfs/bdd-articulos.png}
+    \includegraphics[width=0.4\linewidth]{img/solucion-ipfs/bdd-articulos.png}
     \caption{Representación de cada articulo como su propia base de datos.}
     \label{fig:bdd-articulos}
 \end{figure}
@@ -255,12 +261,12 @@ De esta manera ya tenemos una representación para los artículos, pero faltarí
     \label{fig:bdd-wiki}
 \end{figure}
 
-Ahora bien, cómo podemos acceder a la base de datos? En OrbitDB las bases de datos tienen una dirección que las identifica, formada en su creación. Esta dirección está conformada por el nombre de la base de datos, su tipo y su \textit{Access Controller}. Este último sirve para indicar quien tiene acceso y permisos sobre la base de datos. Como en nuestro caso estamos permitiendo que todos tengan permiso, el \textit{controller} va a ser siempre el mismo. Esto nos es importante, ya que, como el tipo de la base de datos y su \textit{controller} van a ser siempre los mismos, con solo saber el nombre identificador, al crear la base de datos, vamos a tener siempre la misma dirección, y en consecuencia, vamos a tener siempre la misma base de datos. 
+Ahora bien, ¿cómo podemos acceder a la base de datos? En OrbitDB las bases de datos tienen una dirección que las identifica, formada en su creación. Esta dirección está conformada por el nombre de la base de datos, su tipo y su \textit{Access Controller}. Este último sirve para indicar quien tiene acceso y permisos sobre la base de datos. Como en nuestro caso estamos permitiendo que todos tengan permiso, el \textit{controller} va a ser siempre el mismo. Esto nos es importante, ya que, como el tipo de la base de datos y su \textit{controller} van a ser siempre los mismos, con solo saber el nombre identificador, al crear la base de datos, vamos a tener siempre la misma dirección, y en consecuencia, vamos a tener siempre la misma base de datos. 
 
 \begin{figure}[H]
 \centering
 \fbox{\texttt{/orbitdb/zdpuAmrcSRUhkQcnRQ6p4bphs7DJWGBkqczSGFYynX6moTcDL}}
-\caption{Ejemplo de un \textit{address} de una base de datos de OrbitDB.}
+\caption{Ejemplo de la \textit{address} de una base de datos de OrbitDB.}
 \end{figure}
 
 Esto nos es de mucha utilidad ya que con saber únicamente el nombre identificador de la wiki, podemos acceder su base de datos, como también a las bases de datos de sus artículos al componer ambos nombres, el de la wiki con el del articulo, y asi acceder a la base de datos del artículo.
@@ -272,7 +278,7 @@ Esto nos es de mucha utilidad ya que con saber únicamente el nombre identificad
     \label{fig:bdd-names}
 \end{figure}
 
-Es importante notar que en ningún momento vamos a estar abriendo explícitamente una base de datos desde un nodo nuevo, sino que vamos a estar creando la misma base de datos vacia desde cero para luego sincronizarla con el resto de nodos. Esto sucede ya que, si recordamos, OrbitDB es una base de datos \textbf{eventualmente consistente}, lo que significa que OrbitDB te asegura que en algún momento todos los nodos van a converger a la misma información, pero no te da la certeza de cuando va a suceder. Esto también nos ayuda ya que no podemos nunca estar seguros si somos los primeros al crear una base de datos o si ya existe y aún no fuimos sincronizados, generandose como si fuera un \textit{chicken egg problem}, por lo tanto al tener en cuenta se evita hacer asumiciones que pueden generar problemas.
+Es importante notar que en ningún momento vamos a estar abriendo explícitamente una base de datos desde un nodo nuevo, sino que vamos a estar creando la misma base de datos vacia desde cero para luego sincronizarla con el resto de nodos. Esto sucede ya que, si recordamos, OrbitDB es una base de datos \textbf{eventualmente consistente}, lo que significa que OrbitDB te asegura que en algún momento todos los nodos van a converger a la misma información, pero no te da la certeza de cuándo va a suceder. Esto también nos ayuda ya que no podemos nunca estar seguros si somos los primeros al crear una base de datos o si ya existe y aún no fuimos sincronizados, generándose como si fuera un \textit{chicken egg problem}, por lo tanto al tener en cuenta se evita hacer asunciones que pueden generar problemas.
 
 Otro punto importante es que al estar identificando a las bases de datos con su nombre, significa que es muy fácil crear una wiki alternativa que sea totalmente independiente a otras existentes, permitiendo asi total libertad de crear y mantener otras wikis que se quiera, cada una con sus articulos correspondientes y persistida por sus propios colaboradores. Esto nos va a ser de especial utilidad cuando este enfoque no solo lo utlicemos para wikis, el cual explicaremos con detalle más adelante.
 
@@ -346,26 +352,76 @@ Una alternativa más alineada con los principios de descentralización puede enc
 
 La DHT de IPFS funciona como una base de datos distribuida que permite localizar contenido de forma descentralizada. En lugar de un servidor central, cada nodo almacena una fracción del índice global que vincula CIDs con los nodos que los proveen. Así, cuando un nodo desea acceder a un determinado contenido, consulta la DHT para identificar los proveedores del CID correspondiente.\cite{dht}
 
-Este mecanismo puede aprovecharse directamente para resolver el problema del descubrimiento de nodos colaboradores. Si consideramos que el CID representa la base de datos y los colaboradores son los proveedores de dicho CID, entonces basta con realizar una búsqueda en la DHT para obtener una lista de nodos actualmente activos que están ofreciendo ese contenido. De este modo, se logra un enfoque completamente descentralizado en el que los nodos colaboradores pueden anunciar su disponibilidad, y los nuevos nodos pueden descubrirlos e iniciar la sincronización sin depender de un punto central.
+Este mecanismo puede aprovecharse directamente para resolver el problema del descubrimiento de nodos colaboradores. Si consideramos que el CID representa la base de datos, construida a partir de su nombre identificador, y los colaboradores son los proveedores de dicho CID, entonces basta con realizar una búsqueda en la DHT para obtener una lista de nodos actualmente activos que están ofreciendo ese contenido. De este modo, se logra un enfoque completamente descentralizado en el que los nodos colaboradores pueden anunciar su disponibilidad, y los nuevos nodos pueden descubrirlos e iniciar la sincronización sin depender de un punto central ni de direcciones de nodos preconfiguradas.
 
 \paragraph{AstraDB}
 
-Hasta este momento y gracias al análisis anterior, se logró construir una implementación para el repositorio de conocimiento que mantuviera un estado y permitiera su modificación de una manera distribuida y descentralizada. Esta implementación era parte de la solución del repositorio de conocimiento y formaba una gran parte de su arquitectura, sin embargo al empezar con el desarrollo del mensajero en tiempo real, nos dimos cuenta que se podía crear una abstracción para que ambos casos de uso la utilicen, ya que todos los principios iban a ser los mismos, tanto la representación de los datos, como el manejo de conexión y uso de colaboradores. Es así como surge AstraDB.
+Gracias al análisis anterior, se logró construir una implementación para el repositorio de conocimiento que mantuviera un estado y permitiera su modificación de una manera distribuida y descentralizada. Esta implementación era parte de la solución del repositorio de conocimiento y formaba una gran parte de su arquitectura, sin embargo al empezar con el desarrollo del mensajero en tiempo real, nos dimos cuenta que se podía crear una abstracción para que ambos casos de uso la utilicen, ya que todos los principios iban a ser los mismos, tanto la representación de los datos, como el manejo de conexión y uso de colaboradores. Es así como surge AstraDB.
 
-AstraDB es la abstracción resultante de pensar la representación de los datos como pares clave valor. Donde en vez de tener un repositorio de artículos general, en donde se encuentre el nombre de todos los articulos y cada artículo como su propia base de datos, tengamos un base de datos general en donde se encuentren todas las claves que existen actualmente y una base de datos por cada clave con el contenido de dicha clave. Si bien sería similar a como se utiliza una base de datos clave valor, esta tiene una importante diferencia, la cual es que los valores de clave se agregan a los anteriores en vez de remplzarla el valor actual, esto sucede ya que se sigue respetando el uso de \textit{append only} que nos permitia no tener que generar permisos para evitar el borrado de información.
+AstraDB es la abstracción resultante de pensar la representación de los datos como pares clave valor. Donde en vez de tener un repositorio de artículos general, en donde se encuentre el nombre de todos los artículos y cada artículo como su propia base de datos, tengamos un base de datos general en donde se encuentren todas las claves que existen actualmente y una base de datos por cada clave con el contenido de dicha clave. Si bien sería similar a como se compone una base de datos clave valor, esta tiene una importante diferencia, la cual es que los valores de clave se agregan a los anteriores en vez de remplazar el valor actual, esto sucede ya que se sigue respetando el uso de \textit{append only} que nos permitía no tener que generar permisos para evitar el borrado de información y lograr una descentralización.
 
-AstraDB es una abstracción de una base de datos \textit{key-value like} orientada para aplicaciones comunitarias en el ecosistema de IPFS. Construída como una capa superior a \textbf{OrbitDB}\cite{orbitdb}, se encarga de manejar todo la sincronización y descubrimiento de colaboradores.
+Su interfaz consiste de dos métodos principales, los cuales permiten el agregado de una nueva clave y obtención de los valores asociados a esa clave. Permitiendo de esta manera que la creación de nuevos casos de uso orientados al uso colaborativo y siguiendo los principios mostrados sea mucho mas fácil y rápido, 
+logrando que el foco del desarrollo este en los requisitos del mismo y no en el funcionamiento del ecosistema.
 
-Su arquitectura tiene 2 grandes responsabilidades. Por un lado tiene que encargarse del manejo de lo datos, permitir que la aplicación tenga un estado y este pueda ser modificado por parte de cualquier usuario. Por otro lado debe proveer la forma de conectar y proveer de información a los distintos usuarios, para que estos puedan comunicarse y notificarse de nuevos cambios.
+Lo que se tiene que hacer es adaptar el caso de uso al paradigma de clave valor. En el caso del repositorio de conocimiento, como se explicó anteriormente, cada clave representa un artículo, y el contenido del mismo es cada actualización que se le realizó al mismo. Para el caso del mensajero en tiempo real, cada clave representa un determinado chat, con el nombre del chat como la clave, y su contenido representa cada mensaje enviado secuencialmente. Mientras el caso de uso se pueda representar con dicho paradigma, se puede utilizar astradb para su persistencia de forma colaborativa.
 
-\paragraph{Manejo de los datos}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{img/solucion-ipfs/astradb-arquitectura.png}
+    \caption{Arquitectura de AstraDB.}
+    \label{fig:astradb-arquitectura}
+\end{figure}
 
+Su arquitectura, al igual que la descrita anteriormente, consiste de 2 principales ramas, una encargada del manejo de datos y otra del manejo de conexión. Al iniciar el nodo, este inicializa tanto el \textit{Key Repository}, como el \textit{Connection Manager} los cuales funcionan independientemente uno del otro y en paralelo para lograr en conjunto, el funcionamiento de AstraDB.
+
+\paragraph{Key Repository}
+
+Dentro del \textit{Key Repository} se encuentra todo el manejo de datos de la infraestructura. Se encarga de mantener un registro de todas las claves existentes y de realizar las modificaciones requeridas.
+
+Al inicializarse crea la base de datos central con el nombre identificador recibido por parámetro e intenta sincronizarla con los colaboradores conectados. Si no logra sincronizarse con ningún colaborador se asume que es una nueva base de datos y continua con su funcionamiento.
+
+Si al crear el nodo de AstraDB se optó por ser colaborador, al recibir una actualización de la base de datos central sobre una nueva \textit{key} creada, la base de datos representando el contenido de la \textit{key} será abierta y guardada. De esta manera se logra la persistencia de la \textit{key} y  perimite que usuarios puedan acceder a ella al sincronizarse con este nodo.
+
+Las base de datos utilizadas por el \textit{Key Repository}, tanto la central como las de cada \textit{key} individual, están representadas por una abstracción llamada \textit{Database}. En esta abstracción se maneja toda interacción con la base de datos de OrbitDB.
+
+Al incializarse se debe optar por si se desea sincronizar la base de datos o si no es necesario. Si se sincroniza entonces se va a esperar que la base de datos se sincronice con algun colaborador conectado, lo que significa obtener todas las actualizaciones que contiene la instancia de base de datos contenida en el colaborador. Una vez sincronizada esta ya permite su funcionamiento, el agregado de nuevo contenido a la base de datos u obtención de todo el contenido del mismo.
+
+OrbitDB permite escuchar por eventos emitidos por la instacia de la base de datos, en nuestro caso es de suma importancia cuando se recibe una nueva actualización, que sucede al sincronizarse con otro usuario y se recibe al menos un nueva entrada a la base de datos, sin embargo una actualización no es siempre el ultimo valor agregado a una base de datos. Por la naturaleza de las bases de datos de OrbitDB y su eventual consistencia, significa que al sincronizarse ambas bases de datos van a tener el mismo contenido y en el mismo orden. Aunque estemos usando una base de datos de tipo eventos y solo se pueda agregar al final, no significa que si dos de esas instancias de bases de datos tienen su contenido propio y aun no fueron sincronizados entre si, al sincronizarse puede que nuevo contenido quede por debajo de contenido nuevo. Es por esto que desde la abstracción se debe tomar recaudos para que no quede contenido nuevo sin notificar, independientemente de su vejez.
+
+Esto es de suma importancia para cuando se utiliza para el mensajero en tiempo real, ya que AstraDB permite escuchar por actualizaciones en tiempo real para una determinada clave, recibiendo de esta forma todas las actualizaciones de un determinado chat.
+
+Para lograr esto la abstracción \textit{Database} mantiene un registro de todas las claves vistas hasta un determinado momento, en OrbitDB cada entrada a una base de datos tiene un hash identificador y es eso lo que nos guardarnos. Al recibir un evento de \textit{Update} desde la base de datos de OrbitDB, debemos iterar todas las entradas que contiene dicha base de datos para encontrar si hay entradas nuevas, no antes vistas. Se debe iterar en su totalidad ya que nada asegura que no haya entradas nuevas en distintas posiciones de la base de datos, como vemos que puede suceder en el siguiente ejemplo:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{img/solucion-ipfs/ejemplo-sincronizacion.png}
+    \caption{Ejemplo de sincronización de nodos.}
+    \label{fig:ejemplo-sincronizacion}
+\end{figure}
+
+En el ejemplo contamos con dos nodos independientes que forman parte de la misma base de datos con nombre 'Chat'. Cada nodo tiene su propia representación de la base de datos hasta un determinado momento. A continuacion se puede observar que ocurre una sincronizacion entre ambos nodos, esto hace que ambos nodos pasen a tener la misma representacion de informacion de la base de datos fusionando lo que tenian previamente, de esto se encarga OrbitDB. Lo importante a notar aca es que desde el punto de vista del nodo 1, las entradas nuevas de la base de datos no estan al final de la misma unicamente, sino que aparece una nueva entrada previa a sus entradas que tenia. Y como se mencionó anteriormente, OrbitDB solo anuncia el evento \textit{Update} al sincronizarse con otro nodo y con únicamente la última entrada actualizada, en este caso avisaría del último mensaje con contenido '¿Todo bien?'. Es por esto mismo que desde la abstracción \textit{Database} es necesario recorrer todas las entradas actuales para encontrar aquellas nuevas en la instancia de base datos propia y avisar por un evento individualmente por cada una. 
+
+\paragraph{Connection Manager}
+
+Dentro del \textit{Connection Manager} se encuentra todo el manejo de conexiones de la infraestructura. Se encarga de encontrar y conectarse a otros colaboradores que provean la base de datos utilizada, como también agregarse como proveedor si se trata de un nodo colaborativo.
+
+Al inicializarse lo primero que hace es construir el \textbf{CID} identificador de la base de datos central, para esto utiliza \textbf{Helia}\cite{helia}, la implementación de IPFS para javascript, para codificar el nombre identificador recibido por parámetro. Como se explicó anteriormente, este CID va a ser siempre el mismo para todas las instancias de AstraDB que utilicen el mismo nombre identificador.
+
+Luego inicializa tres servicios que van a estar funcionando en paralelo durante la ejecución de AstraDB. Esos servicios son: \textit{SearchForProviders}, \textit{ProvideDB} y \textit{ReconnectToProviders}.
+
+En \textit{SearchForProviders} se va a realizar una busqueda continua de nuevos proveedores de la base de datos que se está utilizando, para conectarse a ellos y poder sincronizarse. Para esto va a realizar una consulta a la \textbf{DHT} utlizando \textbf{LibP2P}\cite{libp2p}, buscando los proveedores del CID construido anteriormente. Al encontrar un nuevo proveedor, se va a intentar conectarse a este.
+
+En \textit{ProvideDB}, solo en caso de optar por ser colaborador, se va a notificar utilizando la \textbf{DHT} que el nodo utilizado es proveedor de la base de datos utilizada. De esta manera otros nodos pueden encontrar al nodo en su busqueda de proveedores.
+
+Por último, en \textit{ReconnectToProviders} se va a estar iterando una lista de proveedores previamente conectados para intentar reconectarse a ellos, por si ocurrió una falla en la conexión.
+
+\paragraph{Resultado}
+
+Como resultado del análisis y creación de esta infraestructura, se logró proveer de una herramienta para facilitar la creación de nuevas aplicaciones con enfoque comunitario, distribuido y descentralizado utilizando el ecosistema de IPFS.
 
 \subsubsection{Colaboración}
 
-Se creó una herramienta para facilitar la colaboración a Astraweb, el cuál es el principal front-end de nuestro proyecto y se verá más adelante. Consiste en un nodo que es capaz de colaborar tanto con Astrawiki y Astrachat, como también ayudar como nodo colaborativo del clúster que fija el sitio web.
-
-Para lograr esto, se diseñó un sistema con cuatro contenedores, cada uno asignado a uno de los tres casos de uso.
+Se creó una herramienta para facilitar la colaboración a nuestra wiki. El nodo es capaz de fijar los contenidos de Astraweb, nuestro front-end, y también mantener todas las bases de datos utilizadas por Astrawiki y Astrachat en la capa de aplicación. Para lograr esto, se diseñó un sistema con cuatro contenedores, cada uno asignado a uno de los tres casos de uso.
 
 Para el pinning del sitio web en si, se utilizó el contenedor de IPFS Cluster con la instrucción de colaborar con el clúster dado por parámetro. Este parámetro es la dirección IPFS del archivo \texttt{service.json} que identifica a un clúster. Además, IPFS Cluster requiere de un contenedor de Kubo para manejar el manejo de archivos en la red de IPFS.
 
