@@ -1,14 +1,56 @@
 \section{Trabajos futuros}
 
+En base al análisis realizado, se detectaron diversas lineas de trabajo futuras de las cuales se puede continuar el desarrollo.
+
 \subsection{Mejoras a los casos de uso}
 
 A continuación se proponen mejoras para los casos de uso implementados, los cuales, por temas de tiempo, no se llegaron a implementar.
 
+\subsubsection{Astrawiki-eth}
+
+Teniendo en cuenta que es el caso de uso donde mayor volumen de datos se transfieren, por lo tanto mayor costo de gas, una mejora involucra la disminución de este costo. Se podría disminuir haciendo uso de los clones de \textit{smart contract}s según lo propuesto en el ERC-1167\cite{erc-1167}. En resumen, lo que se propone es que haya un contrato como ''plantilla'' al cual se lo copia cada vez que, por ejemplo, se crea un artículo nuevo.
+
 \subsubsection{Astrachat-eth}
 
-Una de las principales mejoras que se pueden implementar sobre este caso de uso es respecto a la experiencia de uso, al menos en el navegadores. El hecho que cada mensajes enviado implique firmar una transacción por medio de la wallet hace que la aplicación pierda el factor de \textit{real time}. Una posible solución a este problema es que se pueda crear un balance en un fondo común (con dinero de los usuarios) de forma que cada vez que se envíe un mensaje se tome de este fondo para pagar la transacción. % Mencionar ayuda a otros frontends que no son web-based
+Una de las principales mejoras que se pueden implementar sobre este caso de uso es respecto a la experiencia de uso para frontends en navegadores web. El hecho que para cada mensaje enviado sea necesario confirmar una transacción por medio de la wallet hace que la aplicación pierda el factor de \textit{real-time}. Una posible solución a este problema es que se pueda crear un balance en un fondo común (con dinero de los usuarios) de forma que cada vez que se envíe un mensaje se tome de este fondo para pagar la transacción. Esta mejora haría más fácil la integración con otros frontends que no corren en navegadores web como \textit{Astrachat-cli} aunque también queda investigar cómo conectar una wallet a los mismos.
 
-Por otro lado, en base al costo por transacción (visto en la sección \ref{performance-blockchain}) se podría utilizar alguna red cuyos precios de gas por transacción sean menores. Una de estas redes --basada en Ethereum-- es la \textit{Ronin Network}\cite{ronin-network}\cite{ronin-network-whitepaper} que a principio de este año abrió su red para que cualquier usuario pueda implementar aplicaciones en la red.
+Por otro lado, en base al costo por transacción (visto en la sección \ref{performance-blockchain}) se podría utilizar alguna red cuyos precios de gas por transacción sean menores. Una de estas redes --basada en Ethereum-- es la \textit{Ronin Network}\cite{ronin-network}\cite{ronin-network-whitepaper} que a principio de este año (2025) abrió su red para que cualquier usuario pueda implementar aplicaciones en la misma.
+
+\subsection{Mejora para clusters colaborativos}
+
+Como se mencionó previamente en el análisis de IPFS, los clusters colaborativos son una alternativa para lograr la persistencia y disponibilidad de archivos, a través del "pinneo" de nodos colaborativos. La cual va muy de la mano con la filosofía de las aplicaciones comunitarias, ya que potencialmente la propia gente que utiliza la aplicación sea la que la mantenga colaborativamente. El problema es que actualmente casi no se utiliza esta alternativa, lo cual lleva a que por ejemplo, no haya una manera fácil de utilizarla, sin embargo esto tiene sus razones.
+
+\paragraph{IPFS Cluster}
+
+Para entender mejor por qué no se utiliza mucho esta forma de "pineo" y cuales son sus limitaciones, primero hay que entender que es lo que se utiliza. IPFS cuenta con una aplicación distribuida llamada IPFS Cluster, esta funciona a la par de los nodos de IPFS y permite mantener un conjunto global de "pines", alocando inteligentemente los items a sus nodos.
+
+Gracias a esta aplicación es posible la creación de clusters colaborativos. Los clusters colaborativos permiten que \textit{peers} individuales, que no son de confianza, se unan a un clúster IPFS como "seguidores" (sin permiso para modificar o editar el conjunto de pines).
+
+Para crear este cluster es necesario primero contar con algunos nodos confiables, aquellos que van a tener permitido modificar qué archivos son los que pertenecen al conjunto de "pines". Y es esta nuestra primera limitación, ya que no se puede permitir que cualquier nodo pueda modificar este conjunto, entonces es necesario contar con nodos propios que tengan ese rol.
+
+Otra cosa muy importante que se puede configurar sobre el cluster es el \textit{replication factor}, este ajuste permite indicar a cuantos nodos se va a replicar cada archivo. Esto es muy importante porque permite que no sea obligatorio replicar la totalidad de los archivos en todos los nodos. 
+
+Sin embargo existe una limitación muy importante, IPFS Cluster no verifica si los seguidores realmente están "pineando" o no el contenido, ni cuánto espacio tienen ni otras métricas. Confía en todo lo que dicen. Eso significa que un seguidor malintencionado siempre puede fingir que tiene suficiente espacio, que se le asignen pines o fragmentos, pero al final no "pinea" nada. Un grupo formado por voluntarios aleatorios y que no son de confianza no puede usar, por ejemplo, factor de replicación de tres, porque esos 3 miembros podrían simplemente estar fingiendo "pinear" cosas. Es por eso que el escenario que mejor funciona es dejando que todos "pineen" todo y esperar que algunos de los \textit{peers} no sean maliciosos.
+
+Justamente de esa manera es como funcionan los clusters públicos actualmente, visibles en la página de IPFS\cite{collaborative-clusters}, donde hay algunos que piden gigabytes, y hasta algunos terabytes de información, para poder colaborar. Esto es algo totalmente inviable para que la gente pueda colaborar hasta un cierto almacenamiento, limitando mucho la posibilidad de ditribución de colaboradores.
+
+\paragraph{Deployado, seguimiento y descubrimiento}
+
+Habiendo hablado ya de las limitaciones más técnicas que se prensentan al usar cluster colaborativos, hay otro tipo de limitación que es el la falta de facilidad a lo hora de deployar, seguir y descubrir aplicaciones colaborativas que usen IPFS cluster.
+
+En primer lugar hablemos del deployado, actualmente si se quiere deployar la aplicación en un cluster colaborativo la única forma que existe es hacerlo de forma manual y crear un servicio que se ocupe de actualizar el conjunto de "pines" cuando sea necesario actualizarse. Si bien es factible, no es algo cómodo para todos y limita a decidirse ir por este camino. Lo ideal sería, que exista un servicio, parecido al ofrecido en los servicios de \textit{pinning}, como es el caso de Fleek\cite{fleek}, donde al actualizar el repositorio ya se deployen los cambios. Facilitando asi su deployado en el cluster colaborativo. Se podría pensar como un servicio que corra sobre los nodos \textit{trusted} donde, cuando un nodo lider detecte que se hizo un cambio, se "buildee" la página web por ejemplo, y se despliegue en el cluster comunitario.
+
+Parecido a lo anterior, alguien que quiera colaborar necesita ejecutar comandos manualmente que para mucha gente no sabe lo que está haciendo, lo cual también termina desincentivando y generando que menos gente decida por colaborar.
+
+Por último no existe una manera fácil de presentar y descubrir nuevos o existentes proyectos comunitarios que la gente pueda optar por colaborar. Actualmente el único lugar donde prensentan proyectos públicos para colaborar es la página de IPFS\cite{collaborative-clusters}, que ademas se ser bastante simple, depende de ellos si agregan un nuevo proyecto para presentar en esa página. Donde lo ideal sería que puedan publicarse nuevos proyectos junto a una descripción y que la gente pueda conocerlos y optar por colaborar de una manera mucho más sencilla.
+
+\paragraph{Conclusión}
+
+Con esto concluimos que se presenta la oportunidad para una linea de trabajo futura focalizada en la mejora para clusters colaborativos. 
+
+En primer lugar una mejora técnica donde se mofique o se contruya por encima de IPFS cluster, que permita principalmente que en un clúster comunitario se asegure el "pineo" de información sin necesidad de tener que obligar a todos los colaboradores a "pinear" la totalidad de los archivos.
+
+En segundo lugar, la creación de una plataforma o aplicación, que permita la facilitación del deployado, seguimiento y descubrimiento de aplicaciones colaborativas.
 
 \subsection{Análisis del consumo de energía en la red de IPFS}
 
@@ -17,9 +59,6 @@ Como se mencionó anteriormente, no hay análisis detallados del uso de energía
 \subsection{Blockchain para aplicaciones comunitarias}
 
 En la búsqueda de una blockchain comunitaria nos encontramos con un servicio llamado \textit{Filecoin}\cite{filecoin} el cual provee de incentivos monetarios para aquellos que cedan espacio en sus discos a guardar archivos de otras personas. Es abierto para que cualquier persona pueda unirse a la red peer-to-peer que proveen. Funciona por arriba de IPFS, utiliza tecnologías de Blockchain para los incentivos y dar garantía que los datos están realmente guardados en los nodos. Nuestra propuesta de trabajo futuro es que se cree una tecnología basada en Blockchain que no necesite del incentivo monetario para funcionar y que además permita la ejecución de código.
-
-
-% Por parte de Blockchain, un posible trabajo futuro sería el de crear una blockchain específicamente para este tipo de aplicaciones parecido a \textit{Filecoin}\cite{filecoin} pero sin el incentivo monetario. Esto no significa que no pueda tener una moneda para la utilización de la red. La idea sería crear una red que cualquier persona pueda hostear en su computadora o servidor personal, accesible para todos y donde se puedan crear aplicaciones como el repositorio de conocimiento y el mensajero en tiempo real.
 
 \subsection{Análisis de Freenet como ecosistema}
 

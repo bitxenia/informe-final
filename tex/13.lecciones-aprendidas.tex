@@ -1,11 +1,21 @@
 \section{Lecciones aprendidas}
 
+\subsection{Tecnologías emergentes}
+
+Trabajar con tecnologías emergentes resulta un desafío al encontrarse en desarrollo constante y frecuente. Esto quiere decir que la documentación es escasa, nula o se encuentra desactualizada.
+
+\subsection{Creación de paquetes}
+Durante parte del desarrollo del repositorio de conocimiento, trabajamos la implementación de cada ecosistema dentro del front-end. Esta decisión nos pareció razonable luego de elegir usar un mismo front-end para ambos ecosistemas y abstraernos en una interfaz en común. Sin embargo, una vez avanzado en ambos ecosistemas, las limitaciones de esta elección se hicieron aparentes.
+
+Por un lado, nos restringía para realizar métricas y tests manuales fácilmente, ya que cada prueba involucraba levantar un servidor local con la página y recompilar el mismo con cada cambio, además de no tener fácil acceso para pruebas automáticas.
+
+Por otro lado, limitaba el potencial de las herramientas que estábamos desarrollando. El resultado final es mucho más versátil ya que puede acoplarse a cualquier front-end como se demostro con los front-ends alternativos, ventaja que se alinea con la filosofía de aplicaciones decentralizadas y comunitarias.
+
+En retrospectiva desarrollar los casos de uso de forma modular desde el comienzo hubiera agilizado el proceso, e implicaría posiblemente el uso de pruebas en una etapa más temprana.
+
+\subsection{Otras lecciones}
+
 \begin{itemize}
-    \item Trabajar con tecnologías emergentes resulta un desafío al encontrarse en desarrollo constante y frecuente. Esto quiere decir que la documentación es escasa, nula o se encuentra desactualizada.
-
-    \subsection{Modularizar en paquetes}
-    Al trabajar con distintos ecosistemas, modularizar en distintos paquetes/librerías cada uno facilita la integración, las pruebas y el cálculo de métricas.
-
     \item Paralelizar las tareas por ecosistema nos ayudó a tener un referente para cada uno y no abarcar la misma información al investigar.
 
     \item Realizar reuniones semanales nos sirvió para compartir el conocimiento adquirido de los distintos ecosistemas y ponernos al tanto de en qué estaba trabajando cada uno.
