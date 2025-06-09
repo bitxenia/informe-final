@@ -32,11 +32,11 @@ Otra cosa muy importante que se puede configurar sobre el cluster es el \textit{
 
 Sin embargo existe una limitación muy importante, IPFS Cluster no verifica si los seguidores realmente están "pineando" o no el contenido, ni cuánto espacio tienen ni otras métricas. Confía en todo lo que dicen. Eso significa que un seguidor malintencionado siempre puede fingir que tiene suficiente espacio, que se le asignen pines o fragmentos, pero al final no "pinea" nada. Un grupo formado por voluntarios aleatorios y que no son de confianza no puede usar, por ejemplo, factor de replicación de tres, porque esos 3 miembros podrían simplemente estar fingiendo "pinear" cosas. Es por eso que el escenario que mejor funciona es dejando que todos "pineen" todo y esperar que algunos de los \textit{peers} no sean maliciosos.
 
-Justamente de esa manera es como funcionan los clusters públicos actualmente, visibles en la página de IPFS\cite{collaborative-clusters}, donde hay algunos que piden gigabytes, y hasta algunos terabytes de información, para poder colaborar. Esto es algo totalmente inviable para que la gente pueda colaborar hasta un cierto almacenamiento, limitando mucho la posibilidad de ditribución de colaboradores.
+Justamente de esa manera es como funcionan los clusters públicos actualmente, visibles en la página de IPFS\cite{collaborative-clusters}, donde hay algunos que piden gigabytes, y hasta algunos terabytes de información, para poder colaborar. Esto es algo totalmente inviable para que la gente pueda colaborar hasta un cierto almacenamiento, limitando mucho la posibilidad de distribución de colaboradores.
 
 \paragraph{Deployado, seguimiento y descubrimiento}
 
-Habiendo hablado ya de las limitaciones más técnicas que se prensentan al usar cluster colaborativos, hay otro tipo de limitación que es el la falta de facilidad a lo hora de deployar, seguir y descubrir aplicaciones colaborativas que usen IPFS cluster.
+Habiendo hablado ya de las limitaciones más técnicas que se prensentan al usar cluster colaborativos, hay otro tipo de limitación que es el la falta de facilidad a la hora de deployar, seguir y descubrir aplicaciones colaborativas que usen IPFS cluster.
 
 En primer lugar hablemos del deployado, actualmente si se quiere deployar la aplicación en un cluster colaborativo la única forma que existe es hacerlo de forma manual y crear un servicio que se ocupe de actualizar el conjunto de "pines" cuando sea necesario actualizarse. Si bien es factible, no es algo cómodo para todos y limita a decidirse ir por este camino. Lo ideal sería, que exista un servicio, parecido al ofrecido en los servicios de \textit{pinning}, como es el caso de Fleek\cite{fleek}, donde al actualizar el repositorio ya se deployen los cambios. Facilitando asi su deployado en el cluster colaborativo. Se podría pensar como un servicio que corra sobre los nodos \textit{trusted} donde, cuando un nodo lider detecte que se hizo un cambio, se "buildee" la página web por ejemplo, y se despliegue en el cluster comunitario.
 
@@ -48,13 +48,13 @@ Por último no existe una manera fácil de presentar y descubrir nuevos o existe
 
 Con esto concluimos que se presenta la oportunidad para una linea de trabajo futura focalizada en la mejora para clusters colaborativos. 
 
-En primer lugar una mejora técnica donde se mofique o se contruya por encima de IPFS cluster, que permita principalmente que en un clúster comunitario se asegure el "pineo" de información sin necesidad de tener que obligar a todos los colaboradores a "pinear" la totalidad de los archivos.
+En primer lugar una mejora técnica donde se modifique o se construya por encima de IPFS cluster, que permita principalmente que en un clúster comunitario se asegure el "pineo" de información sin necesidad de tener que obligar a todos los colaboradores a "pinear" la totalidad de los archivos.
 
 En segundo lugar, la creación de una plataforma o aplicación, que permita la facilitación del deployado, seguimiento y descubrimiento de aplicaciones colaborativas.
 
 \subsection{Análisis del consumo de energía en la red de IPFS}
 
-Como se mencionó anteriormente, no hay análisis detallados del uso de energía en la red de IPFS. Un posible trabajo involucra calcular una huella de carbono aproximada, el consumo promedio de energía, entre otras métricas. De ello puede desprenderse un análisis comparativo entre diferentes ecosistemas como Blockchain, y cloud hosting tradicional.
+Como se mencionó anteriormente, no hay análisis detallado del uso de energía en la red de IPFS. Un posible trabajo involucra calcular una huella de carbono aproximada, el consumo promedio de energía, entre otras métricas. De ello puede desprenderse un análisis comparativo entre diferentes ecosistemas como Blockchain, y cloud hosting tradicional.
 
 \subsection{Blockchain para aplicaciones comunitarias}
 
