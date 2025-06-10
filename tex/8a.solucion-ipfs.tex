@@ -2,11 +2,13 @@
 
 \subsubsection{Infraestructura de despliegue}
 
-En IPFS, es posible desplegar una aplicación web subiendo un directorio con todos los archivos estáticos necesarios para el funcionamiento en un navegador, incluyendo el código necesario a nivel aplicación. Esto se puede realizar manualmente mediante cualquier cliente de IPFS, como Kubo\cite{kubo} o Helia\cite{helia}, y devuelve un \textit{content identifier} (CID) \cite{cid} que representa esa versión de la aplicación.
+%En IPFS, es posible desplegar una aplicación web subiendo un directorio con todos los archivos estáticos necesarios para el funcionamiento en un navegador, incluyendo el código necesario a nivel aplicación. Esto se puede realizar manualmente mediante cualquier cliente de IPFS, como Kubo\cite{kubo} o Helia\cite{helia}, y devuelve un \textit{content identifier} (CID) \cite{cid} que representa esa versión de la aplicación.
 
-Cualquier usuario puede publicar su sitio web en la red de IPFS a través de un nodo local de manera gratuita y poco tiempo. IPFS provee un tutorial en su página de cómo realizarlo \cite{ipfs-static-website}. A continuación se detallará las implicaciones que tiene desplegar una aplicación web de esta manera, y que alternativas existen para publicar en IPFS.
+%Cualquier usuario puede publicar su sitio web en la red de IPFS a través de un nodo local de manera gratuita y poco tiempo. IPFS provee un tutorial en su página de cómo realizarlo \cite{ipfs-static-website}. A continuación se detallará las implicaciones que tiene desplegar una aplicación web de esta manera, y que alternativas existen para publicar en IPFS.
 
-Al subir un archivo —por ejemplo, código HTML— su contenido se inserta en una función de hash, y así se obtiene su CID. Desde ese momento, cualquier nodo que desee obtener el archivo puede encontrarlo utilizando dicho CID. Sin embargo, no se asegura la persistencia del archivo, y dejará de ser accesible luego de un tiempo. Esto se debe al \textit{garbage collector} \cite{garbage-collector} implementado por IPFS, que desecha datos para liberar almacenamiento de forma arbitraria. Por esta razón existe el concepto de \cite{pinning}: \textit{"pinear"} o fijar un archivo o directorio significa instruir al nodo IPFS para que trate dicha información como esencial y, por lo tanto, no lo descarte. 
+Como objetivo para 
+
+Al subir un archivo a IPFS —por ejemplo, código HTML— su contenido se inserta en una función de hash, y así se obtiene su CID. Desde ese momento, cualquier nodo que desee obtener el archivo puede encontrarlo utilizando dicho CID. Sin embargo, no se asegura la persistencia del archivo, y dejará de ser accesible luego de un tiempo. Esto se debe al \textit{garbage collector} \cite{garbage-collector} implementado por IPFS, que desecha datos para liberar almacenamiento de forma arbitraria. Por esta razón existe el concepto de \cite{pinning}: \textit{"pinear"} o fijar un archivo o directorio significa instruir al nodo IPFS para que trate dicha información como esencial y, por lo tanto, no lo descarte. 
 
 No obstante, fijar un archivo o directorio no asegura su disponibilidad indefinida en el tiempo, ya a que esta depende de que el nodo que que fije el contenido esté activo, o de que otros nodos que hayan accedido al archivo y aún lo tengan en su caché. Para mejorar la disponibilidad de un archivo, lo ideal es que varios nodos fijen el contenido, de modo que otro nodo que desee obtener el contenido pueda hacerlo desde cualquiera de ellos.
 
@@ -421,15 +423,20 @@ Por último, en \textit{ReconnectToProviders} se va a estar iterando una lista d
 
 Como resultado del análisis y creación de esta infraestructura, se logró proveer de una herramienta para facilitar la creación de nuevas aplicaciones con enfoque comunitario, distribuido y descentralizado utilizando el ecosistema de IPFS. De la cual nuestros casos de uso Astrawiki y Astrachat la utilizan para su funcionamiento.
 
-\paragraph{Limitaciones}
+\subsubsection{Infraestructura de aplicación}
 
-Sin embargo este enfoque presenta algunas limitaciones o aspectos a mejorar que son importantes destacar.
+Las aplicaciones dinámicas, aquellas que requieren mantener un estado mutable, como una wiki colaborativa o un mensajero descentralizado, presentan desafíos particulares en el ecosistema de IPFS. Si bien IPFS permite mantener un estado compartido mediante la publicación continua de nuevos CIDs y el uso de mecanismos como IPNS —el cual introdujimos y utilizamos en la infraestructura de despliegue—, \textbf{no está diseñado específicamente para la actualización eficiente de datos dinámicos entre múltiples usuarios y en tiempo real}.
 
-Para la solución implementada, la seguridad no fue una prioridad. En consecuencia se presentan algunos problemas que están relacionados con esto. La solución da total libertad a la creación y agregado de información a las bases de datos sin ninguna limitación, junto a que los colaboradores deben almacenar la totalidad de la base de datos, por lo que se explicó anteriormente de la falta de \textit{Proof of storage}, lo cual de por si es un limitación. En consecuencia es muy fácil realizar un ataque de spam, usando el espacio almacenado de los colaboradores, al crear nuevas \textit{Keys} o agregar contenido sin importancia a cada una de ellas. Esto podría mitigarse si se utilizara un consenso a la hora de aceptar un cambio o no a la base de datos, dado que si el cambio no se acepta, entonces no se distribuye y no se efectúa, sin embargo, como se explicó, esto requiere un foco de seguridad y para mostrar su uso en el ecosistema no fue el punto principal.
+Esto introduce ciertas limitaciones a la hora de construir aplicaciones interactivas, donde múltiples usuarios necesitan leer y escribir datos de forma concurrente. En particular, la falta de mecanismos nativos para gestionar versiones, sincronizar cambios o evitar conflictos entre ediciones simultáneas, hace que desarrollar aplicaciones con estado mutable directamente sobre IPFS resulte poco conveniente.
 
-Relacionado con lo anterior, permitir la modificación libre de toda la información puede que no sea lo deseado para otro tipo de aplicaciones. Si se quisiera crear un blog personal o de microblogging, se desearia que solo  pueda moficar la información el dueño del blog y que los colaboradores solo ayuden con la persistencia del mismo. Esto puede ser una posible mejora y es posible si se puediera optar que las bases de datos de las keys tengan el permiso de moficiacion unicamente al usuario que las creó, como tambien referenciar a la \textit{Address} de la base de datos creada, ya que en este caso si depede de su creador, por lo que se explicó en anterioridad en la representación de los datos.
+Para abordar estas limitaciones, exploramos herramientas complementarias dentro del ecosistema de IPFS, entre las cuales se destaca \textbf{OrbitDB}~\cite{orbitdb}. OrbitDB es una base de datos distribuida peer-to-peer. Utiliza IPFS para el almacenamiento de datos y \textbf{Libp2p}\cite{libp2p} para la sincronización entre nodos. Se trata de una base de datos \textit{eventualmente consistente}, diseñada específicamente para funcionar en redes descentralizadas sin necesidad de servidores centrales. Gracias a su arquitectura, OrbitDB permite abstraer muchas de las complejidades asociadas al manejo de estado mutable en sistemas distribuidos, facilitando la implementación de aplicaciones colaborativas y comunitarias.
 
-Tambien tiene una limitacion con que no se pueden crear cosas privadas, dado que el almacenamiento esta en la red de ipfs y cualquiera puede acceder a el y la falta de encirptacion, hace que para casos de uso donde se requiera privacidad de informacion no es lo ideal.
+
+A continuación, describiremos los componentes y arquitectura de AstraDB, cómo permite representar entidades como artículos o conversaciones, y cómo se integra en aplicaciones distribuidas concretas.
+
+\subsection{AstraDB}
+
+
 
 \subsubsection{Colaboración}
 

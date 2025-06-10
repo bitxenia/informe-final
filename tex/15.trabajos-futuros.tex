@@ -6,6 +6,16 @@ En base al análisis realizado, se detectaron diversas lineas de trabajo futuras
 
 A continuación se proponen mejoras para los casos de uso implementados, los cuales, por temas de tiempo, no se llegaron a implementar.
 
+\subsubsection{AstraDB}
+
+Sin embargo este enfoque presenta algunas limitaciones o aspectos a mejorar que son importantes destacar.
+
+Para la solución implementada, la seguridad no fue una prioridad. En consecuencia se presentan algunos problemas que están relacionados con esto. La solución da total libertad a la creación y agregado de información a las bases de datos sin ninguna limitación, junto a que los colaboradores deben almacenar la totalidad de la base de datos, por lo que se explicó anteriormente de la falta de \textit{Proof of storage}, lo cual de por si es un limitación. En consecuencia es muy fácil realizar un ataque de spam, usando el espacio almacenado de los colaboradores, al crear nuevas \textit{Keys} o agregar contenido sin importancia a cada una de ellas. Esto podría mitigarse si se utilizara un consenso a la hora de aceptar un cambio o no a la base de datos, dado que si el cambio no se acepta, entonces no se distribuye y no se efectúa, sin embargo, como se explicó, esto requiere un foco de seguridad y para mostrar su uso en el ecosistema no fue el punto principal.
+
+Relacionado con lo anterior, permitir la modificación libre de toda la información puede que no sea lo deseado para otro tipo de aplicaciones. Si se quisiera crear un blog personal o de microblogging, se desearia que solo  pueda moficar la información el dueño del blog y que los colaboradores solo ayuden con la persistencia del mismo. Esto puede ser una posible mejora y es posible si se puediera optar que las bases de datos de las keys tengan el permiso de moficiacion unicamente al usuario que las creó, como tambien referenciar a la \textit{Address} de la base de datos creada, ya que en este caso si depede de su creador, por lo que se explicó en anterioridad en la representación de los datos.
+
+Tambien tiene una limitacion con que no se pueden crear cosas privadas, dado que el almacenamiento esta en la red de ipfs y cualquiera puede acceder a el y la falta de encirptacion, hace que para casos de uso donde se requiera privacidad de informacion no es lo ideal.
+
 \subsubsection{Astrawiki-eth}
 
 Teniendo en cuenta que es el caso de uso donde mayor volumen de datos se transfieren, por lo tanto mayor costo de gas, una mejora involucra la disminución de este costo. Se podría disminuir haciendo uso de los clones de \textit{smart contract}s según lo propuesto en el ERC-1167\cite{erc-1167}. En resumen, lo que se propone es que haya un contrato como ''plantilla'' al cual se lo copia cada vez que, por ejemplo, se crea un artículo nuevo.

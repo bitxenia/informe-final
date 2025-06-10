@@ -27,7 +27,7 @@ En cuanto a un ambiente de pruebas o \textit{staging}, si bien no existe un \tex
 \paragraph{Ethereum}
 Con la librería web3.js se puede interactuar con un nodo de Ethereum y realizar un despliegue de la aplicación. Además, con las herramientas de Hardhat se puede levantar una red de prueba que facilita el desarrollo local.
 
-\subsubsection{Viabilidad}
+\subsubsection{Aplicabilidad al caso de uso}
 
 \paragraph{Swarm}
 Resulta más conveniente para sitios web o recursos estáticos, al igual que IPFS. Por otro lado, al ser una tecnología de almacenamiento no es posible la ejecución de código.
@@ -41,21 +41,34 @@ Los eventos pueden resultar útil para la interacción en tiempo real requerida 
 
 \subsubsection{Performance\label{performance-blockchain}}
 
+\paragraph{Astrawiki}
+
+\subparagraph{Tiempo en obtener un artículo}
+
+La primer métrica tomada corresponde al tiempo que tarda en obtener un artículo.
+
+\setlength\tabcolsep{10pt}
+\begin{table}[!htbp]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}
+    \hline
+    & \textbf{Max} & \textbf{Mean} & \textbf{Min} & \textbf{Std} & \textbf{Median} \\
+    \hline
+    \textbf{short} & 42.03 ms & 11.26 ms & 6.44 ms & 3.28 ms & 10.51 ms \\
+    \hline
+    \textbf{medium} & 33.35 ms & 15.30 ms & 9.11 ms & 3.47 ms & 14.66 ms \\
+    \hline
+    \textbf{large} & 135.32 ms & 47.46 ms & 31.05 ms & 7.82 ms & 46.34 ms \\
+    \hline
+    \end{tabular}
+    \caption{Tiempo en obtener un artículo}
+\end{table}
+
 \paragraph{Astrachat}
 
-Las siguientes métricas se obtuvieron levantando una instancia local de Hardhat \cite{hardhat} y ejecutando 850 muestras, 3 veces cada una y con 3 mensajes de largo distinto:
-
-\begin{itemize}
-    \item \textit{short}: mensaje de 1 palabra. ''\textit{Lorem}''
-    \item \textit{medium}: mensaje de 10 palabras. ''\textit{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elementum.}''
-    \item \textit{large}: mensaje de 30 palabras. ''\textit{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ex risus, porttitor sed lacus id, egestas lobortis purus. Curabitur consectetur metus ut est vehicula egestas. Class aptent taciti sociosqu ad.}''
-\end{itemize}
-
-El tamaño de las palabras elegidas representa el largo de los mensajes más comunes que suelen enviarse en un chat.
+Las siguientes métricas se obtuvieron levantando una instancia local de Hardhat \cite{hardhat} y ejecutando 850 muestras y 3 veces cada una.
 
 Hay que tener en cuenta que los tiempos obtenidos corresponden al que le toma a la transacción ejecutarse en una máquina local. En un caso real, existe un tiempo mayor de red y de interacción del usuario con la \textit{wallet} para confirmar la transacción.
-
-A partir de los datos obtenidos se calcularon el máximo (\textbf{Max}), mínimo (\textbf{Min}), la media (\textbf{Mean}), el desvío estándar (\textbf{Std}) y la mediana (\textbf{Median}).
 
 \subparagraph{Tiempo en enviar un mensaje}
 
@@ -64,20 +77,15 @@ La primer métrica tomada corresponde al tiempo que tarda en enviarse un mensaje
 \setlength\tabcolsep{10pt}
 \begin{table}[!htbp]
     \centering
-    % \begin{tabular}{|m{5em}|m{5em}|}
-    \begin{tabular}{|*4{c|}}
+    \begin{tabular}{|c|c|c|c|c|c|}
     \hline
-    & \textbf{short} & \textbf{medium} & \textbf{large} \\
+    & \textbf{Max} & \textbf{Mean} & \textbf{Min} & \textbf{Std} & \textbf{Median} \\
     \hline
-    \textbf{Max} & 10.93 ms & 10.34 ms & 10.68 ms \\
+    \textbf{short} & 10.93 ms & 6.12 ms & 5.09 ms & 0.74 ms & 6.01 ms \\
     \hline
-    \textbf{Mean} & 6.12 ms & 6.26 ms & 6.44 ms \\
+    \textbf{medium} & 10.34 ms & 6.26 ms & 5.24 ms & 0.60 ms & 6.20 ms \\
     \hline
-    \textbf{Min} & 5.09 ms & 5.24 ms & 5.36 ms \\
-    \hline
-    \textbf{Std} & 0.74 ms & 0.60 ms & 0.70 ms \\
-    \hline
-    \textbf{Median} & 6.01 ms & 6.20 ms & 6.37 ms\\
+    \textbf{large} & 10.68 ms & 6.44 ms & 5.36 ms & 0.70 ms & 6.37 ms \\
     \hline
     \end{tabular}
     \caption{Tiempo en enviar un mensaje}
@@ -92,20 +100,21 @@ La siguiente tabla muestra el valor (en ETH y USD) de enviar el mismo mensaje co
 \setlength\tabcolsep{10pt}
 \begin{table}[H]
     \centering
-    \begin{tabular}{|c|cc|cc|cc|}
+    \begin{tabular}{|c|c|c|c|c|c|c|}
     \hline
-     & \multicolumn{2}{c|}{\textbf{short}} & \multicolumn{2}{c|}{\textbf{medium}} & \multicolumn{2}{c|}{\textbf{large}} \\ \hline
-     & \multicolumn{1}{c|}{\textbf{ETH}} & \multicolumn{1}{c|}{\textbf{USD}} & \multicolumn{1}{c|}{\textbf{ETH}} & \multicolumn{1}{c|}{\textbf{USD}} & \multicolumn{1}{c|}{\textbf{ETH}} & \multicolumn{1}{c|}{\textbf{USD}} \\
-     \hline
-    \textbf{Max} & \multicolumn{1}{l|}{0.00042043} & 1.03 & \multicolumn{1}{l|}{0.00060668} & 1.48 & \multicolumn{1}{l|}{0.00085774} & 2.09 \\
+    & & \textbf{Max} & \textbf{Mean} & \textbf{Min} & \textbf{Std} & \textbf{Median} \\
     \hline
-    \textbf{Mean} & \multicolumn{1}{l|}{0.00034257} & 0.84 & \multicolumn{1}{l|}{0.00051325} & 1.25 & \multicolumn{1}{l|}{0.00074335} & 1.81 \\
+    \multirow{2}{*}{\textbf{short}} & \textbf{ETH} & 0.00042043 & 0.00034257 & 0.00034221 & 0.00000331 & 0.00034221 \\
+    \cline{2-7}
+    & \textbf{USD} & 1.03 & 0.84 & 0.83 & 0.01 & 0.83 \\
     \hline
-    \textbf{Min} & \multicolumn{1}{l|}{0.00034221} & 0.83 & \multicolumn{1}{l|}{0.00051274} & 1.25 & \multicolumn{1}{l|}{0.00074264} & 1.81 \\
+    \multirow{2}{*}{\textbf{medium}} & \textbf{ETH} & 0.00060668 & 0.00051325 & 0.00051274 & 0.00000434 & 0.00051274 \\
+    \cline{2-7}
+    & \textbf{USD} & 1.48 & 1.25 & 1.25 & 0.01 & 1.25 \\
     \hline
-    \textbf{Std} & \multicolumn{1}{l|}{0.00000331} & 0.01 & \multicolumn{1}{l|}{0.00000434} & 0.01 & \multicolumn{1}{l|}{0.00000579} & 0.01 \\
-    \hline
-    \textbf{Median} & \multicolumn{1}{l|}{0.00034221} & 0.83 & \multicolumn{1}{l|}{0.00051274} & 1.25 & \multicolumn{1}{l|}{0.00074264} & 1.81 \\
+    \multirow{2}{*}{\textbf{large}} & \textbf{ETH} & 0.00085774 & 0.00074335 & 0.00074264 & 0.00000579 & 0.00074264 \\
+    \cline{2-7}
+    & \textbf{USD} & 2.09 & 1.81 & 1.81 & 0.01 & 1.81 \\
     \hline
     \end{tabular}
     \caption{Precio y gas usado para enviar un mensaje}
@@ -131,19 +140,15 @@ En esta métrica se midió el tiempo que tarda en un mensaje desde que es enviad
 \setlength\tabcolsep{10pt}
 \begin{table}[H]
     \centering
-    \begin{tabular}{|*4{c|}}
+    \begin{tabular}{|c|c|c|c|c|c|}
     \hline
-     & \textbf{short} & \textbf{medium} & \textbf{large} \\
+    & \textbf{Max} & \textbf{Mean} & \textbf{Min} & \textbf{Std} & \textbf{Median} \\
     \hline
-    \textbf{Max} & 38.12 ms & 28.97 ms & 24.66 ms \\
+    \textbf{short} & 38.12 ms & 5.42 ms & 4.26 ms & 1.62 ms & 4.66 ms \\
     \hline
-    \textbf{Mean} & 5.42 ms & 5.76 ms & 5.76 ms \\
+    \textbf{medium} & 28.97 ms & 5.76 ms & 4.31 ms & 1.74 ms & 5.05 ms \\
     \hline
-    \textbf{Min} & 4.26 ms & 4.31 ms & 4.46 ms \\
-    \hline
-    \textbf{Std} & 1.62 ms & 1.74 ms & 0.94 ms \\
-    \hline
-    \textbf{Median} & 4.66 ms & 5.05 ms & 5.6 ms \\
+    \textbf{large} & 24.66 ms & 5.76 ms & 4.46 ms & 0.94 ms & 5.6 ms \\
     \hline
     \end{tabular}
     \caption{Tiempo en enviar y recibir un mensaje (mismo usuario)}
@@ -157,19 +162,15 @@ Esta métrica calcula el tiempo que tarda un segundo usuario en recibir un mensa
 \setlength\tabcolsep{10pt}
 \begin{table}[H]
     \centering
-    \begin{tabular}{|*4{c|}}
+    \begin{tabular}{|c|c|c|c|c|c|}
     \hline
-     & \textbf{short} & \textbf{medium} & \textbf{large} \\
+    & \textbf{Max} & \textbf{Mean} & \textbf{Min} & \textbf{Std} & \textbf{Median} \\
     \hline
-    \textbf{Max} & 13.19 ms & 10.92 ms & 13.95 ms \\
+    \textbf{short} & 13.19 ms & 5.61 ms & 4.59 ms & 0.97 ms & 5.53 ms \\
     \hline
-    \textbf{Mean} & 5.61 ms & 5.84 ms & 5.96 ms \\
+    \textbf{medium} & 10.92 ms & 5.84 ms & 4.53 ms & 1.28 ms & 5.06 ms \\
     \hline
-    \textbf{Min} & 4.59 ms & 4.53 ms & 4.65 ms \\
-    \hline
-    \textbf{Std} & 0.97 ms & 1.28 ms & 0.72 ms \\
-    \hline
-    \textbf{Median} & 5.53 ms & 5.06 ms & 5.89 ms \\
+    \textbf{large} & 13.95 ms & 5.96 ms & 4.65 ms & 0.72 ms & 5.89 ms \\
     \hline
     \end{tabular}
     \caption{Tiempo en enviar y recibir un mensaje (distintos usuarios)}

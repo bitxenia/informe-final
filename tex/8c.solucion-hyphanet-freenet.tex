@@ -32,9 +32,9 @@ Un servicio de email dentro de Hyphanet que también depende de WebOfTrust.
 \subparagraph{Freetalk}\cite{hyphanet-freetalk}
 Sistema de foro.
 
-No hay una receta para implementar estos plugins ya que la guía que existe está incompleta y hace años que no se actualiza (lo mismo pasa con los plugins en sí, llevan años sin actualizarse).
+No hay una receta para implementar estos plugins ya que \href{https://github.com/ArneBab/freenet-plugin-bare-guide/blob/master/index.org}{la guía} que existe está incompleta y hace años que no se actualiza (lo mismo pasa con los plugins en sí, llevan años sin actualizarse).
 
-La documentación brilla por su ausencia y cada plugin hace uso de la librería de \textit{Freenet} de una forma distinta lo cual hace difícil saber cuál es la forma correcta (de haberla) para crear un plugin desde cero.
+La documentación es prácticamente nula y cada plugin hace uso de la librería de \textit{Freenet} de una forma distinta lo cual hace difícil saber cuál es la forma correcta (de haberla) para crear un plugin desde cero.
 
 Toda información que deba guardarse se debe hacer en una base de datos local administrada por el plugin (ya sea usando un archivo o una librería como podría ser \textit{sqlite}\cite{sqlite}) ya que no existe una base de datos distribuida en el ecosistema que lo facilite. Esto hace que cada nodo tenga la información sólo de aquellos nodos con los que interactúa, mientras más lo haga más datos va a tener que persistir. Además es necesario que el plugin tenga forma de garantizar la integridad de los datos sino podrían ser fácilmente manipulados por algún nodo generando inconsistencias para la aplicación (que a su vez debería poder manejar).
 
@@ -116,4 +116,8 @@ Al momento de probar el ecosistema, una aplicación podía comunicarse con un co
 
 \paragraph{Transparencia} Freenet está pensado como un posible reemplazo a World Wide Web.
 
-\paragraph{Anonimato} La versión anterior fue diseñada con foco en el anonimato. La nueva versión no ofrece esta opción \textit{out of the box} sin embargo es posible crear un sistema por encima que provea cierta anonimidad.
+\paragraph{Anonimato} La versión anterior fue diseñada con foco en el anonimato. La nueva versión no ofrece esta opción \textit{out-of-the-box} sin embargo es posible crear un sistema por encima que provea cierta anonimidad.
+
+\subsubsection{Baja del ecosistema}
+
+Debido a las constantes modificaciones en la API del ecosistema y la falta de actualización de la documentación por estar en pleno desarrollo, tuvimos que optar por descartar el ecosistema, por lo que no se llegaron a implementar ninguno de los casos de uso propuestos.
