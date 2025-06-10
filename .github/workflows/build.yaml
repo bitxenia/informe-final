@@ -22,7 +22,7 @@ jobs:
           mkdir out
           mv ./main.pdf ./out/informe-final.pdf
       - name: Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v2.2.2
         with:
           files: ./out/informe-final.pdf
       - name: Upload
