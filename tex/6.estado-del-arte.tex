@@ -21,13 +21,6 @@ El modelo \textbf{peer-to-peer(P2P)} consiste en una red \textbf{descentralizada
 Ambos modelos tienen ventajas y desventajas, y por lo tanto distintos casos de uso. El modelo cliente-servidor actualmente es la arquitectura mas utilizada.
 
 \paragraph{Resiliencia}
-Cuando un servidor se encuentra fuera de servicio, toda la red que depende de él no funcionará en tanto no se restaure el servidor. Para contrarrestar esta vulnerabilidad del modelo, se desarrollaron métodos a lo largo de los años. Una manera de evitar que la red se vuelva inoperativa es la de alojar instancias del servidor en diferentes zonas geográficas. Además, se pueden implementar medidas para evitar la caída del servidor, como las técnicas de balanceo de cargas \cite{bourke2001server} y fuentes de energía alternativas para evitar eventuales cortes de electricidad.
-
-No obstante, una red peer-to-peer puede ser incluso más robusta. Si hay suficientes pares en la misma y están lo suficientemente dispersos geográficamente, la desconexión de uno de ellos no desactiva toda la red. Esto permite que el modelo peer-to-peer pueda ser resistente a cortes de energía masivos y desastres naturales, lo que lo hace un modelo ideal para servicios prioritarios.
-
-Cabe destacar que en una red de una cantidad limitada de pares, en donde no hay redundancia del contenido que se distribuye, es posible que al desconectar uno de los pares parte del contenido se vuelva no disponible. Por lo tanto, si bien la red seguirá activa, no tendrá toda la funcionalidad que si puede ofrecer un servidor mientras siga en línea.
-
-\paragraph{Resiliencia}
 
 En el modelo cliente-servidor, la disponibilidad de la red depende críticamente del servidor central. Si este falla o queda fuera de servicio, los clientes no pueden acceder a los recursos, lo que puede interrumpir por completo el funcionamiento del sistema. Para mitigar esta vulnerabilidad, se han implementado soluciones como la replicación de servidores en distintas ubicaciones geográficas, el balanceo de carga \cite{bourke2001server} y el uso de fuentes de energía alternativas, todo con el fin de mejorar la tolerancia a fallos y garantizar una mayor disponibilidad.
 
