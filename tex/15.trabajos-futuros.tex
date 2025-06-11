@@ -7,8 +7,11 @@ En base al análisis realizado, se detectaron diversas lineas de trabajo futuras
 A continuación se proponen mejoras para los casos de uso implementados, los cuales, por temas de tiempo, no se llegaron a implementar.
 
 \subsubsection{AstraDB}
+%TODO: redactar
 
 Sin embargo este enfoque presenta algunas limitaciones o aspectos a mejorar que son importantes destacar.
+
+Algo a notar es la falta de una conexión entre nodos web, lo cual sería algo muy útil, ya que los mismos usuarios web utilizando la aplicación en un determinado momento, podrian ayudar a proveer de las bases de datos a nuevos usuarios que se conecten y no dejar que solo los nodos independientes puedan hacerlo, lo cual seguría muy bien la filosofía de IPFS, sin embargo esto requeriría que los nodos web puedan escuchar conexiones entrantes y esto es únicamente posible haciendo uso de un \textbf{Relay} como explicamos anteriormente y que actualmente no fue posible obtener un funcionamiento estable en el contexto de nuestro proyecto. Igualmente sería algo muy fácil de implementar una vez que su funcionamiento sea estable y agregaría esta característica que mejoraría la infraestructura.
 
 Para la solución implementada, la seguridad no fue una prioridad. En consecuencia se presentan algunos problemas que están relacionados con esto. La solución da total libertad a la creación y agregado de información a las bases de datos sin ninguna limitación, junto a que los colaboradores deben almacenar la totalidad de la base de datos, por lo que se explicó anteriormente de la falta de \textit{Proof of storage}, lo cual de por si es un limitación. En consecuencia es muy fácil realizar un ataque de spam, usando el espacio almacenado de los colaboradores, al crear nuevas \textit{Keys} o agregar contenido sin importancia a cada una de ellas. Esto podría mitigarse si se utilizara un consenso a la hora de aceptar un cambio o no a la base de datos, dado que si el cambio no se acepta, entonces no se distribuye y no se efectúa, sin embargo, como se explicó, esto requiere un foco de seguridad y para mostrar su uso en el ecosistema no fue el punto principal.
 
@@ -27,7 +30,7 @@ Una de las principales mejoras que se pueden implementar sobre este caso de uso 
 Por otro lado, en base al costo por transacción (visto en la sección \ref{performance-blockchain}) se podría utilizar alguna red cuyos precios de gas por transacción sean menores. Una de estas redes --basada en Ethereum-- es la \textit{Ronin Network}\cite{ronin-network}\cite{ronin-network-whitepaper} que a principio de este año (2025) abrió su red para que cualquier usuario pueda implementar aplicaciones en la misma.
 
 \subsection{Mejora para clusters colaborativos}
-
+%TODO: Redactar
 Como se mencionó previamente en el análisis de IPFS, los clusters colaborativos son una alternativa para lograr la persistencia y disponibilidad de archivos, a través del "pinneo" de nodos colaborativos. La cual va muy de la mano con la filosofía de las aplicaciones comunitarias, ya que potencialmente la propia gente que utiliza la aplicación sea la que la mantenga colaborativamente. El problema es que actualmente casi no se utiliza esta alternativa, lo cual lleva a que por ejemplo, no haya una manera fácil de utilizarla, sin embargo esto tiene sus razones.
 
 \paragraph{IPFS Cluster}

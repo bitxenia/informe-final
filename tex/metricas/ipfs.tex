@@ -1,5 +1,12 @@
 \subsection{IPFS}
 
+Para realizar las métricas de IPFS, se utilizó el siguiente sistema:
+\begin{itemize}
+    \item \textbf{CPU:} Ryzen 5 1600
+    \item \textbf{RAM:} 8GB
+    \item \textbf{Almacenamiento:} SSD
+\end{itemize}
+
 \subsubsection{Costos}
 
 Mientras que en una Blockchain convencional se delega el almacenamiento y cómputo en nodos dedicados a ese propósito a cambio de un monto monetaria, IPFS ejecuta todo de manera local. El costo de IPFS no es, entonces, monetario sino energético.
@@ -151,34 +158,22 @@ La cantidad de archivos que tiene el contenido a publicar es la variable que mod
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\linewidth]{img/metricas-ipfs/tendencia-desplegar.png}
+    \includegraphics[width=0.9\linewidth]{img/metricas-ipfs/tendencia-desplegar.png}
     \caption{Tendencia del tiempo total promedio para desplegar el contenido en ejecuciones consecutivas.}
     \label{fig:tendencia-desplegar.png}
 \end{figure}
 
 Por último, se ve como la tendencia en ejecuciones consecutivas no afecta el tiempo que se tarda en desplegar.
 
-%TODO: Agregar métricas de IPFS y una conclusión al respecto.
-
-\paragraph{Astrawiki}
+\paragraph{Repositorio de conocimiento}
 
 Las métricas tanto de Astrawiki como Astrachat se ven muy relacionadas, debido a que el grueso del trabajo relacionado a IPFS se realiza con su biblioteca en común, AstraDB. Por ejemplo, el tiempo que tarda un nodo en obtener una nueva versión de un articulo es el similar al que tarda un nodo en recibir un mensaje. Por ello, se prefirió complementar las métricas obtenidas para acentuar el uso específico de AstraDB de cada caso de uso, y evitar métricas repetidas. 
 
-\paragraph{Astrachat}
+\paragraph{Mensajero en tiempo real}
 
-Las siguientes métricas se obtuvieron con un nodo colaborador y un nodo común. Se levantaron ambos nodos en la misma máquina para poder coordinar ambos nodos y facilitar la obtención de métricas. Además, se utilizaron 3 mensajes de largo distinto:
+Las siguientes métricas se obtuvieron con un nodo colaborador y un nodo común. Se levantaron ambos nodos en la misma máquina para poder coordinar ambos nodos y facilitar la obtención de métricas.
 
-\begin{itemize}
-    \item \textit{short}: mensaje de 1 palabra. ''\textit{Lorem}''
-    \item \textit{medium}: mensaje de 10 palabras. ''\textit{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam elementum.}''
-    \item \textit{large}: mensaje de 30 palabras. ''\textit{Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ex risus, porttitor sed lacus id, egestas lobortis purus. Curabitur consectetur metus ut est vehicula egestas. Class aptent taciti sociosqu ad.}''
-\end{itemize}
-
-El tamaño de las palabras elegidas representa el largo de los mensajes más comunes que suelen enviarse en un chat.
-
-Estos ejemplos asumen una conexión existente entre el nodo colaborador y el nodo común. Para agilizar la obtención de métricas la conexión directamente mediante las multiaddresses de los nodos, aunque en un caso real se debería encontrar utilizando la DHT. Una vez establecida la conexión el uso es el mismo, por lo que estas métricas no dependen del tipo de mecanismo utilizado para el establecimiento de la conexión.
-
-A partir de los datos obtenidos se calcularon el máximo (\textbf{Max}), mínimo (\textbf{Min}), la media (\textbf{Mean}), el desvío estándar (\textbf{Std}) y la mediana (\textbf{Median}).
+Se asume una conexión existente entre el nodo colaborador y el nodo común. Para agilizar la obtención de métricas la conexión directamente mediante las multiaddresses de los nodos, aunque en un caso real se debería encontrar utilizando la DHT. Una vez establecida la conexión el uso es el mismo, por lo que estas métricas no dependen del tipo de mecanismo utilizado para el establecimiento de la conexión.
 
 \subparagraph{Tiempo en enviar un mensaje}
 
@@ -187,17 +182,14 @@ A continuación se muestran los resultados de medir el tiempo que le lleva a un 
 \setlength\tabcolsep{10pt}
 \begin{table}[!htbp]
     \centering
-    % \begin{tabular}{|m{5em}|m{5em}|}
-\begin{tabular}{|l|c|c|c|}
-\hline
-                & \multicolumn{1}{l|}{\textbf{short}} & \multicolumn{1}{l|}{\textbf{medium}} & \multicolumn{1}{l|}{\textbf{large}} \\ \hline
-\textbf{max}    & 24230                               & 21870                                & 121000                              \\ \hline
-\textbf{mean}   & 185.1                               & 175.8                                & 265.5                               \\ \hline
-\textbf{min}    & 30.25                               & 26.44                                & 20.59                               \\ \hline
-\textbf{std}    & 765.3                               & 690.1                                & 3822                                \\ \hline
-\textbf{median} & 161.4                               & 153.4                                & 145.5                               \\ \hline
-\end{tabular}
-\caption{Tiempo en enviar un mensaje}
+    \begin{tabular}{|l|c|c|c|c|c|}
+        \hline
+        & \textbf{Max} & \textbf{Mean} & \textbf{Min} & \textbf{Std} & \textbf{Median} \\ \hline
+        \textbf{short} & 24230 ms & 185.1 ms & 30.25 ms & 765.3 ms & 161.4 ms \\ \hline
+        \textbf{medium} & 21870 ms & 175.8 ms & 26.44 ms & 690.1 ms & 153.4 ms \\ \hline
+        \textbf{large} & 121000 ms & 265.5 ms & 20.59 ms & 3822 ms & 145.5 ms \\ \hline
+    \end{tabular}
+    \caption{Tiempo en enviar un mensaje}
 \end{table}
 
 Algo a notar son los máximos para cada medición. Estos se deben a una pérdida en la conexión entre nodos que puede ocurrir en el transcurso de una sesión. Sin embargo, son pocos los casos dado el tamaño de la muestra. Por otro lado, el tamaño del mensaje no afecta de forma apreciable el tiempo de envío.
@@ -216,18 +208,15 @@ El gráfico presenta cómo varía el tiempo de respuesta, medido en milisegundos
 \setlength\tabcolsep{10pt}
 \begin{table}[!htbp]
     \centering
-    % \begin{tabular}{|m{5em}|m{5em}|}
-\begin{tabular}{|l|l|l|l|}
-\hline
-                & \multicolumn{1}{l|}{\textbf{short}} & \multicolumn{1}{l|}{\textbf{medium}} & \multicolumn{1}{l|}{\textbf{large}} \\ \hline
-\textbf{max}    & 5665 ms        & 8471 ms         & 3905 ms        \\ \hline
-\textbf{mean}   & 79.45 ms       & 85.47 ms        & 76.96 ms       \\ \hline
-\textbf{min}    & 2.340 ms       & 2.718 ms        & 2.642 ms       \\ \hline
-\textbf{std}    & 248.8 ms       & 359.4 ms        & 161.2 ms       \\ \hline
-\textbf{median} & 69.19 ms       & 70.14 ms        & 69.15 ms       \\ \hline
-\end{tabular}
-\caption{Tiempo en obtener mensajes}
-\end{table}
+    \begin{tabular}{|l|c|c|c|c|c|}
+        \hline
+        & \textbf{Max} & \textbf{Mean} & \textbf{Min} & \textbf{Std} & \textbf{Median} \\ \hline
+        \textbf{short} & 5665 ms & 79.45 ms & 2.340 ms & 248.8 ms & 69.19 ms \\ \hline
+        \textbf{medium} & 8471 ms & 85.47 ms & 2.718 ms & 359.4 ms & 70.14 ms \\ \hline
+        \textbf{large} & 3905 ms & 76.96 ms & 2.642 ms & 161.2 ms & 69.15 ms \\ \hline
+    \end{tabular}
+    \caption{Tiempo en obtener mensajes}
+\end{table}  
 
 \subparagraph{Tiempo entre enviar y recibir un mensaje}
 
@@ -236,15 +225,12 @@ Esta métrica calcula el tiempo que tarda el nodo común en recibir un mensaje e
 \setlength\tabcolsep{10pt}
 \begin{table}[!htbp]
     \centering
-    % \begin{tabular}{|m{5em}|m{5em}|}
-\begin{tabular}{|l|l|l|l|}
-\hline
-                & \multicolumn{1}{l|}{\textbf{short}} & \multicolumn{1}{l|}{\textbf{medium}} & \multicolumn{1}{l|}{\textbf{large}} \\ \hline
-\textbf{max}    & 22790 ms       & 18050 ms        & 20680 ms       \\ \hline
-\textbf{mean}   & 298.1 ms       & 227.0 ms        & 285.8 ms       \\ \hline
-\textbf{min}    & 47.85 ms       & 40.89 ms        & 64.47 ms       \\ \hline
-\textbf{std}    & 1341 ms        & 800.4 ms        & 1264 ms        \\ \hline
-\textbf{median} & 198.8 ms       & 195.0 ms        & 196.1 ms       \\ \hline
-\end{tabular}
-\caption{Tiempo entre enviar y recibir un mensaje}
-\end{table}
+    \begin{tabular}{|l|c|c|c|c|c|}
+        \hline
+        & \textbf{Max} & \textbf{Mean} & \textbf{Min} & \textbf{Std} & \textbf{Median} \\ \hline
+        \textbf{short} & 22790 ms & 298.1 ms & 47.85 ms & 1341 ms & 198.8 ms \\ \hline
+        \textbf{medium} & 18050 ms & 227.0 ms & 40.89 ms & 800.4 ms & 195.0 ms \\ \hline
+        \textbf{large} & 20680 ms & 285.8 ms & 64.47 ms & 1264 ms & 196.1 ms \\ \hline
+    \end{tabular}
+    \caption{Tiempo entre enviar y recibir un mensaje}
+\end{table}  

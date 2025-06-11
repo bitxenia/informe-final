@@ -2,21 +2,56 @@
 
 Resumiendo, y a modo de comparación entre ecosistemas, podemos concluir con lo siguiente:
 
-\setlength\tabcolsep{1pt}
+% \setlength\tabcolsep{1pt}
+% \begin{table}[H]
+%     \centering
+%     \begin{tabular}{|m{7em}|m{14em}|m{14em}|}
+%     \hline
+%      & \textbf{IPFS} & \textbf{Blockchain} \\
+%     \hline
+%     \textbf{Costos} & Bajos o nulos & Escala con el uso de la aplicación \\
+%     \hline
+%     \textbf{Experiencia de desarrollo} &  & Muy positiva \\
+%     \hline
+%     \textbf{Aplicabilidad al caso de uso} & & Sitios estáticos y aplicaciones CRUD \\
+%     \hline
+%     \textbf{Performance} & &  \\
+%     \hline
+%     \end{tabular}
+%     \caption{Comparación entre los ecosistemas de IPFS y Blockchain}
+% \end{table}
+
+\setlength\tabcolsep{2pt}
 \begin{table}[H]
     \centering
-    \begin{tabular}{|m{7em}|m{14em}|m{14em}|}
+    \begin{tabular}{|m{7em}|c|c|c|c|}
     \hline
-     & \textbf{IPFS} & \textbf{Blockchain} \\
+      & \textbf{IPFS} & \textbf{Blockchain} & \textbf{Hyphanet} & \textbf{Freenet} \\
     \hline
-    \textbf{Costos} & Bajos o nulos & Escala con el uso de la aplicación \\
+    \textbf{Costos} & Bajos o nulos & Escala con el uso de la aplicación & Bajos o nulos & Bajos o nulos \\
     \hline
-    \textbf{Desarrollo} &  & Existen herramientas que facilitan el desarrollo y el despliegue \\
+    \textbf{Experiencia de desarrollo} & Neutra & Muy positiva & Muy negativa & N/A \\
     \hline
-    \textbf{Viabilidad} & & Sitios estáticos y aplicaciones CRUD \\
+    \textbf{Aplicabilidad para SWI} & Alta & Alta & Baja & N/A \\
     \hline
-    \textbf{Performance} & & \\
+    \textbf{Aplicabilidad para RC} & Alta & Alta & N/A & N/A \\
+    \hline
+    \textbf{Aplicabilidad para MTR} & Alta & Media & N/A & N/A \\
+    \hline
+    \textbf{Performance} & Aceptable & Aceptable & N/A & N/A \\
     \hline
     \end{tabular}
     \caption{Comparación entre los ecosistemas de IPFS y Blockchain}
 \end{table}
+
+De los ecosistemas analizados blockchain es el único que conlleva costos monetarios a los usuarios finales de los casos de uso, así como también para el despliegue de los mismos. En el resto de ecosistemas no existen costos por parte del usuario final, sólo el costo de almacenamiento y energía eléctrica para aquellos que hosteen un nodo.
+
+En cuanto a experiencia de desarrollo, blockchain es el que más herramientas y documentación provee en contraste con Hyphanet donde la documentación es escasa. Para Freenet, como no se llegó a desarrollar ninguna aplicación, no nos es posible dar un veredicto. Por la parte de IPFS, surgieron problemas al utilizar la implementación en Javascript/TypeScript y con librerías como OrbitDB sin embargo, en el resto la experiencia fue positiva.
+
+Sobre la aplicabilidad de los casos de uso, tanto IPFS como blockchain pueden ser utilizados para los 3 casos. En particular blockchain creemos que, para aplicaciones de tiempo real como chats, no es el ecosistema indicado por la mala usabilidad al tener que aceptar cada transacción. Para Hyphanet sólo pudimos probar el caso del Sitio Web Informativo y, si bien en la práctica es sencillo, no es accesible a la web abierta.
+
+Por último, la performance en los 2 ecosistemas probados ha sido dentro de los parámetros esperables que una aplicación en Web2 podría tener.
+
+Hay que tener en cuenta que las métricas realizadas para el ecosistema blockchain fueron hechas en un ambiente local, lo cual puede variar dependiendo las especificaciones de la máquina en las que fueron ejecutadas esto también implica que los tiempos de red pueden ser mayores en la realidad. Para una comparación más exacta sería necesario realizar las métricas para el ecosistema blockchain en un ambiente productivo que, por el posible alto costo monetario asociado, no fue posible realizar en este trabajo. Sin embargo, puesto que los costos de \textit{gas} son en gran medida afectados por los \textit{opcodes} del código del \textit{smart contract} resultante, podemos decir que es una buena aproximación.
+
+De la misma forma, el entorno en el que se realizaron las métricas de IPFS consistían de dos nodos ejecutándose en una misma máquina. Además, ya que la conexión no era el foco de las pruebas, se conectaron los nodos de forma directa, sin hacer uso de la DHT. Esto no representa un cambio mayor en los resultados, pero si afecta a los valores obtenidos luego de una pérdida de la conexión, ya que esta hubiera tomado más tiempo. Sin embargo, para los casos frecuentes en los que la conexión se mantuvo, las medidas deberían ser representativas.

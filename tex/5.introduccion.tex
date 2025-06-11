@@ -1,11 +1,25 @@
 \section{Introducción}
 
-Hoy en día, al querer desplegar una aplicación o sitio web comunitario, lo más común es hacerlo a través de un servicio de alojamiento (AWS, Azure, Google Cloud, entre otros) por la comodidad y facilidad que estas ofrecen, alquilando sus servidores para guardar y procesar datos.
+El objetivo de este trabajo es explorar los ecosistemas de herramientas descentralizadas y evaluar cómo se comparan con los servicios tradicionales. A lo largo del informe se detalla la experiencia de desarrollo de diversas aplicaciones y se analiza su viabilidad en estos entornos.
 
-Esto puede llegar a traer problemas para este tipo de aplicaciones. Uno de estos problemas puede ser monetario, ya que muchas veces estas aplicaciones dependen de donaciones o voluntarios para sustentarse, como es el caso de Wikipedia. Como también puede suceder que se encuentre en una zona de censura, lo cual facilita su bloqueo al ser servicios centralizados; entre otros problemas más.
+En particular, nos enfocamos en el desarrollo de aplicaciones \textbf{comunitarias}, \textbf{descentralizadas} y \textbf{distribuidas}, que por su propia naturaleza se benefician del uso de tecnologías peer-to-peer. Estas aplicaciones son representativas de las capacidades y limitaciones de cada ecosistema evaluado.
 
-Sin embargo, existen otros ecosistemas alternativos que se asemejan mucho más a la filosofía de estas aplicaciones, y que ayudan a combatir estos problemas. En donde las aplicaciones pueden estar alojadas por sus propios usuarios, donando su computo o espacio, y así logrando una descentralización.
+Una aplicación es \textbf{comunitaria} cuando es creada, mantenida y/o gobernada por una comunidad. En este tipo de aplicaciones, la toma de decisiones está distribuida entre los participantes, orientada al bien común de la comunidad y fomentando la colaboración entre usuarios. Esta estructura permite que la evolución de la aplicación responda directamente a las necesidades de la comunidad.
 
-En el siguiente documento presentamos un análisis sobre la infraestructura existente, donde es posible la implementación de plataformas para el despliegue de este tipo de aplicaciones, recabando las bondades y desventajas que cada una tiene. 
+A su vez, es \textbf{descentralizada} cuando no existe una única autoridad o servidor central que controle el sistema. En cambio, la lógica y la gobernanza se reparten entre múltiples nodos o participantes, lo que evita la necesidad de confiar en una autoridad centralizada.
 
-Para esto se crearon diferentes casos de uso que representan posibles aplicaciones sobre esta metodología alternativa analizando su viabilidad. Entre ellos, se encuentran un sitio web estático, una enciclopedia colaborativa y una aplicación de comunicación en tiempo real.
+Por último, cuando su infraestructura se encuentra repartida entre varios nodos que pueden operar de forma independiente o coordinada, la aplicación se considera \textbf{distribuida}. Esta arquitectura mejora la resiliencia y escalabilidad del sistema, elimina puntos únicos de fallo y lo hace más resistente tanto a la censura como a las limitaciones de conectividad en determinadas regiones.
+
+Estas definiciones son fundamentales para entender las decisiones que se presentan a lo largo del informe. Es importante destacar que nos referimos a aplicaciones que además de operar en entornos descentralizados, son estrictamente comunitarias. Es decir, no dependen de entidades o servicios externos que puedan intervenir en su funcionamiento, incluyendo su despliegue y uso, lo que las diferencia de aplicaciones únicamente descentralizadas.
+
+En este documento se presenta un análisis de la infraestructura existente que permite implementar y desplegar este tipo de aplicaciones. Se discuten las ventajas y desventajas de cada plataforma evaluada, en base a casos de uso concretos que ilustran la aplicabilidad y potencial de este enfoque alternativo.
+
+% Hoy en día, para desplegar una aplicación o sitio web comunitario, se suele utilizar un servicio de alojamiento (AWS, Azure, Google Cloud, entre otros) por la agilidad y facilidad que estas ofrecen para el desarrollo y mantenimiento, alquilando sus servidores para guardar y procesar datos.
+
+% Esto puede llegar a traer problemas para aplicaciones comunitarias. Uno de estos problemas puede ser monetario, ya que muchas veces estas aplicaciones dependen de donaciones o voluntarios para sustentarse, como es el caso de Wikipedia. Como también puede suceder que se encuentre en una zona de censura, lo cual facilita su bloqueo al ser servicios centralizados; entre otros problemas más.
+
+% Sin embargo, existen otros ecosistemas alternativos que se asemejan mucho más a la filosofía de estas aplicaciones, y que ayudan a combatir estos problemas. En donde las aplicaciones pueden estar alojadas por sus propios usuarios, donando su computo o espacio, y así logrando una descentralización.
+
+% En el siguiente documento presentamos un análisis sobre la infraestructura existente, donde es posible la implementación de plataformas para el despliegue de este tipo de aplicaciones, recabando las bondades y desventajas que cada una tiene. 
+
+% Para esto se crearon diferentes casos de uso que representan posibles aplicaciones sobre esta metodología alternativa analizando su viabilidad. Entre ellos, se encuentran un sitio web estático, una enciclopedia colaborativa y una aplicación de comunicación en tiempo real.

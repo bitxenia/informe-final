@@ -12,20 +12,22 @@ Se utiliza la moneda ETH para pagar por cada transacción, esto incluye tanto el
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{img/aw-eth-bytes-articulo-incremental.png}
-    \caption{Tiempo y gas usado al crear artículos con tamaño de bytes creciente}
-    \label{fig:aw-eth-bytes-articulo-incremental.png}
+    \includegraphics[width=0.75\linewidth]{aw-eth-bytes-articulo-incremental-gas.png}
+    \caption{Gas usado al crear artículos con tamaño de bytes creciente}
+    \label{fig:aw-eth-bytes-articulo-incremental-gas}
 \end{figure}
 
 \subsubsection{Experiencia de desarrollo} % Developer Experience
 
 \paragraph{Swarm}
-En Swarm existe la herramienta de terminal swarm-cli \cite{swarm-cli} con la cual se puede interactuar con un nodo de Swarm. También el equipo de Swarm provee una Github Action que permite la posibilidad de automatizar el despliegue generando un pipeline que utilice dicha herramienta.
+La experiencia de desarrollo en Swarm podría ser mejor. Cuenta con una comunidad pequeña pero activa. Si bien la documentación en varios aspectos puede resultar escasa, tienen medios por los cuales se pueden consultar dudas al equipo de desarrollo y son respondidas con brevedad.
+
+Existen algunas herramientas que facilitan el desarrollo, por ejemplo, swarm-cli \cite{swarm-cli} la cual permite la interacción con un nodo de Swarm para realizar despliegues o consultas sobre su estado. También el equipo de Swarm provee una Github Action que permite la posibilidad de automatizar el despliegue generando un pipeline que utilice dicha herramienta.
 
 En cuanto a un ambiente de pruebas o \textit{staging}, si bien no existe un \textit{gateway} público que interactúe con la \textit{testnet}, es posible levantar uno propio que sí lo haga apuntando a la \textit{testnet} de Sepolia usando la herramienta gateway-proxy \cite{gateway-proxy}.
 
 \paragraph{Ethereum}
-Con la librería web3.js se puede interactuar con un nodo de Ethereum y realizar un despliegue de la aplicación. Además, con las herramientas de Hardhat se puede levantar una red de prueba que facilita el desarrollo local.
+La experiencia de desarrollo en Ethereum resulta positiva por su gran comunidad y herramientas que provee. Por ejemplo, con la librería web3.js se puede interactuar con un nodo de Ethereum y realizar un despliegue de la aplicación. Además, con las herramientas de Hardhat se puede levantar una red de prueba que facilita el desarrollo local. Por otro lado, cuenta con una extensa documentación que detalla el funcionamiento de su blockchain.
 
 \subsubsection{Aplicabilidad al caso de uso}
 
@@ -41,11 +43,13 @@ Los eventos pueden resultar útil para la interacción en tiempo real requerida 
 
 \subsubsection{Performance\label{performance-blockchain}}
 
-\paragraph{Astrawiki}
+Las siguientes métricas se obtuvieron levantando una instancia local de Hardhat \cite{hardhat}, tanto para el repositorio de conocimiento como para el mensajero en tiempo real. Hay que tener en cuenta que los tiempos obtenidos corresponden al que le toma a la transacción ejecutarse en una máquina local. En un caso real, existe un tiempo mayor de red y de interacción del usuario con la \textit{wallet} para confirmar la transacción.
+
+\paragraph{Repositorio de conocimiento}
 
 \subparagraph{Tiempo en obtener un artículo}
 
-La primer métrica tomada corresponde al tiempo que tarda en obtener un artículo.
+En la siguiente tabla podemos ver los resultados de obtener 1000 muestras de la obtención de un mismo artículo en los distintos tamaños. No se nota diferencia significativa entre los tamaños \textit{short} y \textit{medium}, pero sí se puede ver un salto en la latencia al obtener un artículo de tamaño \textit{large}.
 
 \setlength\tabcolsep{10pt}
 \begin{table}[!htbp]
@@ -64,11 +68,20 @@ La primer métrica tomada corresponde al tiempo que tarda en obtener un artícul
     \caption{Tiempo en obtener un artículo}
 \end{table}
 
-\paragraph{Astrachat}
+\subparagraph{Tiempo de creación de artículos}
+
+Se registró el tiempo de creación de un artículo aumentando el tamaño en bytes del mismo. La Figura \ref{fig:aw-eth-bytes-articulo-incremental-tiempo} muestra el resultado de tomar el promedio de 5 muestras por tamaño de artículo, aumentando el mismo de a 1000 bytes por iteración.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\linewidth]{aw-eth-bytes-articulo-incremental-tiempo.png}
+    \caption{Tiempo para crear artículos con tamaño de bytes creciente}
+    \label{fig:aw-eth-bytes-articulo-incremental-tiempo}
+\end{figure}
+
+\textbf{Mensajero en tiempo real}\\
 
 Las siguientes métricas se obtuvieron levantando una instancia local de Hardhat \cite{hardhat} y ejecutando 850 muestras y 3 veces cada una.
-
-Hay que tener en cuenta que los tiempos obtenidos corresponden al que le toma a la transacción ejecutarse en una máquina local. En un caso real, existe un tiempo mayor de red y de interacción del usuario con la \textit{wallet} para confirmar la transacción.
 
 \subparagraph{Tiempo en enviar un mensaje}
 
@@ -126,7 +139,7 @@ Según los resultados obtenidos se puede decir que para enviar un mensaje cuesta
 
 Para esta métrica se tomó el tiempo en obtener todos los mensajes para un chat el cual iba teniendo cada vez más mensajes (desde 0 hasta 850 mensajes). El gráfico muestra para los 3 tipos de mensajes, cómo el tiempo (en milisegundos) se va incrementando a medida que hay más mensajes en el chat.
 
-\begin{figure}[h!]
+\begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{img/blockchain-get-message-graphic.png}
     \caption{Tiempo para obtener mensajes de un chat según el tamaño del chat}

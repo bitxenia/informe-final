@@ -1,0 +1,25 @@
+\subsection{Elección de herramientas en la arquitectura de despliegue de IPFS}
+
+A lo largo del diseño de la arquitectura de despliegue en IPFS, se tomaron decisiones técnicas que influyeron directamente en la descentralización, persistencia, y accesibilidad del contenido. En esta sección, se presentan las principales alternativas consideradas y el razonamiento detrás de las herramientas finalmente seleccionadas.
+
+\subsubsection{Persistencia}
+
+IPFS Cluster fue la tecnología utilizada para manejar la persistencia de archivos en la red de IPFS. Sin embargo, existen alternativas a esta herramienta que tienen sus ventajas a pesar de no ser idóneas para una aplicación comunitaria.
+
+\paragraph{Servicios de \textit{pinning}}
+Una manera sencilla de garantizar la disponibilidad del contenido en IPFS es mediante servicios de \textit{pinning}, como Fleek \cite{fleek}, Filebase \cite{filebase}, o Pinata \cite{pinata}. Estos servicios alojan el contenido en varios nodos propios, eliminando la necesidad de contar con infraestructura local.
+
+Sin embargo, este enfoque entra en conflicto con la filosofía de descentralización. \textbf{Primero}, suelen tener planes gratuitos con funcionalidad limitada, lo cual restringe su escalabilidad comunitaria. \textbf{Segundo}, se introduce una dependencia directa de un tercero: si el servicio deja de fijar los archivos, estos pueden quedar inaccesibles o incluso perderse. Esto representa una forma de centralización delegada, más cercana al modelo de \textit{cloud hosting} tradicional que a una verdadera aplicación descentralizada.
+
+\paragraph{Filecoin}
+Filecoin \cite{filecoin} es una red de almacenamiento incentivado que permite contratar espacio a cambio de FIL, su criptomoneda nativa. Los proveedores de almacenamiento deben demostrar regularmente que conservan los datos mediante pruebas criptográficas.
+
+A diferencia de los servicios de \textit{pinning}, los nodos de Filecoin no están bajo una misma entidad organizativa, lo que lo vuelve más descentralizado. No obstante, su funcionamiento implica un costo económico continuo, lo cual lo hace poco viable para una solución comunitaria sin fines de lucro. Además, la complejidad técnica y operativa es mayor comparada con alternativas como IPFS Cluster.
+
+\subsubsection{Acceso y mutabilidad}
+
+Estas herramientas facilitan el acceso del contenido, y la posibilidad de cambiar el contenido sin modificar la forma de acceder. En la solución se eligió como herramienta para el acceso a ENS, y para la mutabilidad, IPNS. Sin embargo, DNSLink fue una alternativa posible para ambos.
+
+DNSLink \cite{dnslink} permite asociar un nombre de dominio tradicional con un CID o nombre de IPNS mediante registros DNS TXT. Es rápido, compatible con navegadores, y ofrece nombres legibles para humanos. Además, puede apuntar a direcciones IPNS, facilitando la mutabilidad del contenido.
+
+Sin embargo, DNS se basa en una infraestructura centralizada. Autoridades como \textit{ICANN} controlan la raíz del sistema, lo que introduce vulnerabilidades ante censura o intervención por parte de registradores e ISPs. Este nivel de dependencia es incompatible con el objetivo de una aplicación verdaderamente comunitaria y resistente a la censura.
