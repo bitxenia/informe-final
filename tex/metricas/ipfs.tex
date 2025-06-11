@@ -11,7 +11,17 @@ Para realizar las métricas de IPFS, se utilizó el siguiente sistema:
 
 Mientras que en una Blockchain convencional se delega el almacenamiento y cómputo en nodos dedicados a ese propósito a cambio de un monto monetaria, IPFS ejecuta todo de manera local. El costo de IPFS no es, entonces, monetario sino energético.
 
-\subsubsection{Experiencia de desarrollo} % Developer Experience
+\subsubsection{Experiencia de desarrollo}
+
+La experiencia de desarrollo dentro del ecosistema de IPFS resultó desafiante, principalmente debido a que se trata de una tecnología emergente y todavía poco adoptada en entornos de producción. Esto se tradujo en una falta de madurez en algunas herramientas clave y en una documentación a veces limitada o desactualizada.
+
+En nuestro caso, se eligió trabajar con herramientas del ecosistema JavaScript, dado que OrbitDB está diseñado para este entorno y era necesario asegurar compatibilidad con navegadores web. No obstante, JavaScript no representa el entorno más maduro ni prioritario dentro de IPFS y libp2p, lo cual implicó enfrentar una serie de desafíos técnicos.
+
+Durante el desarrollo, nos encontramos con múltiples situaciones en las que ciertas funcionalidades no se comportaban como se esperaba, o directamente no estaban implementadas. Esto nos llevó a participar activamente en los repositorios oficiales, creando distintos \textit{issues} y colaborando en la identificación y resolución de errores (ver Anexo \ref{anexo:issues-ipfs}).
+
+Una de las principales limitaciones fue la falta de soporte para \textbf{WebRTC-Direct} en la implementación de LibP2P en JavaScript, una funcionalidad crítica para poder conectar nodos web con nodos independientes sin requerir servidores intermediarios. Esta característica se encontraba en pleno desarrollo durante el transcurso del proyecto, lo que implicó retrasos y momentos de incertidumbre respecto a la viabilidad técnica de la solución.
+
+Afortunadamente, gracias al activo mantenimiento y la receptividad de los desarrolladores de las distintas herramientas involucradas, fue posible colaborar en la resolución de varios de estos problemas, seguir de cerca los avances en nuevas funcionalidades, y continuar con el desarrollo hasta alcanzar una infraestructura funcional y operativa.
 
 \subsubsection{Aplicabilidad al caso de uso}
 

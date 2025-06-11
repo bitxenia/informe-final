@@ -1,5 +1,17 @@
 \subsection{IPFS}
 
+Durante el desarrollo de los casos de uso sobre el ecosistema IPFS, se fue consolidando una comprensión más profunda de los componentes necesarios para construir aplicaciones distribuidas y descentralizadas. Esto permitió identificar y diseñar una serie de abstracciones que encapsulan la infraestructura general requerida, facilitando la implementación de los casos de uso sobre una base común.
+
+Se distinguen dos infraestructuras principales en funcionamiento: la infraestructura de despliegue y la infraestructura de aplicación.
+
+La \textbf{infraestructura de despliegue} se encarga del alojamiento de las aplicaciones web. Es responsable de distribuir el \textit{front-end} de las aplicaciones, así como también el código necesario para su ejecución, en caso de que incluyan componentes dinámicos. Toda aplicación que deba ser accesible desde la web hace uso de esta infraestructura, como ocurre con el sitio web informativo.
+
+Por otro lado, la \textbf{infraestructura de aplicación} gestiona la lógica de la aplicación, incluyendo el almacenamiento de datos y la conexión entre pares. Esta infraestructura es fundamental para aplicaciones que requieren mantener un estado compartido entre usuarios y permitir su modificación, como en el caso del repositorio de conocimiento y el mensajero en tiempo real.
+
+La identificación de estas abstracciones permitió encapsular gran parte de la complejidad asociada al ecosistema subyacente, lo que facilitó el desarrollo tanto de los casos de uso implementados como de posibles desarrollos futuros. Gracias a esta separación, es posible concentrarse exclusivamente en los requisitos funcionales de cada nuevo caso de uso, sin necesidad de interactuar directamente con los detalles técnicos de IPFS y sus herramientas subyacentes.
+
+A continuación, se detalla la composición y el funcionamiento de ambas infraestructuras.
+
 \subsubsection{Infraestructura de despliegue}
 
 El objetivo de la infraestructura de despliegue fue alojar los archivos estáticos de un sitio web en IPFS, y acceder a ellos mediante un navegador, manteniendo su correcta interpretación por el navegador. Además, se priorizó una filosofía de aplicaciones estrictamente comunitarias a la hora de elegir tecnologías y herramientas del ecosistema a utilizar.
@@ -26,7 +38,7 @@ Una vez que se aloja un contenido en IPFS y se apunta a él mediante un \textit{
 
 Dado que el valor al que apunta el nombre de IPNS cambia con cada modificación del proyecto, se vuelve necesario seleccionar un grupo de nodos que se les confíe con tal fin. De lo contrario un posible atacante podría modificar el registro, invalidándolo o redirigiéndolo. Por la misma razón, no cualquier nodo dentro del clúster debe ser capaz de cambiar el \textit{pin set}, o lista de CIDs fijados por el clúster.
 
-IPFS Cluster tiene en cuenta esto, y hace la distinción entre un nodo \textit{trusted} y un nodo \textit{follower} para su implementación de clústeres \textit{colaborativos}\cite{ipfs-cluster-collaborative}. Para esta herramienta, se utiliza las denominaciones de nodo confiable y nodo colaborador, respectivamente.
+IPFS Cluster tiene en cuenta esto, y hace la distinción entre un nodo \textit{trusted} y un nodo \textit{follower} para su implementación de clústeres \textit{colaborativos} \cite{ipfs-cluster-collaborative}. Para esta herramienta, se utiliza las denominaciones de nodo confiable y nodo colaborador, respectivamente.
 
 \subparagraph{Nodo confiable} Este nodo tiene la capacidad de modificar el nombre IPNS, como también actualizar la configuración del mismo, y el \textit{pin set}. Son una parte esencial del clúster, ya que ellos no es posible modificar el contenido. Esto no implica centralización, ya la comunidad pueden formar sus propios grupos de nodos confiables y actualizar el contenido por su cuenta, similar a realizar un \textit{fork} en un proyecto de Github.
 
@@ -157,7 +169,7 @@ A continuación, describiremos los componentes y la arquitectura de \textbf{Astr
 
 \paragraph{AstraDB}
 
-AstraDB es una infraestructura diseñada para facilitar el desarrollo de aplicaciones comunitarias, distribuidas y descentralizadas que requieren mantener un estado mutable. Construida como una capa superior a \textbf{OrbitDB}~\cite{orbitdb}, abstrae muchos de los aspectos de bajo nivel necesarios para operar bases de datos en redes peer-to-peer.
+AstraDB es una infraestructura diseñada para facilitar el desarrollo de aplicaciones comunitarias, distribuidas y descentralizadas que requieren mantener un estado mutable. Construida como una capa superior a \textbf{OrbitDB} \cite{orbitdb}, abstrae muchos de los aspectos de bajo nivel necesarios para operar bases de datos en redes peer-to-peer.
 
 Su diseño prioriza la colaboración entre múltiples usuarios, permitiendo que cualquier persona pueda contribuir activamente al sostenimiento de la aplicación sin depender de servidores centrales ni infraestructura dedicada. Para ello, automatiza tareas fundamentales como la sincronización, el descubrimiento de nodos y la replicación de datos entre colaboradores.
 
@@ -165,7 +177,7 @@ AstraDB expone una interfaz simple inspirada en el modelo de pares \textit{clave
 
 \paragraph{Representación de los datos}
 
-AstraDB utiliza OrbitDB para la representación de sus datos. OrbitDB es una base de datos distribuida peer-to-peer que utiliza IPFS para el almacenamiento y \textbf{libp2p}~\cite{libp2p} para la sincronización entre nodos. Es una base de datos \textit{eventualmente consistente}, diseñada específicamente para operar en redes descentralizadas sin depender de servidores centrales, lo que la hace especialmente adecuada para aplicaciones distribuidas.
+AstraDB utiliza OrbitDB para la representación de sus datos. OrbitDB es una base de datos distribuida peer-to-peer que utiliza IPFS para el almacenamiento y \textbf{libp2p} \cite{libp2p} para la sincronización entre nodos. Es una base de datos \textit{eventualmente consistente}, diseñada específicamente para operar en redes descentralizadas sin depender de servidores centrales, lo que la hace especialmente adecuada para aplicaciones distribuidas.
 
 OrbitDB ofrece distintos tipos de bases de datos, adaptadas a diversos modelos y casos de uso, como bases de documentos o estructuras de eventos secuenciales.
 
@@ -256,7 +268,7 @@ A diferencia de otros enfoques distribuidos basados en incentivos económicos, A
 
 \paragraph{Conectividad}
 
-Para que la sincronización entre distintas bases de datos de OrbitDB ocurra, primero deben estar ambos pares conectados. Dada la naturaleza de consistencia eventual con la que trabaja OrbitDB, este no se responsabiliza por el establecimiento ni el mantenimiento de las conexiones entre nodos, simplemente asume que, si dos nodos están conectados, eventualmente sincronizarán sus réplicas.  Por eso, en su lugar, delega completamente esta tarea a la capa subyacente de red, que en este caso está conformada por \textbf{LibP2P}\cite{libp2p}, a través de la implementación provista por \textbf{Helia}\cite{helia}. Esto implica que es nuestra responsabilidad definir cómo se comunican los nodos, seleccionando explícitamente qué protocolos de transporte utilizar según el entorno en el que se ejecutan.
+Para que la sincronización entre distintas bases de datos de OrbitDB ocurra, primero deben estar ambos pares conectados. Dada la naturaleza de consistencia eventual con la que trabaja OrbitDB, este no se responsabiliza por el establecimiento ni el mantenimiento de las conexiones entre nodos, simplemente asume que, si dos nodos están conectados, eventualmente sincronizarán sus réplicas.  Por eso, en su lugar, delega completamente esta tarea a la capa subyacente de red, que en este caso está conformada por \textbf{LibP2P} \cite{libp2p}, a través de la implementación provista por \textbf{Helia} \cite{helia}. Esto implica que es nuestra responsabilidad definir cómo se comunican los nodos, seleccionando explícitamente qué protocolos de transporte utilizar según el entorno en el que se ejecutan.
 
 LibP2P es una biblioteca modular diseñada para construir redes peer-to-peer. No define una única forma de conexión, sino que ofrece un conjunto de componentes intercambiables —como transporte, cifrado, multiplexación o descubrimiento de pares— que pueden combinarse según las necesidades del entorno. Esta flexibilidad es clave para nuestra infraestructura, ya que nos permite adaptar el comportamiento de los nodos a las restricciones del entorno web o aprovechar las capacidades completas de un proceso independiente.
 
@@ -296,7 +308,7 @@ Este mecanismo se adopta directamente en AstraDB para el descubrimiento de colab
 
 En AstraDB, los usuarios no se identifican mediante nombres de usuario centralizados, sino a través de un esquema criptográfico basado en claves públicas y privadas, gestionado mediante las identidades de OrbitDB.
 
-Si al iniciar un nodo de AstraDB no se proporciona una clave privada, se genera automáticamente una nueva identidad. La clave privada asociada puede luego ser exportada y almacenada de forma segura, permitiendo preservar la identidad del nodo entre sesiones.
+Si al iniciar un nodo de AstraDB no se proporciona una clave privada, se genera automáticamente una nueva identidad. La clave privada asociada puede luego ser exportada y almacenada, permitiendo preservar la identidad del nodo entre sesiones.
 
 \paragraph{Arquitectura}
 
@@ -329,11 +341,11 @@ Además, toda actualización recibida en una base de datos gestionada por este m
 
 El \textit{Connection Manager} se encarga del manejo de conexiones entre nodos, incluyendo la búsqueda y establecimiento de conexiones con colaboradores que proveen la base de datos, así como la publicación del nodo como proveedor cuando este actúa como colaborador.
 
-Al iniciarse, el módulo construye el \textbf{CID} (Content Identifier) correspondiente a la base de datos central. Para ello, utiliza \textbf{Helia}~\cite{helia}, la implementación de IPFS en JavaScript, para calcular el identificador a partir del nombre recibido. Este CID es común a todas las instancias de AstraDB que utilizan dicho nombre, y permite que los nodos se identifiquen y sincronicen de forma coherente.
+Al iniciarse, el módulo construye el \textbf{CID} (Content Identifier) correspondiente a la base de datos central. Para ello, utiliza \textbf{Helia} \cite{helia}, la implementación de IPFS en JavaScript, para calcular el identificador a partir del nombre recibido. Este CID es común a todas las instancias de AstraDB que utilizan dicho nombre, y permite que los nodos se identifiquen y sincronicen de forma coherente.
 
 Luego, se inicializan tres servicios que operan concurrentemente durante la ejecución del sistema: \textit{SearchForProviders}, \textit{ProvideDB} y \textit{ReconnectToProviders}.
 
-El servicio \textit{SearchForProviders} realiza búsquedas continuas de nuevos proveedores de la base de datos utilizando la DHT (Distributed Hash Table) de IPFS mediante \textbf{LibP2P}~\cite{libp2p}. Cuando encuentra uno, intenta establecer conexión para iniciar la sincronización.
+El servicio \textit{SearchForProviders} realiza búsquedas continuas de nuevos proveedores de la base de datos utilizando la DHT (Distributed Hash Table) de IPFS mediante \textbf{LibP2P} \cite{libp2p}. Cuando encuentra uno, intenta establecer conexión para iniciar la sincronización.
 
 El servicio \textit{ProvideDB}, activo únicamente en nodos colaboradores, anuncia en la DHT que el nodo puede proveer la base de datos, facilitando su descubrimiento por parte de otros.
 
@@ -349,7 +361,7 @@ En el caso del repositorio de conocimiento, las claves representaron los artícu
 
 Para el mensajero en tiempo real, cada clave representó un chat específico y los valores fueron los mensajes enviados en dicho chat. El sistema permitió el inicio de sesión de usuarios mediante la provisión de una clave privada, y habilitó la escucha en tiempo real de las actualizaciones en un chat determinado, garantizando así la recepción inmediata de nuevos mensajes.
 
-Ambos casos de uso lograron, en su implementación, abstraerse del manejo directo del ecosistema subyacente —como IPFS, OrbitDB y LibP2P— gracias a los mecanismos provistos por AstraDB. Esta capa de abstracción permitió que los desarrollos se concentraran exclusivamente en la lógica específica de cada aplicación, sin necesidad de gestionar detalles propios de la infraestructura distribuida.
+Ambos casos de uso lograron, en su implementación, abstraerse del manejo directo del ecosistema subyacente —como IPFS, OrbitDB y LibP2P— gracias a los mecanismos provistos por AstraDB. Esta capa de abstracción permitió que los desarrollos se concentraran exclusivamente en la lógica específica de cada aplicación, sin necesidad de centrarse en detalles propios de la infraestructura distribuida.
 
 Como resultado, no solo se cumplió con los requisitos funcionales de ambos casos, sino que se sentaron las bases para extender el sistema a nuevos escenarios. Siempre que las entidades de un caso de uso puedan representarse mediante claves y su evolución como una secuencia de eventos, AstraDB proporciona un entorno sólido y reutilizable para construir aplicaciones distribuidas de forma simple y modular.
 

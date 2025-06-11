@@ -58,24 +58,11 @@ Este caso se enfoca en la capacidad de la infraestructura de enfrentarse a situa
 
 \subparagraph{Package}
 
-Este caso de uso se implementó en los \textit{packages} \textbf{Astrachat}\cite{astrachat-ipfs} (implementación sobre el ecosistema IPFS) y \textbf{Astrachat-eth}\cite{astrachat-eth} (implementación sobre el ecosistema Blockchain). En las subsiguientes secciones, las menciones a Astrachat referirán a este caso de uso.
+Este caso de uso se implementó en los \textit{packages} \textbf{Astrachat} \cite{astrachat-ipfs} (implementación sobre el ecosistema IPFS) y \textbf{Astrachat-eth} \cite{astrachat-eth} (implementación sobre el ecosistema Blockchain). En las subsiguientes secciones, las menciones a Astrachat referirán a este caso de uso.
 
-\subsection{Proceso de descubrimiento}
+\subsection{Organización modular del proyecto}
 
-Durante la implementación de los casos de uso para cada ecosistema, se fue desarrollando un mejor entendimiento de lo que se estaba creando. Logrando así generar distintas abstracciones que representan la infraestructura general para la implementación de los casos de uso.
 
-Para cada ecosistema hay 2 principales infraestructuras en acción. La infraestructura de despliegue y la infraestructura de aplicación.
-
-La \textbf{infraestructura de despliegue} es la encargada del \textit{hosting} de una aplicación web. Con esta se distribuye y permite el acceso a lo que es el \textit{front-end} de las aplicaciones, como también el código para el funcionamiento de la aplicación, si se trata de una aplicación no estática. Cualquier aplicación que desee ser accedida por la web va a hacer uso de esta infraestructura, como es el caso del sitio web informativo.
-
-La \textbf{infraestructura de aplicación} es la encargada de la lógica de la aplicación, como es el almacenamiento de datos, como la conexión entre pares. Aplicaciones que requieran de mantener un estado y permitir la modificación de parte de los usuarios van a necesitar hacer uso de esta infraestructura, como es el caso del repositorio de conocimiento y mensajero en tiempo real.
-
-% TODO: (Mover a IPFS esto, ya que no se hicieron abstracciones en blockchain)
-Al lograr encontrar estas abstracciones, se permite que generar nuevos casos de uso sea mucho más fácil, ya que la mayoría de la lógica sobre el el ecosistema se encuentra encapsulada dentro de ellas, logrando que el desarrollo de un nuevo caso de uso se concentre únicamente en sus requisitos y no en el ecosistema en el que se encuentra.
-
-A continuación se va a explicar como se componen y funcionan ambas infraestructuras en cada ecosistema.
-
-% TODO: (Explicar que lo que hicimos son packages)
 
 \input{tex/8a.solucion-ipfs}
 \input{tex/8b.solucion-blockchain}

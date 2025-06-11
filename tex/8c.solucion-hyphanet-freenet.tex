@@ -1,6 +1,6 @@
 \subsection{Hyphanet}
 
-Hyphanet \cite{hyphanet-white-paper}\cite{hyphanet} es una plataforma peer-to-peer para publicar y comunicar, resistente a la censura y respetuosa de la privacidad.
+Hyphanet \cite{hyphanet-white-paper} \cite{hyphanet} es una plataforma peer-to-peer para publicar y comunicar, resistente a la censura y respetuosa de la privacidad.
 
 Originalmente conocido como Freenet y creado como un trabajo profesional de fin de carrera por Ian Clarke, Hyphanet es una plataforma de software libre que permite compartir archivos, navegar y publicar sitios de forma anónima. Es descentralizado para hacerlo menos vulnerable a ataques, y de ser usado sólo con personas de confianza lo hace difícil de detectar.
 
@@ -20,32 +20,32 @@ Es posible crear aplicaciones de comunicación con los llamados \textit{plugins}
 
 Entre los plugins más usados en el ecosistema podemos nombrar:
 
-\subparagraph{WebOfTrust}\cite{hyphanet-web-of-trust}
+\subparagraph{WebOfTrust} \cite{hyphanet-web-of-trust}
 Se autodenomina un spam filter pudiendo puntuar (\textit{trust values}) a cada usuario de forma que los que tienen puntaje muy bajo son catalogados como spammers y cualquier contenido que los involucre será filtrado.
 
-\subparagraph{Sone}\cite{hyphanter-sone}
+\subparagraph{Sone} \cite{hyphanter-sone}
 Red social similar a Facebook en el que se pueden subir imágenes, comentar, conectarse con otras personas. Usa WebOfTrust para identificar a cada usuario.
 
-\subparagraph{Freemail}\cite{hyphanet-freemail}
+\subparagraph{Freemail} \cite{hyphanet-freemail}
 Un servicio de email dentro de Hyphanet que también depende de WebOfTrust.
 
-\subparagraph{Freetalk}\cite{hyphanet-freetalk}
+\subparagraph{Freetalk} \cite{hyphanet-freetalk}
 Sistema de foro.
 
 No hay una receta para implementar estos plugins ya que \href{https://github.com/ArneBab/freenet-plugin-bare-guide/blob/master/index.org}{la guía} que existe está incompleta y hace años que no se actualiza (lo mismo pasa con los plugins en sí, llevan años sin actualizarse).
 
 La documentación es prácticamente nula y cada plugin hace uso de la librería de \textit{Freenet} de una forma distinta lo cual hace difícil saber cuál es la forma correcta (de haberla) para crear un plugin desde cero.
 
-Toda información que deba guardarse se debe hacer en una base de datos local administrada por el plugin (ya sea usando un archivo o una librería como podría ser \textit{sqlite}\cite{sqlite}) ya que no existe una base de datos distribuida en el ecosistema que lo facilite. Esto hace que cada nodo tenga la información sólo de aquellos nodos con los que interactúa, mientras más lo haga más datos va a tener que persistir. Además es necesario que el plugin tenga forma de garantizar la integridad de los datos sino podrían ser fácilmente manipulados por algún nodo generando inconsistencias para la aplicación (que a su vez debería poder manejar).
+Toda información que deba guardarse se debe hacer en una base de datos local administrada por el plugin (ya sea usando un archivo o una librería como podría ser \textit{sqlite} \cite{sqlite}) ya que no existe una base de datos distribuida en el ecosistema que lo facilite. Esto hace que cada nodo tenga la información sólo de aquellos nodos con los que interactúa, mientras más lo haga más datos va a tener que persistir. Además es necesario que el plugin tenga forma de garantizar la integridad de los datos sino podrían ser fácilmente manipulados por algún nodo generando inconsistencias para la aplicación (que a su vez debería poder manejar).
 
 \subsubsection{Sitio web estático}
 
-Hyphanet posee un software propio para poder agregar sitios llamado \textit{jSite}\cite{hyphanet-jsite}. Con el mismo, basta con seguir las instrucciones en la \href{https://www.hyphanet.org/pages/documentation.html}{documentación oficial}. Una vez finalizada la creación del sitio, el programa devolverá un \textit{hash} el cual será necesario para poder acceder al sitio.
+Hyphanet posee un software propio para poder agregar sitios llamado \textit{jSite} \cite{hyphanet-jsite}. Con el mismo, basta con seguir las instrucciones en la \href{https://www.hyphanet.org/pages/documentation.html}{documentación oficial}. Una vez finalizada la creación del sitio, el programa devolverá un \textit{hash} el cual será necesario para poder acceder al sitio.
 
 
 \paragraph{Caso de uso}
 
-Se logró levantar un sitio web estático que sólo contenía un HTML con un \texttt{"Hello World"} utilizando \textit{jSite}\cite{hyphanet-jsite} en el ecosistema.
+Se logró levantar un sitio web estático que sólo contenía un HTML con un \texttt{"Hello World"} utilizando \textit{jSite} \cite{hyphanet-jsite} en el ecosistema.
 
 \subsubsection{Otros casos de uso}
 
@@ -54,9 +54,9 @@ Debido a la escasa documentación y falta de estándares para desarrollar aplica
 
 \subsection{Freenet}
 
-\textit{Freenet}\cite{freenet} es una red peer-to-peer para servicios descentralizados, sin censura, en donde los usuarios tengan el control del contenido.
+\textit{Freenet} \cite{freenet} es una red peer-to-peer para servicios descentralizados, sin censura, en donde los usuarios tengan el control del contenido.
 
-Creado por Ian Clarke, el mismo creador de \textit{Hyphanet}\cite{hyphanet}, es una plataforma nueva que busca ser una computadora descentralizada en reemplazo de servidores centralizados. Está hecha en Rust y utiliza WebAssembly para ejecutar las aplicaciones.
+Creado por Ian Clarke, el mismo creador de \textit{Hyphanet} \cite{hyphanet}, es una plataforma nueva que busca ser una computadora descentralizada en reemplazo de servidores centralizados. Está hecha en Rust y utiliza WebAssembly para ejecutar las aplicaciones.
 
 Siguiendo las bases de Hyphanet, y a diferencia de IPFS, Freenet busca ser una \textit{computadora distribuida} donde cada peer es capaz de ejecutar código que contenga estado el cual tendrá eventual consistencia con los demás peers. Parecido a su antecesor, un contrato puede cachearse en varios peers si este es lo suficientemente popular y dejará de cachearse si deja de serlo.
 
@@ -64,7 +64,7 @@ Siguiendo las bases de Hyphanet, y a diferencia de IPFS, Freenet busca ser una \
 
 \paragraph{Key-value}
 
-Freenet es un \textit{global key-value store} que se basa en la idea del \textit{small-world routing}\cite{freenet-small-world-routing} para la descentralización y escalabilidad. Las \textit{keys} son código WebAssembly en dónde se especifican:
+Freenet es un \textit{global key-value store} que se basa en la idea del \textit{small-world routing} \cite{freenet-small-world-routing} para la descentralización y escalabilidad. Las \textit{keys} son código WebAssembly en dónde se especifican:
 
 \begin{itemize}
     \item Qué valores están permitidos en la \textit{key}.

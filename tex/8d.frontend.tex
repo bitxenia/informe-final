@@ -22,15 +22,36 @@ Desde la página principal es posible seleccionar entre tres ecosistemas distint
 
 Una vez seleccionado el ecosistema se puede acceder a la barra de búsqueda para buscar el artículo deseado o bien se puede crear un artículo.
 
-En la creación de un artículo, es posible darle un nombre y una descripción la cual puede ser escrita en Markdown para darle estilo. Una vez dentro de un artículo, a la derecha se puede acceder al historial de versiones (donde se puede visualizar una versión específica del artículo), editar el artículo (sólo en contenido puede ser modificado) y también al chat del artículo.
+En la creación de un artículo \ref{fig:astraweb-create-article}, es posible darle un nombre y una descripción la cual puede ser escrita en Markdown para darle estilo. Una vez dentro de un artículo \ref{fig:astraweb-article-page}, a la derecha se puede acceder al historial de versiones (donde se puede visualizar una versión específica del artículo), editar el artículo (sólo en contenido puede ser modificado) y también al chat del artículo.
 
-Cada artículo posee un chat en tiempo real que actúa como discusión para la mejora o modificación del mismo. Dentro del chat es posible enviar mensajes y responder a mensajes anteriores desde un alias configurado por el usuario. Para mantener la identidad dentro de los chats, se puede ingresar con la misma identificación.
+Cada artículo posee un chat en tiempo real \ref{fig:astraweb-chat} que actúa como discusión para la mejora o modificación del mismo. Dentro del chat es posible enviar mensajes y responder a mensajes anteriores desde un alias configurado por el usuario. Para mantener la identidad dentro de los chats, se puede ingresar con la misma identificación.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{img/astraweb-main-page.png}
+    \includegraphics[width=1\linewidth]{img/frontends/astraweb-main-page.png}
     \caption{Página principal de Astraweb}
     \label{fig:astraweb-main-page}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{img/frontends/create-article.png}
+    \caption{Creación de un artículo}
+    \label{fig:astraweb-create-article}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{img/frontends/article-page.png}
+    \caption{Página de un artículo}
+    \label{fig:astraweb-article-page}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{img/frontends/astraweb-chat.png}
+    \caption{Chat de un artículo}
+    \label{fig:astraweb-chat}
 \end{figure}
 
 \subparagraph{Tecnología} Se utilizó \texttt{React} \cite{react} y \texttt{Next.js} \cite{next} como \textit{frameworks} para la creación de la aplicación web, basándonos en una plantilla llamada \texttt{rubix-documents} \cite{rubix}. El código fue escrito en \texttt{Typescript}.

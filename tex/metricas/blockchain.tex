@@ -1,18 +1,25 @@
 \subsection{Blockchain}
 
+Para realizar las métricas del sitio web informativo y el repositorio de conocimiento en Blockchain, se utilizó el siguiente sistema:
+\begin{itemize}
+    \item \textbf{CPU:} Ryzen 5 1600
+    \item \textbf{RAM:} 16GB
+    \item \textbf{Almacenamiento:} SSD
+\end{itemize}
+
 \subsubsection{Costos}
 
 \paragraph{Swarm}
-Al deployar el sitio web es necesario contar con \textit{postage stamps} que son la manera de pagar por el uso del almacenamiento en Swarm. Cada actualización que se realice al sitio requiere de \textit{postage stamps} y, además, estos tienen fecha de vencimiento por lo que es necesario volver a pagar frecuentemente. Hay que tener en cuenta que dichos \textit{postage stamps} se pagan en la criptomoneda BZZ que fluctúa de valor con respecto al dólar estadounidense. La obtención del sitio web no requiere de costo alguno, por lo que desde el punto de vista de un usuario lector de la aplicación no sería necesario pagar.
+Al deployar el sitio web es necesario contar con \textit{postage stamps} que son la manera de pagar por el uso del almacenamiento en Swarm. Cada actualización que se realice al sitio requiere de \textit{postage stamps} y, además, estos tienen fecha de vencimiento por lo que es necesario volver a pagar frecuentemente. Dichos \textit{postage stamps} se pagan en la criptomoneda BZZ que fluctúa de valor con respecto al dólar estadounidense. La obtención del sitio web no requiere de costo alguno, por lo que desde el punto de vista de un usuario lector de la aplicación no sería necesario pagar.
 
-<TODO: medir cuánto es el costo aproximado en USD o BZZ>
+El valor de los \textit{stamps} también depende del tamaño del contenido a ser desplegado y el tiempo que se quiere mantener el contenido en la red, esto lo manejan con variables llamadas \textit{depth} y \textit{amount} que uno puede variar para obtener el almacenamiento y tiempo requerido. Realizando un despliegue desde un nodo de Swarm que apunta a la testnet Sepolia, un \textit{postage stamp} con 1GB de almacenamiento por 2 días (\textit{depth} 20 y \textit{amount} 10000000000) tiene un costo de 1.0486 BZZ que equivalen a 0.1767 USD (al día 11/06/2025).
 
 \paragraph{Ethereum}
 Se utiliza la moneda ETH para pagar por cada transacción, esto incluye tanto el despliegue de cada \textit{smart contract} como también cada modificación al estado de los mismos. Por lo tanto, el usuario final de la aplicación termina pagando por la creación y edición de cada artículo en el repositorio de conocimiento, y por cada mensaje enviado en el mensajero en tiempo real. Por otro lado, para las operaciones de lectura no se tiene que pagar nada. A este monto que tiene que pagar el usuario se lo llama gas y varía con respecto a las operaciones que realiza el método que se ejecuta al llamar a un \textit{smart contract} y, también, con respecto a la congestión de la red, es decir a mayor congestión mayor será el costo.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\linewidth]{aw-eth-bytes-articulo-incremental-gas.png}
+    \includegraphics[width=0.75\linewidth]{img/aw-eth-bytes-articulo-incremental-gas.png}
     \caption{Gas usado al crear artículos con tamaño de bytes creciente}
     \label{fig:aw-eth-bytes-articulo-incremental-gas}
 \end{figure}
@@ -43,7 +50,39 @@ Los eventos pueden resultar útil para la interacción en tiempo real requerida 
 
 \subsubsection{Performance\label{performance-blockchain}}
 
-Las siguientes métricas se obtuvieron levantando una instancia local de Hardhat \cite{hardhat}, tanto para el repositorio de conocimiento como para el mensajero en tiempo real. Hay que tener en cuenta que los tiempos obtenidos corresponden al que le toma a la transacción ejecutarse en una máquina local. En un caso real, existe un tiempo mayor de red y de interacción del usuario con la \textit{wallet} para confirmar la transacción.
+Para el caso del sitio web informativo las métricas obtenidas se realizaron mediante un nodo local apuntando a la testnet Sepolia. Los valores son una aproximación a lo que sería en la mainnet. Para el caso de la mainnet habría que tener en cuenta que el tiempo de red puede ser mayor.
+
+Las métricas para el repositorio de conocimiento y para el mensajero en tiempo real se obtuvieron levantando una instancia local de Hardhat \cite{hardhat}. Los tiempos obtenidos corresponden al que le toma a la transacción ejecutarse en una máquina local. En un caso real, existe un tiempo mayor de red y de interacción del usuario con la \textit{wallet} para confirmar la transacción.
+
+\paragraph{Sitio web informativo}
+
+\subparagraph{Despliegue de contenido}
+
+Al realizar el despliegue de sitios con distintas cantidades de archivos y tamaños se obtuvieron los resultados de la Tabla \ref{table:estadisticas-despliegue-swarm}. Vemos que la cantidad de archivos no tiene un efecto en el tiempo de publicación del contenido mientras el tamaño total del sitio se mantenga igual.
+
+\setlength\tabcolsep{10pt}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|}
+    \hline
+    & \textbf{Max} & \textbf{Mean} & \textbf{Min} & \textbf{Std} & \textbf{Median} \\
+    \hline
+    \textbf{1KiB-50files} & 13.93 s & 8.95 s & 5.24 s & 1.74 s & 8.83 s \\
+    \hline
+    \textbf{25KiB-50files} & 9.92 s & 7.99 s & 5.81 s & 1.19 s & 8.38 s \\
+    \hline
+    \textbf{50KiB-1files} & 10.39 s & 7.65 s & 5.75 s & 1.13 s & 7.79 s \\
+    \hline
+    \textbf{50KiB-10files} & 22.65 s & 8.84 s & 5.49 s & 3.73 s & 7.59 s \\
+    \hline
+    \textbf{50KiB-25files} & 10.41 s & 8.20 s & 5.66 s & 1.18 s & 8.24 s \\
+    \hline
+    \textbf{50KiB-50files} & 14.59 s & 8.62 s & 5.36 s & 1.80 s & 8.52 s \\
+    \hline
+    \end{tabular}
+    \caption{Estadísticas para desplegar contenido en Swarm}
+    \label{table:estadisticas-despliegue-swarm}
+\end{table}
 
 \paragraph{Repositorio de conocimiento}
 
@@ -74,7 +113,7 @@ Se registró el tiempo de creación de un artículo aumentando el tamaño en byt
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.75\linewidth]{aw-eth-bytes-articulo-incremental-tiempo.png}
+    \includegraphics[width=0.75\linewidth]{img/aw-eth-bytes-articulo-incremental-tiempo.png}
     \caption{Tiempo para crear artículos con tamaño de bytes creciente}
     \label{fig:aw-eth-bytes-articulo-incremental-tiempo}
 \end{figure}

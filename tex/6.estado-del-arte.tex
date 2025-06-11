@@ -13,60 +13,62 @@ Este modelo se clasifica como una arquitectura centralizada, ya que la subred de
 Entre los servicios más comunes que adoptan esta arquitectura se encuentran la World Wide Web (HTTP/HTTPS), el correo electrónico (SMTP, IMAP) y el sistema de DNS, entre otros.
 
 \subsubsection*{Peer-to-Peer}
-El modelo \textbf{peer-to-peer(P2P)} consiste en una red \textbf{descentralizada} que tiene distintos nodos (pares) capaces de comunicarse sin necesidad de un nodo central, por lo que se puede considerar que cada nodo cumple la función tanto de servidor como de cliente.
+El modelo \textbf{peer-to-peer(P2P)} consiste en una red \textbf{descentralizada} compuesta de diferentes nodos capaces de comunicarse sin necesidad de un nodo central, por lo que se puede considerar que cada nodo cumple la función tanto de servidor como de cliente.
 
-\paragraph{BitTorrent} El servicio más utilizado que implementa este modelo es la red de BitTorrent, que implementa el protocolo del mismo nombre para compartir archivos entre pares. Esta red logra que el mismo nodo que descarga un contenido de la red sea a la vez el servidor para otro nodo que quiera acceder a ese contenido. 
+\paragraph{BitTorrent} El servicio más utilizado que implementa este modelo es la red de BitTorrent \cite{bittorrent}, que implementa el protocolo del mismo nombre para compartir archivos entre pares. Esta red logra que el mismo nodo que descarga un contenido de la red sea a la vez el servidor para otro nodo que quiera acceder a ese contenido. 
 
 \subsection{Diferencias y ventajas de cada arquitectura}
 Ambos modelos tienen ventajas y desventajas, y por lo tanto distintos casos de uso. El modelo cliente-servidor actualmente es la arquitectura mas utilizada.
 
 \paragraph{Resiliencia}
-Cuando un servidor se encuentra fuera de servicio, toda la red que depende de él no funcionará en tanto no se restaure el servidor. Para contrarrestar esta vulnerabilidad del modelo, se desarrollaron métodos a lo largo de los años. Una manera de evitar que la red se vuelva inoperativa es la de alojar instancias del servidor en diferentes zonas geográficas. Además, se pueden implementar medidas para evitar la caída del servidor, como las técnicas de balanceo de cargas y fuentes de energía alternativas para evitar eventuales cortes de electricidad.
+Cuando un servidor se encuentra fuera de servicio, toda la red que depende de él no funcionará en tanto no se restaure el servidor. Para contrarrestar esta vulnerabilidad del modelo, se desarrollaron métodos a lo largo de los años. Una manera de evitar que la red se vuelva inoperativa es la de alojar instancias del servidor en diferentes zonas geográficas. Además, se pueden implementar medidas para evitar la caída del servidor, como las técnicas de balanceo de cargas \cite{bourke2001server} y fuentes de energía alternativas para evitar eventuales cortes de electricidad.
 
 No obstante, una red peer-to-peer puede ser incluso más robusta. Si hay suficientes pares en la misma y están lo suficientemente dispersos geográficamente, la desconexión de uno de ellos no desactiva toda la red. Esto permite que el modelo peer-to-peer pueda ser resistente a cortes de energía masivos y desastres naturales, lo que lo hace un modelo ideal para servicios prioritarios.
 
 Cabe destacar que en una red de una cantidad limitada de pares, en donde no hay redundancia del contenido que se distribuye, es posible que al desconectar uno de los pares parte del contenido se vuelva no disponible. Por lo tanto, si bien la red seguirá activa, no tendrá toda la funcionalidad que si puede ofrecer un servidor mientras siga en línea.
 
+\paragraph{Resiliencia}
+
+En el modelo cliente-servidor, la disponibilidad de la red depende críticamente del servidor central. Si este falla o queda fuera de servicio, los clientes no pueden acceder a los recursos, lo que puede interrumpir por completo el funcionamiento del sistema. Para mitigar esta vulnerabilidad, se han implementado soluciones como la replicación de servidores en distintas ubicaciones geográficas, el balanceo de carga \cite{bourke2001server} y el uso de fuentes de energía alternativas, todo con el fin de mejorar la tolerancia a fallos y garantizar una mayor disponibilidad.
+
+En contraste, una red P2P se basa en una arquitectura descentralizada en la que los nodos actúan simultáneamente como clientes y servidores. Esta estructura distribuye la responsabilidad entre múltiples participantes, lo que permite que la red siga operando incluso si varios nodos se desconectan. Cuando los pares están lo suficientemente dispersos geográficamente y hay una cantidad adecuada de ellos, el sistema puede mantener su funcionalidad frente a fallos locales, cortes de energía o incluso desastres naturales. Esta resiliencia inherente hace que el modelo P2P sea especialmente atractivo para servicios que requieren alta disponibilidad o continuidad operativa en condiciones adversas.
+
+No obstante, la robustez de una red P2P depende del nivel de redundancia de los datos distribuidos. Si la red cuenta con pocos nodos o si los datos no están replicados entre varios pares, la desconexión de un nodo puede provocar la pérdida temporal de parte del contenido. En estos casos, aunque la red permanezca activa, su funcionalidad puede verse comprometida. Por tanto, garantizar la resiliencia en un entorno P2P también implica diseñar mecanismos eficientes de replicación y distribución de la información.
+
 \paragraph{Escalabilidad}
-La escalabilidad de una red peer-to-peer aumenta con la cantidad de nodos disponibles, dado que hay más recursos y, en una red bien diseñada, la carga se distribuye equitativamente. En un modelo cliente-servidor, garantizar escalabilidad se puede tornar costoso. Un servidor con mayor capacidad para comunicaciones entrantes y volumen de información tiene hardware de un costo mayor. En casos de aplicaciones de uso masivo puede ser necesario multiplicar la cantidad de nodos servidores para satisfacer la demanda de clientes.
+
+Una de las principales ventajas de las redes peer-to-peer (P2P) es su escalabilidad. A medida que se suman más nodos a la red, también aumentan los recursos disponibles —como capacidad de procesamiento, almacenamiento y ancho de banda— lo que permite distribuir la carga de forma más eficiente. En una red P2P bien diseñada, cada nuevo participante no solo consume recursos, sino que también contribuye al sistema, favoreciendo un crecimiento orgánico y sostenible.
+
+En cambio, en el modelo cliente-servidor, escalar implica aumentar la capacidad del servidor o incorporar servidores adicionales para atender la creciente demanda. Esto conlleva costos significativos en términos de infraestructura, mantenimiento y administración. En aplicaciones de gran escala, como redes sociales o servicios de streaming, es común la implementación de clústeres de servidores y redes de distribución de contenido (CDN) para evitar cuellos de botella y garantizar el rendimiento, lo cual aumenta la complejidad técnica y económica del sistema.
 
 \paragraph{Control del contenido}
-Un servidor, al ser la pieza central de la red a la cuál pertenece, debe soportar múltiples conexiones en simultáneo. Para aplicaciones de alto tráfico, esto requiere una infraestructura que los usuarios suelen no poseer. Una solución es tercerizar el alojamiento de la aplicación servidor en plataformas de Cloud Hosting como pueden ser AWS, Azure, Google Cloud, entre otras. Estos servicios mantienen los servidores de numerosas aplicaciones de Internet, y por lo tanto, tienen la capacidad de modificar, censurar, o remover cualquiera de ellas si así lo desean.
 
-Una red P2P no sufre de estos problemas, ya que por naturaleza los usuarios son quienes la alojan. Por lo tanto, remover contenido de ella resulta mucho mas complejo. Esto evita la censura en zonas donde el acceso a Internet es controlado y/o limitado, pero también puede incentivar a la distribución de contenido ilegal.
+En una arquitectura cliente-servidor, el servidor central debe gestionar múltiples conexiones simultáneas, lo cual requiere una infraestructura robusta que la mayoría de los usuarios no está en condiciones de mantener. Por esta razón, muchas aplicaciones recurren al alojamiento en plataformas de computación en la nube, como AWS, Azure o Google Cloud. Si bien estos servicios ofrecen alta disponibilidad y escalabilidad, también centralizan el control del contenido. Esto implica que las plataformas de hosting tienen la capacidad de modificar, censurar o eliminar aplicaciones y servicios, ya sea por decisión propia, por presión de gobiernos, o en cumplimiento de políticas internas.
+
+En contraste, una red peer-to-peer (P2P) distribuye el contenido entre los propios usuarios, quienes actúan como anfitriones del sistema. Esta descentralización hace que la moderación de contenido sea mucho más difícil, ya que no existe un único punto de control. Esta característica resulta valiosa en contextos donde el acceso a la información está restringido por censura gubernamental o limitaciones regulatorias. Sin embargo, también plantea desafíos éticos y legales, ya que dificulta el control sobre la difusión de contenidos ilícitos o perjudiciales. Así, el modelo P2P ofrece mayor libertad, pero también exige nuevas formas de regulación y responsabilidad colectiva.
 
 \paragraph{Seguridad}
-La seguridad en las aplicaciones cliente-servidor se ha investigado por mucho más tiempo debido a la popularidad de este modelo. Además, al ser centralizado, el propietario del servidor puede bloquear conexiones y eliminar contenido malicioso de su plataforma de forma transparente para los usuarios.
 
-El modelo descentralizado, en cambio, no cuenta con el desarrollo en términos de seguridad. En este caso, el cliente es el responsable de conectarse a redes de confianza, o de hacerlo mediante VPNs (Virtual Private Networks) para mantener el anonimato mientras se integre una red P2P. Sin embargo, cualquiera sea el modelo utilizado por una aplicación, la mayor parte de la seguridad dependerá de que tan segura sea la aplicación.
+La seguridad en aplicaciones basadas en el modelo cliente-servidor ha sido ampliamente estudiada debido a su larga trayectoria y adopción masiva. La centralización permite al administrador del sistema aplicar políticas de seguridad de forma coherente, como el bloqueo de conexiones sospechosas, la autenticación de usuarios y la eliminación de contenido malicioso, todo sin requerir intervención directa del usuario final.
+
+En cambio, las redes P2P presentan desafíos distintos. Al no existir un punto de control central, la responsabilidad de establecer conexiones seguras recae en cada nodo participante. La ausencia de una autoridad central puede dificultar la detección y mitigación de comportamientos maliciosos dentro de la red.
+
+Sin embargo, independientemente del modelo arquitectónico adoptado, la seguridad general de una aplicación dependerá en gran medida de su propio diseño: el uso adecuado de cifrado, autenticación, y la gestión de vulnerabilidades son factores determinantes para garantizar la protección de los datos y de los usuarios.
 
 \paragraph{Persistencia}
-Como varias otras propiedades del modelo cliente-servidor, depende de la integridad del servidor. Si el almacenamiento físico de este se ve afectado, los datos pueden perderse definitivamente. Por esta razón, es común tener un respaldo de los datos de la aplicación en otro disco u otro nodo para evitar la pérdida total de datos.
 
-En una red descentralizada, la persistencia depende de la aplicación utilizada. En el caso de BitTorrent, cada nodo que se conecte y descargue un archivo, podrá compartir ese archivo con otros nodos, y por lo tanto ese archivo contará con una redundancia adicional, la cuál crece a medida que más personas descargan ese archivo. A pesar de esto, en casos donde el archivo es poco compartido, puede volverse inaccesible si los nodos que lo contienen se desconectan de la red.
+En redes descentralizadas, la persistencia depende del comportamiento de los nodos y de las características específicas de la aplicación. En sistemas como BitTorrent, cada nodo que descarga un archivo puede continuar compartiéndolo con otros participantes, lo que genera una forma de redundancia dinámica: a medida que más usuarios descargan un archivo, aumentan las copias disponibles en la red. Sin embargo, si un archivo no es ampliamente compartido, puede volverse inaccesible cuando los pocos nodos que lo contienen se desconectan. En este sentido, la persistencia en redes peer-to-peer no está garantizada por diseño, sino que depende del nivel de replicación voluntaria entre los pares.
 
 \paragraph{Latencia}
-Dada una conexión a Internet promedio, las velocidades manejadas por las aplicaciones cliente-servidor suelen ser aceptables. Sin embargo, en zonas en donde la conexión es escasa, o en casos en donde el servidor está lejos del cliente, la velocidad de transferencia de la aplicación puede verse afectada. Además, no es infrecuente encontrar cortes en videollamadas, juegos, y demás aplicaciones de tiempo real que siguen esta arquitectura. Como en la mayoría de defectos del modelo cliente-servidor, se puede solucionar agregando múltiples instancias del servidor. Por ejemplo, es común almacenar  películas, videos y demás contenido de aplicaciones de streaming en distintos servidores de CDN (Content Delivery Network). Estas redes minimizan la distancia entre el usuario y el servidor, agilizando así la transferencia del contenido.
+Dada una conexión a Internet promedio, las velocidades manejadas por las aplicaciones cliente-servidor suelen ser aceptables. Sin embargo, en zonas en donde la conexión es escasa, o en casos en donde el servidor está lejos del cliente, la velocidad de transferencia de la aplicación puede verse afectada. Además, no es infrecuente encontrar cortes en videollamadas, videojuegos, y demás aplicaciones de tiempo real que siguen esta arquitectura. Como en la mayoría de defectos del modelo cliente-servidor, se puede solucionar agregando múltiples instancias del servidor. Por ejemplo, es común almacenar  películas, videos y demás contenido de aplicaciones de streaming en distintos servidores de CDN (Content Delivery Network). Estas redes minimizan la distancia entre el usuario y el servidor, agilizando así la transferencia del contenido.
 
 A pesar de los avances en la optimización del modelo cliente-servidor, las redes descentralizadas, cuando son eficientes y están bien pobladas, suelen ofrecer incluso mejores resultados. Esto se debe a que la fuente de un contenido puede estar presente en múltiples nodos, lo que aumenta la probabilidad de que un nodo cercano tenga el contenido solicitado. La velocidad de transferencia que puede proporcionar un vecino con el contenido que requerimos generalmente superará la ofrecida por un servidor.
 
 \paragraph{Costos}
-Los costos de alojar una aplicación peer-to-peer suele ser nulo, ya que los mismos usuarios de ella son los encargados de proporcionar la infraestructura de la red.
 
-Al contrario, alojar la aplicación en un servidor conlleva tener un servidor disponible, o bien contratar un servicio de web hosting, cuya tarifa suele aumentar a medida que la aplicación escala. En la mayoría de los casos, el costo termina siendo significativo, por lo que una aplicación descentralizada es una opción viable en escenarios en los que no se desee invertir mucho dinero.
+Una de las ventajas del modelo peer-to-peer (P2P) es su bajo costo operativo. Dado que los propios usuarios de la red aportan recursos como almacenamiento, procesamiento y ancho de banda, no es necesario mantener una infraestructura centralizada para alojar la aplicación. Esto reduce considerablemente los gastos asociados a la implementación y mantenimiento del sistema.
 
-\subsection{Soluciones existentes}
-
-% Mover esta sección para después de ambientes y herramientas?
-
-\subsubsection{IPFS Deploy Action}
-Para desplegar un sitio web en IPFS, se puede utilizar un \textit{GitHub Action} hecho por IPFS y lanzado en Febrero de 2025. Dicha herramienta es un script que se ejecuta con cada commit en un repositorio de GitHub, y permite compilar el sitio web, y luego alojarlo en IPFS utilizando un servicio de \textit{pinning}, Filecoin, o bien un clúster de IPFS. Estas opciones se verán en detalle cuando se abarque la arquitectura de despliegue implementada.
-
-Sin embargo cuenta con una serie de desventajas al utilizar clústeres. Por un lado, utilizando la opción de clúster sólo puede instruir a un único nodo para que luego este sincronice el contenido al resto de los nodos. Un conjunto de nodos que colaboran con el despliegue y mantenimiento de un sitio web sólo podrán actualizarse si el nodo central está activo, lo que resulta en un único punto de falla. Por otro lado, utilizar un \textit{GitHub Action} nos ata necesariamente a \textit{GitHub}, lo cuál supone otra limitación para quienes deseen optar por otra alternativa para su repositorio Git.
-
-\subsubsection{Distributed Wikipedia Mirror}
-%TODO: redactar
-Como sucede con un caso de uso muy similar al repositorio de conocimiento que queremos implementar, el proyecto de \textbf{Distributed Wikipedia Mirror}\cite{distributed-wikipedia-mirror}, el cual consistió en poner una versión de wikipedia en IPFS, únicamente funciona como versión Read-Only, y con snapshots manuales, lo cual es totalmente posible de hacer con la infraestructura que explicamos anteriormente.
+En contraste, el modelo cliente-servidor requiere disponer de un servidor dedicado o contratar servicios de alojamiento web, cuyos costos suelen incrementarse a medida que la aplicación escala y atrae más usuarios. Estos gastos incluyen no solo el hardware o el servicio de hosting, sino también aspectos como soporte técnico, ancho de banda adicional y medidas de seguridad. Por ello, las arquitecturas descentralizadas pueden representar una alternativa económicamente viable, especialmente en contextos donde los recursos financieros son limitados o se busca una solución escalable con bajo mantenimiento central.
 
 \subsection{Ambientes y herramientas}
 Existen varios ecosistemas que apuntan a proveer un marco con el cuál desarrollar una aplicación descentralizada. A su vez, cada uno de ellos cuenta con herramientas especializadas para los diferentes tipos de aplicaciones.
@@ -101,10 +103,19 @@ OrbitDB ha sido desarrollada principalmente dentro del ecosistema de \textit{Jav
 \subsubsection{Blockchain}
 Tecnología basada en una cadena de bloques de operaciones descentralizada y pública.  Esta tecnología genera una base de datos compartida a la que tienen acceso sus participantes, los cuáles pueden rastrear cada transacción que hayan realizado.\parencite{blockchain}
 
-
 % \footnote{https://www.iebschool.com/blog/blockchain-cadena-bloques-revoluciona-sector-financiero-finanzas/}
-
 
 \subsubsection{Alternativas}
 \paragraph{Freenet/Hyphanet}
-Programa de código abierto para compartir datos peer-to-peer con enfoque en la protección de la privacidad. Opera en una red descentralizada, promocionando la libertad de expresión facilitando la anonimidad de los datos compartidos y eludiendo la censura.\cite{freenet}\cite{hyphanet}
+Programa de código abierto para compartir datos peer-to-peer con enfoque en la protección de la privacidad. Opera en una red descentralizada, promocionando la libertad de expresión facilitando la anonimidad de los datos compartidos y eludiendo la censura \cite{freenet} \cite{hyphanet}.
+
+\subsection{Soluciones existentes}
+
+\subsubsection{IPFS Deploy Action}
+Para desplegar un sitio web en IPFS, se puede utilizar un \textit{GitHub Action} hecho por IPFS y lanzado en Febrero de 2025. Dicha herramienta es un script que se ejecuta con cada commit en un repositorio de GitHub, y permite compilar el sitio web, y luego alojarlo en IPFS utilizando un servicio de \textit{pinning}, Filecoin, o bien un clúster de IPFS. Estas opciones se verán en detalle cuando se abarque la arquitectura de despliegue implementada.
+
+Sin embargo cuenta con una serie de desventajas al utilizar clústeres. Por un lado, utilizando la opción de clúster sólo puede instruir a un único nodo para que luego este sincronice el contenido al resto de los nodos. Un conjunto de nodos que colaboran con el despliegue y mantenimiento de un sitio web sólo podrán actualizarse si el nodo central está activo, lo que resulta en un único punto de falla. Por otro lado, utilizar un \textit{GitHub Action} nos ata necesariamente a \textit{GitHub}, lo cuál supone otra limitación para quienes deseen optar por otra alternativa para su repositorio Git.
+
+\subsubsection{Distributed Wikipedia Mirror}
+
+Una iniciativa destacada en este ámbito es el proyecto Distributed Wikipedia Mirror \cite{distributed-wikipedia-mirror}, que replica una versión estática de Wikipedia dentro de la red IPFS. Su objetivo principal es garantizar el acceso inalterable y resistente a la censura del contenido enciclopédico. Sin embargo, esta solución funciona únicamente en modo read-only y se basa en snapshots generados manualmente, lo que limita su dinamismo y capacidad de actualización en tiempo real. A pesar de estas limitaciones, demuestra la viabilidad de alojar grandes volúmenes de información en IPFS y representa un caso de uso muy cercano al repositorio de conocimiento que buscamos construir.

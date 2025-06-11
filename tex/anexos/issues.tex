@@ -1,0 +1,28 @@
+\subsection{Listado de issues reportados en herramientas del ecosistema de IPFS}
+\label{anexo:issues}
+
+Durante el desarrollo en el ecosistema de IPFS se identificaron diversos problemas en las bibliotecas utilizadas —incluyendo IPFS, libp2p y OrbitDB—. Estos fueron reportados mediante \textit{issues} en los repositorios oficiales, acompañados de descripciones detalladas, ejemplos mínimos reproducibles y, en algunos casos, propuestas de mejora o soluciones parciales. A continuación se enumeran los casos reportados:
+
+\begin{enumerate}
+    \item \textbf{OrbitDB}
+    \begin{itemize}
+        \item \texttt{fix: Update relay example to use default reservation ttl setting}\\
+        \url{https://github.com/orbitdb/orbitdb/pull/1206}
+        \item \texttt{Peer Discovery in OrbitDB Using Only the Database Address}\\
+        \url{https://github.com/orbitdb/orbitdb/issues/1207}
+        \item \texttt{Error building OrbitDB app with Next.js}\\
+        \url{https://github.com/orbitdb/orbitdb/issues/1214}
+        \item \texttt{OrbitDB crashes with UnexpectedEOFError when a peer joins and syncs}\\
+        \url{https://github.com/orbitdb/orbitdb/issues/1226}
+    \end{itemize}
+
+    \item \textbf{libp2p-js}
+    \begin{itemize}
+        \item \texttt{Unable to establish an outbound relay connection}\\
+        \url{https://github.com/libp2p/js-libp2p/issues/2897}
+        \item \texttt{AutoTLS IPv4 Multiaddr(s) Do Not Upgrade}\\
+        \url{https://github.com/libp2p/js-libp2p/issues/2929}
+        \item \texttt{Certhash missing from appendAnnounce webrtc-direct multiaddrs}\\
+        \url{https://github.com/libp2p/js-libp2p/issues/3080}
+    \end{itemize}
+\end{enumerate}
