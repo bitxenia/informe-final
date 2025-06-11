@@ -9,7 +9,9 @@ Para realizar las métricas de IPFS, se utilizó el siguiente sistema:
 
 \subsubsection{Costos}
 
-Mientras que en una Blockchain convencional se delega el almacenamiento y cómputo en nodos dedicados a ese propósito a cambio de un monto monetaria, IPFS ejecuta todo de manera local. El costo de IPFS no es, entonces, monetario sino energético.
+En las soluciones de IPFS presentadas, se puede hacer una distinción entre colaboradores y usuarios finales. Si bien ambos ejecutan un nodo propio más en la red, el colaborador tiene más responsabilidades y por lo tanto, utiliza más almacenamiento y cómputo disponible. Como un usuario final únicamente se conecta a la red sin necesidad de almacenar todo el contenido de una aplicación o proveer dicho contenido a los demás nodos, su costo energético es comparable con el de un usuario final utilizando un servicio de Ethereum.
+% En cambio, una Blockchain convencional se delega el almacenamiento y cómputo en nodos dedicados a ese propósito a cambio de un monto monetario. Por lo tanto utiliza más almacenamiento y cómputo, que pasa a ser el \textbf{costo energético}. 
+No hay análisis conclusos al respecto, pero como trabajo futuro puede ser muy útil para conocer la eficiencia de la red en comparación con una solución de tipo Blockchain.
 
 \subsubsection{Experiencia de desarrollo}
 
@@ -178,6 +180,18 @@ Por último, se ve como la tendencia en ejecuciones consecutivas no afecta el ti
 \paragraph{Repositorio de conocimiento}
 
 Las métricas tanto de Astrawiki como Astrachat se ven muy relacionadas, debido a que el grueso del trabajo relacionado a IPFS se realiza con su biblioteca en común, AstraDB. Por ejemplo, el tiempo que tarda un nodo en obtener una nueva versión de un articulo es el similar al que tarda un nodo en recibir un mensaje. Por ello, se prefirió complementar las métricas obtenidas para acentuar el uso específico de AstraDB de cada caso de uso, y evitar métricas repetidas. 
+
+\subparagraph{Creación de artículos}
+
+Esta métrica fue obtenida tomando medidas del tiempo que tarda un nodo en crear el artículo. Para el tamaño del artículo, se obtuvo métricas para tamaños del contenido en incrementos de 1.000 bytes, hasta 50.000 bytes.
+
+\subparagraph{Obtención de artículos}
+
+En este caso, se tomaron en cuenta los tamaños de artículos descritos previamente. Para cada uno, se realizó diez ejecuciones de treinta artículos creados, y se las promedió para lograr un tiempo estimado por acción consecutiva.
+
+%Gráfico
+
+La presencia de picos altos se debe a la pérdida de conexión esporádica de los nodos involucrados. Sin embargo, se puede observar que la obtención de articulos no varía significativamente teniendo en cuenta los distintos tamaños. 
 
 \paragraph{Mensajero en tiempo real}
 
