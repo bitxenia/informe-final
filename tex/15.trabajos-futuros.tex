@@ -1,23 +1,22 @@
 \section{Trabajos futuros}
 
-En base al análisis realizado, se detectaron diversas lineas de trabajo futuras de las cuales se puede continuar el desarrollo.
+A partir del análisis realizado, se identificaron diversas líneas de trabajo que abren la posibilidad de continuar y ampliar el desarrollo presentado.
 
 \subsection{Mejoras a los casos de uso}
 
-A continuación se proponen mejoras para los casos de uso implementados, los cuales, por temas de tiempo, no se llegaron a implementar.
+A continuación se proponen mejoras concretas para los casos de uso implementados. Si bien no pudieron ser abordadas en esta instancia por cuestiones de tiempo, representan oportunidades claras para fortalecer y extender la solución actual.
 
 \subsubsection{AstraDB}
-%TODO: redactar
 
-Sin embargo este enfoque presenta algunas limitaciones o aspectos a mejorar que son importantes destacar.
+El enfoque adoptado para AstraDB presenta ciertas limitaciones que abren la puerta a posibles mejoras futuras. A continuación, se enumeran algunas de las más relevantes:
 
-Algo a notar es la falta de una conexión entre nodos web, lo cual sería algo muy útil, ya que los mismos usuarios web utilizando la aplicación en un determinado momento, podrian ayudar a proveer de las bases de datos a nuevos usuarios que se conecten y no dejar que solo los nodos independientes puedan hacerlo, lo cual seguría muy bien la filosofía de IPFS, sin embargo esto requeriría que los nodos web puedan escuchar conexiones entrantes y esto es únicamente posible haciendo uso de un \textbf{Relay} como explicamos anteriormente y que actualmente no fue posible obtener un funcionamiento estable en el contexto de nuestro proyecto. Igualmente sería algo muy fácil de implementar una vez que su funcionamiento sea estable y agregaría esta característica que mejoraría la infraestructura.
+Una primera mejora posible sería habilitar conexiones entre nodos web. Actualmente, la infraestructura sólo permite que los nodos independientes sirvan las bases de datos al resto de los usuarios. Poder establecer conexiones directas entre navegadores permitiría que los mismos usuarios web que estén utilizando la aplicación en simultáneo puedan colaborar en la distribución de datos, alineándose aún más con la filosofía descentralizada de IPFS. Esta funcionalidad requiere que los nodos web sean capaces de aceptar conexiones entrantes, lo cual solo es posible mediante el uso de un \textbf{Relay}. En el contexto de este proyecto, no se logró un funcionamiento estable del sistema de Relay, pero su incorporación una vez estabilizado sería sencilla e incrementaría significativamente la resiliencia y disponibilidad del sistema.
 
-Para la solución implementada, la seguridad no fue una prioridad. En consecuencia se presentan algunos problemas que están relacionados con esto. La solución da total libertad a la creación y agregado de información a las bases de datos sin ninguna limitación, junto a que los colaboradores deben almacenar la totalidad de la base de datos, por lo que se explicó anteriormente de la falta de \textit{Proof of storage}, lo cual de por si es un limitación. En consecuencia es muy fácil realizar un ataque de spam, usando el espacio almacenado de los colaboradores, al crear nuevas \textit{Keys} o agregar contenido sin importancia a cada una de ellas. Esto podría mitigarse si se utilizara un consenso a la hora de aceptar un cambio o no a la base de datos, dado que si el cambio no se acepta, entonces no se distribuye y no se efectúa, sin embargo, como se explicó, esto requiere un foco de seguridad y para mostrar su uso en el ecosistema no fue el punto principal.
+Por otra parte, la solución actual no priorizó aspectos de seguridad. Toda persona que conozca el nombre de una entidad puede agregar información a su base de datos correspondiente, y los colaboradores deben almacenar su contenido completo. Al no contar con un sistema de \textit{Proof of Storage}, esto abre la posibilidad a ataques de spam: un usuario malicioso podría crear numerosas claves o llenar las existentes con información irrelevante, ocupando el almacenamiento de los colaboradores. Este riesgo podría mitigarse implementando un mecanismo de consenso, mediante el cual los cambios propuestos deban ser aprobados antes de ser distribuidos y aceptados. No obstante, este tipo de enfoque requiere un análisis más profundo centrado en la seguridad, que escapa a los objetivos de esta implementación inicial.
 
-Relacionado con lo anterior, permitir la modificación libre de toda la información puede que no sea lo deseado para otro tipo de aplicaciones. Si se quisiera crear un blog personal o de microblogging, se desearia que solo  pueda moficar la información el dueño del blog y que los colaboradores solo ayuden con la persistencia del mismo. Esto puede ser una posible mejora y es posible si se puediera optar que las bases de datos de las keys tengan el permiso de moficiacion unicamente al usuario que las creó, como tambien referenciar a la \textit{Address} de la base de datos creada, ya que en este caso si depede de su creador, por lo que se explicó en anterioridad en la representación de los datos.
+Relacionado con lo anterior, también se identifica como posible mejora el soporte para casos de uso donde se requiera control de edición más estricto. Actualmente, todas las claves son editables por cualquier usuario. Para aplicaciones como blogs personales o microblogs, sería deseable que solo el creador de una clave pueda modificar su contenido, mientras que el resto de los nodos actúan únicamente como replicadores. Esto podría lograrse incorporando controles de acceso más específicos, por ejemplo, estableciendo que la base de datos asociada a cada clave solo acepte modificaciones del nodo que la creó. Dado que la dirección de una base de datos incluye la clave pública de su creador, esta validación es técnicamente posible dentro del modelo de OrbitDB.
 
-Tambien tiene una limitacion con que no se pueden crear cosas privadas, dado que el almacenamiento esta en la red de ipfs y cualquiera puede acceder a el y la falta de encirptacion, hace que para casos de uso donde se requiera privacidad de informacion no es lo ideal.
+Finalmente, la solución actual no contempla la posibilidad de datos privados. Todo el contenido se almacena públicamente en la red IPFS y no se aplica ningún mecanismo de cifrado. Por tanto, no es adecuada para aplicaciones que requieran confidencialidad. La incorporación de esquemas de cifrado a nivel de aplicación podría ser una solución viable en futuros desarrollos, permitiendo que sólo los usuarios autorizados puedan leer ciertos contenidos.
 
 \subsubsection{Astrawiki-eth}
 
@@ -30,40 +29,35 @@ Una de las principales mejoras que se pueden implementar sobre este caso de uso 
 Por otro lado, en base al costo por transacción (visto en la sección \ref{performance-blockchain}) se podría utilizar alguna red cuyos precios de gas por transacción sean menores. Una de estas redes --basada en Ethereum-- es la \textit{Ronin Network} \cite{ronin-network} \cite{ronin-network-whitepaper} que a principio de este año (2025) abrió su red para que cualquier usuario pueda implementar aplicaciones en la misma.
 
 \subsection{Mejora para clusters colaborativos}
-%TODO: Redactar
-Como se mencionó previamente en el análisis de IPFS, los clusters colaborativos son una alternativa para lograr la persistencia y disponibilidad de archivos, a través del "pinneo" de nodos colaborativos. La cual va muy de la mano con la filosofía de las aplicaciones comunitarias, ya que potencialmente la propia gente que utiliza la aplicación sea la que la mantenga colaborativamente. El problema es que actualmente casi no se utiliza esta alternativa, lo cual lleva a que por ejemplo, no haya una manera fácil de utilizarla, sin embargo esto tiene sus razones.
+
+Como se analizó previamente en el contexto de IPFS, los clusters colaborativos representan una alternativa viable para garantizar la persistencia y disponibilidad de archivos mediante el \textit{pinning} distribuido entre nodos participantes, permitiendo así el \textit{hosting} comunitario.
+
+No obstante, esta alternativa aún presenta una adopción limitada en la práctica, debido a diversas restricciones técnicas y operativas, que se detallan a continuación.
 
 \paragraph{IPFS Cluster}
 
-Para entender mejor por qué no se utiliza mucho esta forma de "pineo" y cuales son sus limitaciones, primero hay que entender que es lo que se utiliza. IPFS cuenta con una aplicación distribuida llamada IPFS Cluster, esta funciona a la par de los nodos de IPFS y permite mantener un conjunto global de "pines", alocando inteligentemente los items a sus nodos.
+IPFS Cluster permite configurar el \textit{replication factor}, es decir, la cantidad deseada de réplicas para cada archivo dentro del clúster. Este parámetro resulta útil para optimizar el uso del almacenamiento, evitando la duplicación innecesaria de datos en todos los nodos. Sin embargo, presenta una limitación crítica: IPFS Cluster no implementa mecanismos de verificación que aseguren que los nodos seguidores estén efectivamente realizando \textit{pinning} del contenido asignado. Tampoco valida el espacio disponible, la integridad de los datos ni el cumplimiento efectivo del acuerdo de replicación.
 
-Gracias a esta aplicación es posible la creación de clusters colaborativos. Los clusters colaborativos permiten que \textit{peers} individuales, que no son de confianza, se unan a un clúster IPFS como "seguidores" (sin permiso para modificar o editar el conjunto de pines).
+Como consecuencia, un nodo malicioso puede simular estar colaborando sin almacenar realmente ningún dato. Esta falta de garantías impide aplicar con seguridad factores de replicación bajos, ya que el contenido podría volverse inaccesible si los nodos asignados no cumplen su rol. Por este motivo, la estrategia más común es replicar todo el contenido en todos los nodos, lo cual restringe severamente la escalabilidad del sistema.
 
-Para crear este cluster es necesario primero contar con algunos nodos confiables, aquellos que van a tener permitido modificar qué archivos son los que pertenecen al conjunto de "pines". Y es esta nuestra primera limitación, ya que no se puede permitir que cualquier nodo pueda modificar este conjunto, entonces es necesario contar con nodos propios que tengan ese rol.
+Este modelo es el que se observa actualmente en los clusters públicos listados por el proyecto IPFS \cite{collaborative-clusters}, donde a los colaboradores se les solicita disponer de capacidades de almacenamiento que pueden variar desde varios \textit{gigabytes} hasta \textit{terabytes}, limitando significativamente la participación comunitaria a gran escala.
 
-Otra cosa muy importante que se puede configurar sobre el cluster es el \textit{replication factor}, este ajuste permite indicar a cuantos nodos se va a replicar cada archivo. Esto es muy importante porque permite que no sea obligatorio replicar la totalidad de los archivos en todos los nodos. 
+\paragraph{Despliegue, seguimiento y descubrimiento}
 
-Sin embargo existe una limitación muy importante, IPFS Cluster no verifica si los seguidores realmente están "pineando" o no el contenido, ni cuánto espacio tienen ni otras métricas. Confía en todo lo que dicen. Eso significa que un seguidor malintencionado siempre puede fingir que tiene suficiente espacio, que se le asignen pines o fragmentos, pero al final no "pinea" nada. Un grupo formado por voluntarios aleatorios y que no son de confianza no puede usar, por ejemplo, factor de replicación de tres, porque esos 3 miembros podrían simplemente estar fingiendo "pinear" cosas. Es por eso que el escenario que mejor funciona es dejando que todos "pineen" todo y esperar que algunos de los \textit{peers} no sean maliciosos.
+Más allá de las limitaciones técnicas, existen también obstáculos operativos en cuanto a la facilidad de despliegue, monitoreo y descubrimiento de proyectos colaborativos que utilizan IPFS Cluster.
 
-Justamente de esa manera es como funcionan los clusters públicos actualmente, visibles en la página de IPFS \cite{collaborative-clusters}, donde hay algunos que piden gigabytes, y hasta algunos terabytes de información, para poder colaborar. Esto es algo totalmente inviable para que la gente pueda colaborar hasta un cierto almacenamiento, limitando mucho la posibilidad de distribución de colaboradores.
+Si bien nuestra herramienta de infraestructura de despliegue facilita la publicación de contenido en clusters colaborativos, la incorporación de nuevos colaboradores continúa requiriendo conocimientos técnicos avanzados y la ejecución manual de comandos, lo que constituye una barrera de entrada para usuarios menos experimentados. El desarrollo de herramientas más accesibles y orientadas a la experiencia del usuario permitiría ampliar significativamente la red de participantes.
 
-\paragraph{Deployado, seguimiento y descubrimiento}
-
-Habiendo hablado ya de las limitaciones más técnicas que se prensentan al usar cluster colaborativos, hay otro tipo de limitación que es el la falta de facilidad a la hora de deployar, seguir y descubrir aplicaciones colaborativas que usen IPFS cluster.
-
-En primer lugar hablemos del deployado, actualmente si se quiere deployar la aplicación en un cluster colaborativo la única forma que existe es hacerlo de forma manual y crear un servicio que se ocupe de actualizar el conjunto de "pines" cuando sea necesario actualizarse. Si bien es factible, no es algo cómodo para todos y limita a decidirse ir por este camino. Lo ideal sería, que exista un servicio, parecido al ofrecido en los servicios de \textit{pinning}, como es el caso de Fleek \cite{fleek}, donde al actualizar el repositorio ya se deployen los cambios. Facilitando asi su deployado en el cluster colaborativo. Se podría pensar como un servicio que corra sobre los nodos \textit{trusted} donde, cuando un nodo lider detecte que se hizo un cambio, se "buildee" la página web por ejemplo, y se despliegue en el cluster comunitario.
-
-Parecido a lo anterior, alguien que quiera colaborar necesita ejecutar comandos manualmente que para mucha gente no sabe lo que está haciendo, lo cual también termina desincentivando y generando que menos gente decida por colaborar.
-
-Por último no existe una manera fácil de presentar y descubrir nuevos o existentes proyectos comunitarios que la gente pueda optar por colaborar. Actualmente el único lugar donde prensentan proyectos públicos para colaborar es la página de IPFS \cite{collaborative-clusters}, que ademas se ser bastante simple, depende de ellos si agregan un nuevo proyecto para presentar en esa página. Donde lo ideal sería que puedan publicarse nuevos proyectos junto a una descripción y que la gente pueda conocerlos y optar por colaborar de una manera mucho más sencilla.
+Asimismo, no existe actualmente una plataforma abierta y descentralizada que permita registrar y descubrir fácilmente proyectos comunitarios. Los únicos clusters públicos disponibles se encuentran listados en la página oficial de IPFS \cite{collaborative-clusters}, donde la inclusión de nuevos proyectos depende de una gestión centralizada. Una solución que permita registrar proyectos de forma abierta, incluyendo descripciones, requisitos de colaboración y enlaces de participación, facilitaría enormemente la adopción y el involucramiento comunitario en una variedad más amplia de iniciativas distribuidas.
 
 \paragraph{Conclusión}
 
-Con esto concluimos que se presenta la oportunidad para una linea de trabajo futura focalizada en la mejora para clusters colaborativos. 
+Las limitaciones expuestas permiten identificar una línea de trabajo futura enfocada en la mejora de los clusters colaborativos, la cual podría abordarse en dos ejes complementarios:
 
-En primer lugar una mejora técnica donde se modifique o se construya por encima de IPFS cluster, que permita principalmente que en un clúster comunitario se asegure el "pineo" de información sin necesidad de tener que obligar a todos los colaboradores a "pinear" la totalidad de los archivos.
-
-En segundo lugar, la creación de una plataforma o aplicación, que permita la facilitación del deployado, seguimiento y descubrimiento de aplicaciones colaborativas.
+\begin{itemize}
+    \item \textbf{Mejoras técnicas:} desarrollar mecanismos —ya sea mediante extensiones de IPFS Cluster o capas complementarias— que permitan validar de forma efectiva el pinneo distribuido, sin necesidad de replicación total ni dependencia de nodos completamente confiables.
+    \item \textbf{Herramientas de participación:} diseñar una plataforma que facilite el despliegue, monitoreo y descubrimiento de aplicaciones comunitarias distribuidas, reduciendo las barreras técnicas y promoviendo la colaboración descentralizada.
+\end{itemize}
 
 \subsection{Análisis del consumo de energía en la red de IPFS}
 

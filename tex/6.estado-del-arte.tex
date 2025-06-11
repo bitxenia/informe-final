@@ -1,5 +1,5 @@
 \section{Estado del Arte}
-En esta sección describiremos en qué se diferencian las aplicaciones descentralizadas de aquellas centralizadas, cuáles son las ventajas (y desventajas) del modelo de aplicación distribuido, y qué tecnologías existen actualmente para asistir en la creación de dichas aplicaciones. 
+En esta sección describiremos en qué se diferencian las aplicaciones descentralizadas de aquellas centralizadas, cuáles son las ventajas (y desventajas) del modelo de aplicación distribuido, y qué tecnologías existen actualmente para asistir en la creación de dichas aplicaciones.
 
 \subsection{Introducción a arquitecturas de red}
 La comunicación entre distintas computadoras requiere una coordinación efectiva entre todas las partes involucradas, el uso de protocolos que estandaricen la forma en que se transmite la información, y una infraestructura que permita enviar cada bit desde el origen hasta su destino. Para ofrecer servicios a través de Internet, es necesario diseñar una red bien estructurada que cumpla con estos requisitos. En este contexto, existen dos arquitecturas principales que permiten alcanzar dicho objetivo.
@@ -99,8 +99,12 @@ Tecnología basada en una cadena de bloques de operaciones descentralizada y pú
 % \footnote{https://www.iebschool.com/blog/blockchain-cadena-bloques-revoluciona-sector-financiero-finanzas/}
 
 \subsubsection{Alternativas}
-\paragraph{Freenet/Hyphanet}
-Programa de código abierto para compartir datos peer-to-peer con enfoque en la protección de la privacidad. Opera en una red descentralizada, promocionando la libertad de expresión facilitando la anonimidad de los datos compartidos y eludiendo la censura \cite{freenet} \cite{hyphanet}.
+\paragraph{Hyphanet} \cite{hyphanet-white-paper} \cite{hyphanet} es una plataforma peer-to-peer para publicar y comunicar, resistente a la censura y respetuosa de la privacidad. Originalmente conocido como Freenet y creado como un trabajo profesional de fin de carrera por Ian Clarke, Hyphanet es una plataforma de software libre que permite compartir archivos, navegar y publicar sitios de forma anónima. Es descentralizado para hacerlo menos vulnerable a ataques, y de ser usado sólo con personas de confianza lo hace difícil de detectar para agentes externos.
+
+\paragraph{Freenet} \cite{freenet} es una red peer-to-peer para servicios descentralizados, sin censura, en donde los usuarios tengan el control del contenido. Es una plataforma que transforma las computadoras de sus usuarios en plataformas distribuidas y resilientes en la que se pueden construir aplicaciones descentralizadas. Cada peer contribuye a un colectivo tolerante a fallas, asegurando que los servicios robustos que estén siempre disponibles.
+
+Creado por Ian Clarke, el mismo creador de \textit{Hyphanet} \cite{hyphanet}, es una plataforma nueva que busca ser una computadora descentralizada en reemplazo de servidores centralizados. Está hecha en Rust y utiliza WebAssembly para ejecutar las aplicaciones.
+
 
 \subsection{Soluciones existentes}
 

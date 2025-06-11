@@ -22,9 +22,9 @@ Desde la página principal es posible seleccionar entre tres ecosistemas distint
 
 Una vez seleccionado el ecosistema se puede acceder a la barra de búsqueda para buscar el artículo deseado o bien se puede crear un artículo.
 
-En la creación de un artículo \ref{fig:astraweb-create-article}, es posible darle un nombre y una descripción la cual puede ser escrita en Markdown para darle estilo. Una vez dentro de un artículo \ref{fig:astraweb-article-page}, a la derecha se puede acceder al historial de versiones (donde se puede visualizar una versión específica del artículo), editar el artículo (sólo en contenido puede ser modificado) y también al chat del artículo.
+En la creación de un artículo (Figura \ref{fig:astraweb-create-article}), es posible darle un nombre y una descripción la cual puede ser escrita en Markdown para darle estilo. Una vez dentro de un artículo (Figura \ref{fig:astraweb-article-page}), a la derecha se puede acceder al historial de versiones (donde se puede visualizar una versión específica del artículo), editar el artículo (sólo en contenido puede ser modificado) y también al chat del artículo.
 
-Cada artículo posee un chat en tiempo real \ref{fig:astraweb-chat} que actúa como discusión para la mejora o modificación del mismo. Dentro del chat es posible enviar mensajes y responder a mensajes anteriores desde un alias configurado por el usuario. Para mantener la identidad dentro de los chats, se puede ingresar con la misma identificación.
+Cada artículo posee un chat en tiempo real (Figura \ref{fig:astraweb-chat}) que actúa como discusión para la mejora o modificación del mismo. Dentro del chat es posible enviar mensajes y responder a mensajes anteriores desde un alias configurado por el usuario. Para mantener la identidad dentro de los chats, se puede ingresar con la misma identificación.
 
 \begin{figure}[H]
     \centering
@@ -56,12 +56,8 @@ Cada artículo posee un chat en tiempo real \ref{fig:astraweb-chat} que actúa c
 
 \subparagraph{Tecnología} Se utilizó \texttt{React} \cite{react} y \texttt{Next.js} \cite{next} como \textit{frameworks} para la creación de la aplicación web, basándonos en una plantilla llamada \texttt{rubix-documents} \cite{rubix}. El código fue escrito en \texttt{Typescript}.
 
-\subparagraph{Servidor ejemplo} Se desarrolló una solución centralizada como tercer ecosistema para este frontend, con dos propósitos:
-\begin{enumerate}
-    \item Paralelizar el desarrollo del front-end y los distintos paquetes de cada ecosistema. Debido a que se definió una interfaz común tanto para el repositorio de conocimiento como para el mensajero en tiempo real, se logró avanzar con el front-end haciendo pruebas manuales con este servidor.
-    \item Comparar las implementaciones descentralizadas contra un enfoque centralizado.
-    % TODO: esto habría que sacarlo?
-\end{enumerate}
+\subparagraph{Servidor ejemplo} Se desarrolló una solución centralizada como tercer ecosistema para este front-end, con el propósito de paralelizar el desarrollo y los distintos paquetes de cada ecosistema. Debido a que se definió una interfaz común tanto para el repositorio de conocimiento como para el mensajero en tiempo real, se logró avanzar con el front-end haciendo pruebas manuales con este servidor.
+
 El servidor fue creado en \texttt{Node.js} con \texttt{Express.js} como framework para interactuar con \textit{requests} de HTTP.
 
 \subparagraph{Limitaciones} Debido a la falta de un servidor tradicional para ofrecer el contenido, el uso de \textit{Server Components} o componentes de servidor \cite{server-components} no era posible. Esto implicó modificar ampliamente la plantilla utilizada para descartar este tipo de componentes en favor de aquellos que pueden ser compilados y luego utilizados por el cliente sin interacción con un servidor.
