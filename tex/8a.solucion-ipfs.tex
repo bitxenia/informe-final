@@ -4,7 +4,7 @@ Durante el desarrollo de los casos de uso sobre el ecosistema IPFS, se fue conso
 
 Se distinguen dos infraestructuras principales en funcionamiento: la infraestructura de despliegue y la infraestructura de aplicación.
 
-La \textbf{infraestructura de despliegue} se encarga del alojamiento de las aplicaciones web. Es responsable de distribuir el \textit{front-end} de las aplicaciones, así como también el código necesario para su ejecución, en caso de que incluyan componentes dinámicos. Toda aplicación que deba ser accesible desde la web hace uso de esta infraestructura, como ocurre con el sitio web informativo.
+La \textbf{infraestructura de despliegue} se encarga del alojamiento de las aplicaciones web. Es responsable de distribuir el \textit{front-end} de las aplicaciones, así como también el código necesario para su ejecución, en caso de que incluyan componentes dinámicos. Toda aplicación que deba ser accesible desde la web hace uso de esta infraestructura, como ocurre con el sitio web estático.
 
 Por otro lado, la \textbf{infraestructura de aplicación} gestiona la lógica de la aplicación, incluyendo el almacenamiento de datos y la conexión entre pares. Esta infraestructura es fundamental para aplicaciones que requieren mantener un estado compartido entre usuarios y permitir su modificación, como en el caso del repositorio de conocimiento y el mensajero en tiempo real.
 
@@ -129,7 +129,7 @@ La comunicación entre contenedores se realiza a través de sus respectivas APIs
     \centering
     \includegraphics[width=0.5\linewidth]{img/solucion-ipfs/ds-trusted-peer.png}
     \caption{Diagrama de secuencia para el caso en que watcher detecta un cambio. Notar que para mayor claridad se omite los pasos para desplegar el nombre de IPNS del \texttt{service.json}, al ser exactamente los mismos que en el caso de un contenido.}
-    \label{fig:contenedores-trusted-peer}
+    \label{fig:ds-contenedores-trusted-peer}
 \end{figure}
 
 \subparagraph{Gestión de claves de IPNS}

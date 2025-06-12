@@ -1,12 +1,19 @@
-\subsection{Front-end}
+\subsection{Interfaces de usuario}
 
-% TODO: Mostrar un diagrama de cómo todos los paquetes de bitxenia se utilizan e interactuan entre sí para que el front-end los termine usando. 
+Una de las decisiones arquitectónicas fundamentales del proyecto fue desarrollar cada caso de uso como un paquete independiente, encapsulando en cada uno la lógica específica necesaria para operar sobre su respectivo ecosistema (IPFS o Ethereum). Esta modularidad permitió abstraer la complejidad técnica detrás de cada solución y exponer interfaces simples y reutilizables, facilitando su integración desde cualquier aplicación cliente, especialmente desde el navegador.
 
-Como prueba de la versatilidad de los ecosistemas, y aprovechando la creación de paquetes, se desarrollaron diferentes front-ends para las aplicaciones realizadas.
+Gracias a este enfoque, fue posible construir múltiples interfaces gráficas que, sin necesidad de replicar lógica de negocio, pueden interactuar con los diferentes módulos según el contexto o ecosistema seleccionado. Esta versatilidad permitió no solo demostrar cada caso de uso de forma aislada, sino también combinarlos en un único entorno integrado.
 
-\paragraph{Astraweb}
+\paragraph{Astrawiki-web}
 
-Es el principal front-end, y acumula todos los casos de uso creados en una única aplicación web, demostrando la capacidad de utilizar estas herramientas en conjunto, en un entorno web, y de manera intercambiable. Se le permite al usuario escoger el ecosistema al que se desea conectar, pudiendo intercambiar ecosistemas libremente, a forma de comparar y evaluar la funcionalidad desarrollada en este proyecto.
+Es la principal interfaz de usuario, y acumula todos los casos de uso creados en una única aplicación web, demostrando la capacidad de utilizar estas herramientas en conjunto, en un entorno web, y de manera intercambiable. Se le permite al usuario escoger el ecosistema al que se desea conectar, pudiendo intercambiar ecosistemas libremente, a forma de comparar y evaluar la funcionalidad desarrollada en este proyecto.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{img/frontends/arquitectura-astrawiki-web.png}
+    \caption{Diagrama de componentes de Astrawiki-web}
+    \label{fig:arquitectura-astrawiki-web}
+\end{figure}
 
 Representa un repositorio de conocimiento, con discusiones en cada articulo, lo que se asemeja a repositorios como Wikipedia. Además, se alojan en las redes descentralizadas evaluadas, tanto en IPFS como en Swarm, accesibles desde el navegador.
 

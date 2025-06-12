@@ -77,10 +77,12 @@
 
 \renewcommand{\headrulewidth}{1pt}
 \renewcommand{\footrulewidth}{1pt}
-\rhead{\footnotesize \textsc {Informe de Trabajo Profesional}} % Trabajo práctico
-\lhead{\includegraphics[width=2.5cm]{logo.pdf}}
-\cfoot{\small \textsc {Página \thepage\ de \pageref*{LastPage}}}
-\lfoot{Inneo Veiga, Prada,\\ Sotelo Guerreño, Velazquez }
+\rhead{}
+\chead{\footnotesize \textsc {Análisis de ecosistemas para la implementación de plataformas como servicio\\ para despliegue de aplicaciones comunitarias, distribuidas y descentralizadas}} % Trabajo práctico
+\lhead{}
+\rfoot{\small \textsc {\thepage}}
+\cfoot{}
+\lfoot{Inneo Veiga, Prada \\ Sotelo Guerreño, Velazquez}
 
 \fancypagestyle{firststyle}
  {
@@ -112,22 +114,22 @@
 	\end{minipage}\\[0.4cm]
 	\begin{minipage}{0.4\textwidth}
         \begin{center}
-            \large{Lucas Nahuel Sotelo Guerreño \\ \textit{102730} \\ \href{mailto:lsotelo@fi.uba.ar}{lsotelo@fi.uba.ar}}
-        \end{center}
-	\end{minipage}
-	\begin{minipage}{0.4\textwidth}
-        \begin{center}
             \large{Sebastian Bento Inneo Veiga \\ \textit{100998} \\ \href{mailto:sinneo@fi.uba.ar}{sinneo@fi.uba.ar}}
-        \end{center}
-	\end{minipage}\\[1cm]
-	\begin{minipage}{0.4\textwidth}
-        \begin{center}
-            \large{Joaquín Matías Velazquez \\ \textit{105980} \\ \href{mailto:jvelazquez@fi.uba.ar}{jvelazquez@fi.uba.ar}}
         \end{center}
 	\end{minipage}
 	\begin{minipage}{0.4\textwidth}
         \begin{center}
             \large{Joaquín Prada \\ \textit{105978} \\ \href{mailto:jprada@fi.uba.ar}{jprada@fi.uba.ar}}
+        \end{center}
+	\end{minipage}\\[1cm]
+	\begin{minipage}{0.4\textwidth}
+        \begin{center}
+            \large{Lucas Nahuel Sotelo Guerreño \\ \textit{102730} \\ \href{mailto:lsotelo@fi.uba.ar}{lsotelo@fi.uba.ar}}
+        \end{center}
+	\end{minipage}
+	\begin{minipage}{0.4\textwidth}
+        \begin{center}
+            \large{Joaquín Matías Velazquez \\ \textit{105980} \\ \href{mailto:jvelazquez@fi.uba.ar}{jvelazquez@fi.uba.ar}}
         \end{center}
 	\end{minipage}\\[1cm]
     \begin{minipage}{0.4\textwidth}

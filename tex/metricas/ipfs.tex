@@ -1,11 +1,6 @@
 \subsection{IPFS}
 
-Para realizar las métricas de IPFS, se utilizó el siguiente sistema:
-\begin{itemize}
-    \item \textbf{CPU:} Ryzen 5 1600
-    \item \textbf{RAM:} 8GB
-    \item \textbf{Almacenamiento:} SSD
-\end{itemize}
+
 
 \subsubsection{Costos}
 
@@ -40,7 +35,7 @@ La performance en IPFS se ve afectada por algunas variables. Entre ellas se encu
 
  Se puede minimizar  el efecto de estas variables en la medida final sin distorsionar las métricas obtenidas. Más adelante se verán las maneras en las que se puede lidiar con estas variables.
 
-\paragraph{Sitio Web Informativo}
+\paragraph{Sitio Web Estático}
 La métrica que se decidió medir es la del \textbf{tiempo que tarda un nodo en desplegar un sitio web o contenido}. Para ello, se creó un clúster con un único nodo y un repositorio Git con contenido de distinta forma.
 
 \subparagraph{Obtención de las métricas} En este caso, el proceso de despliegue se contiene dentro del contenedor \texttt{watcher}. Para medir el tiempo real que transcurre en cada paso del despliegue, se utilizó el comando de GNU \texttt{time} para cada paso, y el resultado es sumado para obtener el tiempo total que tardó desplegar el contenido.
@@ -185,13 +180,33 @@ Las métricas tanto de Astrawiki como Astrachat se ven muy relacionadas, debido 
 
 Esta métrica fue obtenida tomando medidas del tiempo que tarda un nodo en crear el artículo. Para el tamaño del artículo, se obtuvo métricas para tamaños del contenido en incrementos de 1.000 bytes, hasta 50.000 bytes.
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{img/metricas-ipfs/tiempo-para-crear-articulo.png}
+    \caption{Tiempo para crear artículos}
+    \label{fig:ipfs-create-message-graphic.png}
+\end{figure}
+
+Del gráfico se desprende, en primer lugar, que la primera creación suele requerir más tiempo. Además, se observa que el tamaño de cada artículo no influye de manera significativa en el tiempo de publicación, debido a que el proceso de creación y sincronización de las bases de datos conllevan un tiempo mayor.
+
 \subparagraph{Obtención de artículos}
 
 En este caso, se tomaron en cuenta los tamaños de artículos descritos previamente. Para cada uno, se realizó diez ejecuciones de treinta artículos creados, y se las promedió para lograr un tiempo estimado por acción consecutiva.
 
-%Gráfico
+\setlength\tabcolsep{10pt}
+\begin{table}[!htbp]
+    \centering
+    \begin{tabular}{|l|c|c|c|c|c|}
+\hline
+                & \textbf{max} & \textbf{mean} & \textbf{min} & \textbf{std} & \textbf{median} \\ \hline
+\textbf{short}  & 5086 ms       & 1579 ms       & 704.2 ms     & 972.8 ms     & 1337 ms         \\ \hline
+\textbf{medium} & 5726 ms      & 1378 ms       & 572.3 ms     & 922.8 ms     & 1151 ms         \\ \hline
+\textbf{large}  & 6821 ms      & 1532 ms       & 709.6 ms     & 1101 ms      & 1244 ms         \\ \hline
+\end{tabular}
+    \caption{Tiempo en obtener artículos}
+\end{table}  
 
-La presencia de picos altos se debe a la pérdida de conexión esporádica de los nodos involucrados. Sin embargo, se puede observar que la obtención de articulos no varía significativamente teniendo en cuenta los distintos tamaños. 
+La presencia de picos altos se debe a la pérdida de conexión esporádica de los nodos involucrados. Sin embargo, se puede observar que la obtención de artículos no varía significativamente teniendo en cuenta los distintos tamaños. La conexión de las bases de datos individuales terminan siendo el factor que más afecta al tiempo total.
 
 \paragraph{Mensajero en tiempo real}
 
@@ -258,3 +273,12 @@ Esta métrica calcula el tiempo que tarda el nodo común en recibir un mensaje e
     \end{tabular}
     \caption{Tiempo entre enviar y recibir un mensaje}
 \end{table}  
+
+\subsubsection{Sistema utilizado}
+
+Para realizar las métricas de IPFS, se utilizó el siguiente sistema:
+\begin{itemize}
+    \item \textbf{CPU:} Ryzen 5 1600
+    \item \textbf{RAM:} 8GB
+    \item \textbf{Almacenamiento:} SSD
+\end{itemize}

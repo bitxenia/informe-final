@@ -1,12 +1,5 @@
 \subsection{Blockchain}
 
-Para realizar las métricas del sitio web informativo y el repositorio de conocimiento en Blockchain, se utilizó el siguiente sistema:
-\begin{itemize}
-    \item \textbf{CPU:} Ryzen 5 1600
-    \item \textbf{RAM:} 16GB
-    \item \textbf{Almacenamiento:} SSD
-\end{itemize}
-
 \subsubsection{Costos}
 
 \paragraph{Swarm}
@@ -50,11 +43,11 @@ Los eventos pueden resultar útil para la interacción en tiempo real requerida 
 
 \subsubsection{Performance\label{performance-blockchain}}
 
-Para el caso del sitio web informativo las métricas obtenidas se realizaron mediante un nodo local apuntando a la testnet Sepolia. Los valores son una aproximación a lo que sería en la mainnet. Para el caso de la mainnet habría que tener en cuenta que el tiempo de red puede ser mayor.
+Para el caso del sitio web estático las métricas obtenidas se realizaron mediante un nodo local apuntando a la testnet Sepolia. Los valores son una aproximación a lo que sería en la mainnet. Para el caso de la mainnet habría que tener en cuenta que el tiempo de red puede ser mayor.
 
 Las métricas para el repositorio de conocimiento y para el mensajero en tiempo real se obtuvieron levantando una instancia local de Hardhat \cite{hardhat}. Los tiempos obtenidos corresponden al que le toma a la transacción ejecutarse en una máquina local. En un caso real, existe un tiempo mayor de red y de interacción del usuario con la \textit{wallet} para confirmar la transacción.
 
-\paragraph{Sitio web informativo}
+\paragraph{Sitio Web Estático}
 
 \subparagraph{Despliegue de contenido}
 
@@ -230,3 +223,20 @@ Esta métrica calcula el tiempo que tarda un segundo usuario en recibir un mensa
 \end{table}
 
 Si comparamos las tablas de tiempos de enviar y recibir un mensaje (\ref{tab:tiempo-send-recv-same-user} y \ref{tab:tiempo-send-recv-diff-user}) vemos que los tiempos son parecidos. Si bien los máximos de la primer tabla son mayores que los de la segunda y los datos están más dispersos, para los demás valores de la segunda tabla estos tienden a ser ligeramente mayores. En este caso particular, si se hiciera una prueba entre 2 usuarios de distintas partes del mundo el tiempo de conexión seguramente pesaría más.
+
+\subsubsection{Sistema utilizado}
+
+Para realizar las métricas del sitio web estático y el repositorio de conocimiento en Blockchain, se utilizó el siguiente sistema:
+\begin{itemize}
+    \item \textbf{CPU:} Ryzen 5 1600
+    \item \textbf{RAM:} 16GB
+    \item \textbf{Almacenamiento:} SSD
+\end{itemize}
+
+En cuanto al mensajero en tiempo real, las especificaciones del sistema en el cual se realizaron las métricas son las siguientes:
+
+\begin{itemize}
+    \item \textbf{CPU:} Ryzen 7 5700X
+    \item \textbf{RAM:} 32GB
+    \item \textbf{Almacenamiento:} HDD
+\end{itemize}

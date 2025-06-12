@@ -10,7 +10,7 @@ Un artículo se compone de un nombre único y no vacío y su contenido. Si bien 
     \centering
     \includegraphics[width=0.5\linewidth]{img/solucion-wiki/arquitectura-wiki.png}
     \caption{Arquitectura general del repositorio de conocimiento.}
-    \label{fig:usm-wiki}
+    \label{fig:architecture-wiki}
 \end{figure}
 
 \subsubsection{Representación de un artículo}
@@ -58,7 +58,7 @@ Una problemática que trae tener distintas ramas de versiones es que la compilac
     \centering
     \includegraphics[width=0.5\linewidth]{img/solucion-wiki/arbol-versiones.png}
     \caption{Ambas maneras de almacenar versiones. En este caso, \texttt{t} es un momento en el tiempo en el que todas las bases de datos están sincronizadas. En el primer caso, cuando \texttt{t=1} en ambas versiones, significa que hay un conflicto ya que ambas se basan en la misma versión padre. En el árbol, ese problema se mitiga.}
-    \label{fig:usm-wiki}
+    \label{fig:versions-tree}
 \end{figure}
 
 \paragraph{Elección de rama principal}
@@ -119,5 +119,5 @@ export type ChatMessage = {
 };\end{lstlisting}
     \end{minipage}
     \caption{Propiedades de un \texttt{ChatMessage}}
-    \label{fig:version-type}
+    \label{fig:chat-message}
 \end{figure}

@@ -1,14 +1,16 @@
 \subsection{Blockchain}
 
-Para el ecosistema de blockchain se decidió utilizar la red de Ethereum \cite{wood2014ethereum}, al ser una blockchain popular y muy utilizada para el desarrollo de aplicaciones descentralizadas nos permite demostrar y comparar los casos de uso contra nuestra solución en IPFS. Ethereum está compuesta de nodos distribuidos que comparten poder de cómputo lo cual permite el desarrollo de aplicaciones descentralizadas. Cuenta con una moneda que funciona a modo de incentivo, es decir, que los nodos reciben ganancias por formar parte de la red. Esto conlleva a que los usuarios de la red necesiten pagar para utilizarla a través de transacciones.
+Para el ecosistema de blockchain se decidió utilizar la red de Ethereum \cite{wood2014ethereum}, al ser una blockchain popular y muy utilizada para el desarrollo de aplicaciones descentralizadas nos permite demostrar y comparar los casos de uso contra nuestra solución en IPFS.
 
 \subsubsection{Swarm}
 
-Existen varias soluciones de almacenamiento distribuido dentro del ecosistema blockchain, en este caso, para el desarrollo del sitio web estático optamos por Swarm \cite{team2021swarm} que corre sobre una \textit{sidechain} de Ethereum. Swarm surgió como uno de los tres pilares de Ethereum para una web descentralizada \parencite{swarm-origin}. Funciona por \textit{content addressing} como IPFS e incluye un modelo de incentivos utilizando su propia moneda llamada BZZ.
+Existen varias soluciones de almacenamiento descentralizado dentro del ecosistema blockchain, en este caso, para el desarrollo del sitio web estático optamos por Swarm al estar basado en una \textit{sidechain} de Ethereum.
 
-\paragraph{Feed}
+\paragraph{Feed} El contenido que se publica en Swarm tiene asociado un CID, esto lo hace inmutable. Para permitir cambios manteniendo la inmutabilidad del contenido en Swarm existen los \textit{feeds} que funcionan de manera similar a los IPNS de IPFS. Es un puntero, con CID fijo, a un archivo. Esto permite actualizar el archivo al que apunta un \textit{feed} manteniendo un punto de entrada fijo al sitio web.
 
-Los \textit{feeds} en Swarm funcionan de manera similar a los IPNS de IPFS. Es un puntero, con CID fijo, a un archivo. Esto permite actualizar el archivo al que apunta un \textit{feed} manteniendo un punto de entrada fijo al sitio web.
+\paragraph{Postage stamps} Esta es la forma de pagar por el uso del almacenamiento en la red de Swarm. Posee un \textit{time-to-live} (TTL) que es calculado en base a los valores de \textit{depth} y \textit{amount} indicados al momento de la creación del \textit{stamp} \cite{swarm-postage-stamps}.
+
+\paragraph{Despliegue} Para el despliegue del front-end es necesario primero comprar un \textit{postage stamp} con la moneda BZZ y luego con la herramienta \texttt{swarm-cli} \cite{swarm-cli} se publica el sitio web indicando el \textit{feed} correspondiente. Durante el desarrollo encontramos que no existe un \textit{gateway} público que apunte a la testnet de Sepolia y nos permita probar el despliegue sin necesidad de utilizar dinero real. Es por esto que se levantó un nodo de Swarm configurado para que apunte a la testnet de Sepolia y un \textit{gateway} que utilice este nodo mediante la herramienta \texttt{gateway-proxy} \cite{gateway-proxy} que provee el equipo de Swarm.
 
 \subsubsection{Ethereum}
 

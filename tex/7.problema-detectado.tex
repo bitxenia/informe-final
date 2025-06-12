@@ -1,17 +1,25 @@
 \section{Problema detectado y/o faltante}
-Los servicios actuales que proveen de infraestructura tienden a ser muy costosos para las pequeñas comunidades que necesitan tener un servicio con alta disponibilidad, accesible para todos y barato de escalar. Actualmente tampoco existe un estándar para aplicaciones cuyo stack sea completamente distribuido usando peer-to-peer.
 
-\subsection{Costos}
-La inversión para el mantenimiento de servidores puede ser un obstáculo a la hora de proveer una red a sus usuarios cuando se trata de una aplicación pequeña o startup. En estos casos, es común sacrificar la escalabilidad en pos de mantener los costos del alojamiento de la aplicación bajos.
+Las soluciones actuales de infraestructura presentan barreras significativas para su adopción por parte de proyectos sin grandes recursos, como iniciativas independientes, educativas o comunitarias. Estas barreras se relacionan principalmente con los costos operativos, la dependencia de infraestructura centralizada y la exposición a fallas o interrupciones del servicio.
 
-En el otro extremo del espectro, se encuentran las aplicaciones en declive. Debido a la falta de incentivos financieros para justificar el mantenimiento, muchas veces la solución es desconectar los servidores definitivamente. Esto es especialmente frecuente en videojuegos multijugador que no cuentan con la capacidad de crear servidores dedicados. En tales situaciones, la empresa propietaria puede desactivar los servidores, lo que resulta en que el videojuego se vuelva parcialmente o completamente inutilizable \cite{dead-games}.
+\subsection{Costo y sostenibilidad}
 
-\subsection{Interrupciones del servicio}
-Dada la naturaleza del modelo cliente-servidor, no es infrecuente que estas redes se vuelvan inaccesibles. Esto puede ocurrir deliberadamente por temas de mantenimiento, o accidentalmente debido a modificaciones en la aplicación del servidor durante el mantenimiento o actualización de la misma.
+La mayoría de las aplicaciones con requerimientos de alta disponibilidad dependen de servicios centralizados en la nube, los cuales implican costos mensuales elevados incluso en etapas tempranas del desarrollo. Este modelo económico desalienta la creación y mantenimiento de servicios comunitarios o de bajo presupuesto, restringiendo su escalabilidad o continuidad en el tiempo.
 
-Uno de los episodios recientes de mayor revuelo ocurrió el 4 de Octubre de 2021, día en el que la familia de aplicaciones de Meta -Whatsapp, Facebook e Instagram -, estuvo fuera de servicio por seis horas. Esto ocasionó que mas de 3500 millones de usuarios se vieran afectados. En un articulo posterior, Meta reveló que la causa se debió a una falla en la herramienta de auditoría de los comandos que se envían a la red global de datacenters de Meta, la cual evitó que se pudiera detener el comando que desconectaba los servidores de la red \parencite{meta-offline}.
+A su vez, la dependencia de servidores centralizados genera un punto único de mantenimiento y financiamiento que puede convertirse en un cuello de botella. En escenarios donde no existe un respaldo institucional o comercial fuerte, la sostenibilidad del servicio queda comprometida.
 
-\subsection{Zonas de censura}
-Es común que aplicaciones o sitios web comunitarios sean sometidos a su censura. La centralización de los servicios ayuda a que sea mucho más fácil bloquear su acceso, dado que es más fácil identificar y bloquear un único punto de acceso. En contraste, los sistemas descentralizados, suelen ser más resistentes porque no dependen de un servidor o servicio central que pueda ser intervenido fácilmente.
+\subsection{Interrupciones e infraestructura crítica}
 
-Uno de los casos más conocidos y vigentes es la censura de Wikipedia. Donde algunos gobiernos bloquean su acceso en un determinado lenguaje y otros en su totalidad \parencite{censorship-wikipedia}.
+La arquitectura tradicional basada en cliente-servidor implica una fuerte dependencia de la disponibilidad continua de uno o varios nodos centrales. Estas arquitecturas son susceptibles a interrupciones por mantenimiento, errores de configuración, fallas de hardware o problemas de conectividad. En muchos casos, un único incidente puede volver una aplicación completamente inaccesible para todos sus usuarios.
+
+Esto evidencia la necesidad de diseñar infraestructuras más resistentes a fallas, donde la continuidad operativa no dependa de un único punto de control.
+
+\subsection{Centralización y control de acceso}
+
+La centralización también facilita el control externo sobre los servicios. Aplicaciones y plataformas pueden ser bloqueadas o restringidas en determinados contextos geográficos o políticos simplemente mediante la identificación y bloqueo de sus puntos de acceso. Esto representa una amenaza para la disponibilidad global y el acceso libre a herramientas comunitarias.
+
+Un ejemplo representativo es el de Wikipedia, cuyo acceso ha sido bloqueado —de forma total o parcial— en diversos países, debido a restricciones impuestas sobre determinados contenidos \parencite{censorship-wikipedia}.
+
+\subsection{Accesibilidad tecnológica}
+
+Finalmente, muchas de las tecnologías necesarias para implementar infraestructuras distribuidas aún requieren conocimientos técnicos avanzados para su configuración, despliegue y operación. Esta complejidad técnica representa una barrera de entrada tanto para usuarios como para desarrolladores que podrían beneficiarse de este tipo de arquitectura, pero que no cuentan con los recursos o conocimientos necesarios para adoptarla.
