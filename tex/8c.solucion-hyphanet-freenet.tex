@@ -16,23 +16,23 @@ Es posible crear aplicaciones de comunicación con los llamados \textit{plugins}
 
 Entre los plugins más usados en el ecosistema podemos nombrar:
 
-\subparagraph{WebOfTrust} \cite{hyphanet-web-of-trust}
-Se autodenomina un spam filter pudiendo puntuar (\textit{trust values}) a cada usuario de forma que los que tienen puntaje muy bajo son catalogados como spammers y cualquier contenido que los involucre será filtrado.
+\subparagraph{WebOfTrust}
+Se autodenomina un \textit{spam filter} pudiendo puntuar (\textit{trust values}) a cada usuario de forma que los que tienen puntaje muy bajo son catalogados como spammers y cualquier contenido que los involucre será filtrado \cite{hyphanet-web-of-trust}.
 
-\subparagraph{Sone} \cite{hyphanter-sone}
-Red social similar a Facebook en el que se pueden subir imágenes, comentar, conectarse con otras personas. Usa WebOfTrust para identificar a cada usuario.
+\subparagraph{Sone}
+Red social similar a Facebook en el que se pueden subir imágenes, comentar, conectarse con otras personas. Usa WebOfTrust para identificar a cada usuario \cite{hyphanter-sone}.
 
-\subparagraph{Freemail} \cite{hyphanet-freemail}
-Un servicio de email dentro de Hyphanet que también depende de WebOfTrust.
+\subparagraph{Freemail}
+Un servicio de email dentro de Hyphanet que también depende de WebOfTrust \cite{hyphanet-freemail}.
 
-\subparagraph{Freetalk} \cite{hyphanet-freetalk}
-Sistema de foro.
+\subparagraph{Freetalk}
+Sistema de foro \cite{hyphanet-freetalk}.
 
 No hay una receta para implementar estos plugins ya que la guía \cite{hyphanet-plugin-guide} que existe está incompleta y hace años que no se actualiza (lo mismo pasa con los plugins en sí, llevan años sin actualizarse).
 
-La documentación es prácticamente nula y cada plugin hace uso de la librería de \textit{Freenet} de una forma distinta lo cual hace difícil saber cuál es la forma correcta (de haberla) para crear un plugin desde cero.
+La documentación es prácticamente nula y cada \textit{plugin} hace uso de la librería de \textit{Freenet} de una forma distinta lo cual hace difícil saber cuál es la forma correcta (de haberla) para crear un \textit{plugin} desde cero.
 
-Toda información que deba guardarse se debe hacer en una base de datos local administrada por el plugin (ya sea usando un archivo o una librería como podría ser \textit{sqlite} \cite{sqlite}) ya que no existe una base de datos distribuida en el ecosistema que lo facilite. Esto hace que cada nodo tenga la información sólo de aquellos nodos con los que interactúa, mientras más lo haga más datos va a tener que persistir. Además es necesario que el plugin tenga forma de garantizar la integridad de los datos sino podrían ser fácilmente manipulados por algún nodo generando inconsistencias para la aplicación (que a su vez debería poder manejar).
+Toda información que deba guardarse se debe hacer en una base de datos local administrada por el \textit{plugin} (ya sea usando un archivo o una librería como podría ser \textit{sqlite} \cite{sqlite}) ya que no existe una base de datos distribuida en el ecosistema que lo facilite. Esto hace que cada nodo tenga la información sólo de aquellos nodos con los que interactúa, mientras más lo haga más datos va a tener que persistir. Además es necesario que el \textit{plugin} tenga forma de garantizar la integridad de los datos sino podrían ser fácilmente manipulados por algún nodo generando inconsistencias para la aplicación (que a su vez debería poder manejar).
 
 \subsubsection{Sitio web estático}
 
@@ -50,7 +50,7 @@ Debido a la escasa documentación y falta de estándares para desarrollar aplica
 
 \subsection{Freenet}
 
-Siguiendo las bases de Hyphanet, y a diferencia de IPFS, Freenet busca ser una \textit{computadora distribuida} donde cada peer es capaz de ejecutar código que contenga estado el cual tendrá eventual consistencia con los demás peers. Parecido a su antecesor, un contrato puede cachearse en varios peers si este es lo suficientemente popular y dejará de cachearse si deja de serlo.
+Siguiendo las bases de Hyphanet, y a diferencia de IPFS, Freenet busca ser una \textit{computadora distribuida} donde cada peer es capaz de ejecutar código que contenga estado el cual tendrá eventual consistencia con los demás \textit{peers}. Parecido a su antecesor, un contrato puede cachearse en varios \textit{peers} si este es lo suficientemente popular y dejará de cachearse si deja de serlo.
 
 \subsubsection{Arquitectura}
 

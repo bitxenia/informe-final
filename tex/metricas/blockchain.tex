@@ -5,7 +5,7 @@
 \paragraph{Swarm}
 Al deployar el sitio web es necesario contar con \textit{postage stamps} que son la manera de pagar por el uso del almacenamiento en Swarm. Cada actualización que se realice al sitio requiere de \textit{postage stamps} y, además, estos tienen fecha de vencimiento por lo que es necesario volver a pagar frecuentemente. Dichos \textit{postage stamps} se pagan en la criptomoneda BZZ que fluctúa de valor con respecto al dólar estadounidense. La obtención del sitio web no requiere de costo alguno, por lo que desde el punto de vista de un usuario lector de la aplicación no sería necesario pagar.
 
-El valor de los \textit{stamps} también depende del tamaño del contenido a ser desplegado y el tiempo que se quiere mantener el contenido en la red, esto lo manejan con variables llamadas \textit{depth} y \textit{amount} que uno puede variar para obtener el almacenamiento y tiempo requerido. Realizando un despliegue desde un nodo de Swarm que apunta a la testnet Sepolia, un \textit{postage stamp} con 1GB de almacenamiento por 2 días (\textit{depth} 20 y \textit{amount} 10000000000) tiene un costo de 1.0486 BZZ que equivalen a 0.1767 USD (al día 11/06/2025).
+El valor de los \textit{stamps} también depende del tamaño del contenido a ser desplegado y el tiempo que se quiere mantener el contenido en la red, esto lo manejan con variables llamadas \textit{depth} y \textit{amount} que uno puede variar para obtener el almacenamiento y tiempo requerido. Realizando un despliegue desde un nodo de Swarm que apunta a la \textit{testnet} Sepolia, un \textit{postage stamp} con 1GB de almacenamiento por 2 días (\textit{depth} 20 y \textit{amount} 10000000000) tiene un costo de 1.0486 BZZ que equivalen a 0.1767 USD (al día 11 de junio de 2025).
 
 \paragraph{Ethereum}
 Se utiliza la moneda ETH para pagar por cada transacción, esto incluye tanto el despliegue de cada \textit{smart contract} como también cada modificación al estado de los mismos. Por lo tanto, el usuario final de la aplicación termina pagando por la creación y edición de cada artículo en el repositorio de conocimiento, y por cada mensaje enviado en el mensajero en tiempo real. Por otro lado, para las operaciones de lectura no se tiene que pagar nada. A este monto que tiene que pagar el usuario se lo llama gas y varía con respecto a las operaciones que realiza el método que se ejecuta al llamar a un \textit{smart contract} y, también, con respecto a la congestión de la red, es decir a mayor congestión mayor será el costo.
@@ -22,12 +22,12 @@ Se utiliza la moneda ETH para pagar por cada transacción, esto incluye tanto el
 \paragraph{Swarm}
 La experiencia de desarrollo en Swarm podría ser mejor. Cuenta con una comunidad pequeña pero activa. Si bien la documentación en varios aspectos puede resultar escasa, tienen medios por los cuales se pueden consultar dudas al equipo de desarrollo y son respondidas con brevedad.
 
-Existen algunas herramientas que facilitan el desarrollo, por ejemplo, swarm-cli \cite{swarm-cli} la cual permite la interacción con un nodo de Swarm para realizar despliegues o consultas sobre su estado. También el equipo de Swarm provee una Github Action que permite la posibilidad de automatizar el despliegue generando un pipeline que utilice dicha herramienta.
+Existen algunas herramientas que facilitan el desarrollo, por ejemplo, \textit{swarm-cli} \cite{swarm-cli} la cual permite la interacción con un nodo de Swarm para realizar despliegues o consultas sobre su estado. También el equipo de Swarm provee una Github Action que permite la posibilidad de automatizar el despliegue generando un \textit{pipeline} que utilice dicha herramienta.
 
-En cuanto a un ambiente de pruebas o \textit{staging}, si bien no existe un \textit{gateway} público que interactúe con la \textit{testnet}, es posible levantar uno propio que sí lo haga apuntando a la \textit{testnet} de Sepolia usando la herramienta gateway-proxy \cite{gateway-proxy}.
+En cuanto a un ambiente de pruebas o \textit{staging}, si bien no existe un \textit{gateway} público que interactúe con la \textit{testnet}, es posible levantar uno propio que sí lo haga apuntando a la \textit{testnet} de Sepolia usando la herramienta \textit{gateway-proxy} \cite{gateway-proxy}.
 
 \paragraph{Ethereum}
-La experiencia de desarrollo en Ethereum resulta positiva por su gran comunidad y herramientas que provee. Por ejemplo, con la librería web3.js se puede interactuar con un nodo de Ethereum y realizar un despliegue de la aplicación. Además, con las herramientas de Hardhat se puede levantar una red de prueba que facilita el desarrollo local. Por otro lado, cuenta con una extensa documentación que detalla el funcionamiento de su blockchain.
+La experiencia de desarrollo en Ethereum resulta positiva por su gran comunidad y herramientas que provee. Por ejemplo, con la librería \texttt{web3.js} se puede interactuar con un nodo de Ethereum y realizar un despliegue de la aplicación. Además, con las herramientas de Hardhat se puede levantar una red de prueba que facilita el desarrollo local. Por otro lado, cuenta con una extensa documentación que detalla el funcionamiento de su blockchain.
 
 \subsubsection{Aplicabilidad al caso de uso}
 
@@ -37,13 +37,13 @@ Resulta más conveniente para sitios web o recursos estáticos, al igual que IPF
 A diferencia de IPFS, Swarm cuenta con incentivos incluidos (por medio de la moneda BZZ), esto significa que para deployar contenido en la red es necesario pagar. Al hacerlo te asegura que el mismo va a estar disponible durante el tiempo equivalente al costo pagado, es decir, que no es necesario pinear los archivos puesto que se encuentran en la red con un TTL.
 
 \paragraph{Ethereum}
-Su punto fuerte es la ejecución de código, por lo cual es útil para funcionar como backend de aplicaciones web. Como hemos visto, por el costo de almacenamiento de los smart contracts, no es recomendable para recursos como imágenes, videos o incluso strings de texto muy largos como lo realizado en el repositorio de conocimiento. 
+Su punto fuerte es la ejecución de código, por lo cual es útil para funcionar como \textit{backend} de aplicaciones web. Como hemos visto, por el costo de almacenamiento de los \textit{smart contracts}, no es recomendable para recursos como imágenes, videos o incluso \textit{strings} de texto muy largos como lo realizado en el repositorio de conocimiento. 
 
-Los eventos pueden resultar útil para la interacción en tiempo real requerida en el mensajero, pero lo positivo de esto queda opacado por el hecho de necesitar pagar por cada interacción, en el caso del mensajero por cada mensaje enviado. Esto se puede volver costoso rápidamente, además de tedioso al momento de utilizar la aplicación. Se pueden explorar alternativas para reducir esta fricción, como por ejemplo, que el contrato tenga un balance de tokens para ser gastados, lo cual haría que el usuario no tenga que confirmar cada transacción de mensaje enviado si no que directamente el contrato lo extrae de su balance; entre otras posibilidades.
+Los eventos pueden resultar útil para la interacción en tiempo real requerida en el mensajero, pero lo positivo de esto queda opacado por el hecho de necesitar pagar por cada interacción, en el caso del mensajero por cada mensaje enviado. Esto se puede volver costoso rápidamente, además de tedioso al momento de utilizar la aplicación. Se pueden explorar alternativas para reducir esta fricción, como por ejemplo, que el contrato tenga un balance de \textit{tokens} para ser gastados, lo cual haría que el usuario no tenga que confirmar cada transacción de mensaje enviado si no que directamente el contrato lo extrae de su balance; entre otras posibilidades.
 
 \subsubsection{Performance\label{performance-blockchain}}
 
-Para el caso del sitio web estático las métricas obtenidas se realizaron mediante un nodo local apuntando a la testnet Sepolia. Los valores son una aproximación a lo que sería en la mainnet. Para el caso de la mainnet habría que tener en cuenta que el tiempo de red puede ser mayor.
+Para el caso del sitio web estático las métricas obtenidas se realizaron mediante un nodo local apuntando a la \textit{testnet} Sepolia. Los valores son una aproximación a lo que sería en la \textit{mainnet}. Para el caso de la \textit{mainnet} habría que tener en cuenta que el tiempo de red puede ser mayor.
 
 Las métricas para el repositorio de conocimiento y para el mensajero en tiempo real se obtuvieron levantando una instancia local de Hardhat \cite{hardhat}. Los tiempos obtenidos corresponden al que le toma a la transacción ejecutarse en una máquina local. En un caso real, existe un tiempo mayor de red y de interacción del usuario con la \textit{wallet} para confirmar la transacción.
 
@@ -140,7 +140,7 @@ Se puede observar que los tiempos entre los tamaños de mensajes no varían dema
 
 \subparagraph{Gas usado para enviar un mensaje}
 
-La siguiente tabla muestra el valor (en ETH y USD) de enviar el mismo mensaje corto. El precio tomado para la conversión de ETH a dólar es el de la fecha del 5 de junio de 2025 a las 19:00hs de \$2439.17 de la página \href{https://coinmarketcap.com/currencies/ethereum/}{Coinmarketcap}.
+La siguiente tabla muestra el valor (en ETH y USD) de enviar el mismo mensaje corto. El precio tomado para la conversión de ETH a dólar es el de la fecha del 5 de junio de 2025 a las 19:00 hs de \$2439.17 de la página Coinmarketcap \cite{coinmarketcap-eth-price}.
 
 \setlength\tabcolsep{10pt}
 \begin{table}[H]

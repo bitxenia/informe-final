@@ -63,7 +63,7 @@ Cada artículo posee un chat en tiempo real (Figura \ref{fig:astraweb-chat}) que
 
 \subparagraph{Tecnología} Se utilizó \texttt{React} \cite{react} y \texttt{Next.js} \cite{next} como \textit{frameworks} para la creación de la aplicación web, basándonos en una plantilla llamada \texttt{rubix-documents} \cite{rubix}. El código fue escrito en \texttt{Typescript}.
 
-\subparagraph{Servidor ejemplo} Se desarrolló una solución centralizada como tercer ecosistema para este front-end, con el propósito de paralelizar el desarrollo y los distintos paquetes de cada ecosistema. Debido a que se definió una interfaz común tanto para el repositorio de conocimiento como para el mensajero en tiempo real, se logró avanzar con el front-end haciendo pruebas manuales con este servidor.
+\subparagraph{Servidor ejemplo} Se desarrolló una solución centralizada como tercer ecosistema para este \textit{front-end}, con el propósito de paralelizar el desarrollo y los distintos paquetes de cada ecosistema. Debido a que se definió una interfaz común tanto para el repositorio de conocimiento como para el mensajero en tiempo real, se logró avanzar con el \textit{front-end} haciendo pruebas manuales con este servidor.
 
 El servidor fue creado en \texttt{Node.js} con \texttt{Express.js} como framework para interactuar con \textit{requests} de HTTP.
 
@@ -73,7 +73,7 @@ El servidor fue creado en \texttt{Node.js} con \texttt{Express.js} como framewor
 
 Front-end de terminal, desarrollado para el caso de uso del repositorio de conocimiento y para el ecosistema de IPFS en específico. Cuenta con todas las funcionalidades del repositorio de conocimiento, como crear, editar y ver artículos, consultar versiones pasadas, e incluso colaborar, lo cual se verá en el apartado de IPFS. Además, cuenta con un contenedor \texttt{Docker} publicado, con el fin de fácilmente iniciar un nodo sin necesitar una instalación de \texttt{Node} y demás dependencias. Funciona como un \texttt{daemon} \cite{daemon}, es decir, se inicia y funciona en segundo plano hasta que se indique lo contrario.
 
-Su propósito es, por un lado demostrar la versatilidad del modelo de paquetes utilizado para crear distintos front-ends. Y por otro lado, el contenedor es útil para el nodo colaborador desarrollado para IPFS visto previamente.
+Su propósito es, por un lado demostrar la versatilidad del modelo de paquetes utilizado para crear distintos \textit{front-ends}. Y por otro lado, el contenedor es útil para el nodo colaborador desarrollado para IPFS visto previamente.
 
 \subparagraph{Arquitectura} Se compone de un cliente, el cuál se inicia con cada comando (\texttt{start}, \texttt{add}, \texttt{get}, \texttt{edit}, \texttt{list}, etc.) y un servidor que se ejecuta por detrás, el cual inicia la instancia del repositorio de conocimiento de IPFS y utiliza su API cuando recibe \texttt{requests HTTP}.
 
@@ -86,11 +86,11 @@ Su propósito es, por un lado demostrar la versatilidad del modelo de paquetes u
 
 \paragraph{Astrachat CLI}
 
-Frontend de terminal, desarrollado para el caso de uso de mensajero en tiempo real y para el ecosistema de Blockchain.
+Frontend de terminal, desarrollado para el caso de uso de mensajero en tiempo real y para el ecosistema de Ethereum.
 
 \subparagraph{Tecnología}
 
-Se utilizó \texttt{React} \cite{react} y \texttt{Ink} \cite{ink} como \textit{frameworks} para crear la interfaz de este frontend.
+Se utilizó \texttt{React} \cite{react} y \texttt{Ink} \cite{ink} como \textit{frameworks} para crear la interfaz de este \textit{front-end}.
 
 \subparagraph{Funcionalidad}
 
@@ -105,4 +105,4 @@ Esta implementación permite crear un chat, unirse a un chat existente, enviar y
 
 \subparagraph{Limitaciones}
 
-Debido a que se ejecuta en la terminal no es posible hacer uso de una wallet como Metamask \cite{metamask} ya que la misma sólo funciona en web. Debido a esto, se \textit{hardcodearon} algunas de las wallets que provee Hardhat \cite{hardhat}.
+Debido a que se ejecuta en la terminal no es posible hacer uso de una \textit{wallet} como Metamask \cite{metamask} ya que la misma sólo funciona en web. Debido a esto, se \textit{hardcodearon} algunas de las \textit{wallets} que provee Hardhat \cite{hardhat}.

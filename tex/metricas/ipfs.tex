@@ -62,7 +62,7 @@ La métrica que se decidió medir es la del \textbf{tiempo que tarda un nodo en 
     \label{fig:metricas-ipfs-caso1-1.png}
 \end{figure}
 
-De este gráfico podemos concluir que la operación más significante en términos de tiempo en el despliegue es la \textit{providing} del contenido. Esto es, la publicación de todos los CIDs en la DHT. Luego, le siguen el providing del \texttt{service.json}, y las operaciones para actualizar el valor al que apunta el nombre de IPNS, tanto del contenido como del \texttt{service.json}. Las demás operaciones se pueden despreciar.
+De este gráfico podemos concluir que la operación más significante en términos de tiempo en el despliegue es la \textit{providing} del contenido. Esto es, la publicación de todos los CIDs en la DHT. Luego, le siguen el \textit{providing} del \texttt{service.json}, y las operaciones para actualizar el valor al que apunta el nombre de IPNS, tanto del contenido como del \texttt{service.json}. Las demás operaciones se pueden despreciar.
 
 
 
@@ -79,7 +79,7 @@ De este gráfico podemos concluir que la operación más significante en términ
     \hline
     \textbf{50KiB-1files} & 78.75 s & 66.09 s & 61.48 s & 5.83 s & 62.93 s \\
     \hline
-    \textbf{50KiB-10files} & 30.57 s & 12.93 s & 7.10 s & 7.42 s & 8.96 s \\
+    \textbf{50KiB-10files} & 30.30 s & 23.03 s & 8.93 s & 3.68 s & 23.37 s \\
     \hline
     \textbf{50KiB-25files} & 23.79 s & 22.65 s & 21.94 s & 0.46 s & 22.57 s \\
     \hline
@@ -102,7 +102,7 @@ De este gráfico podemos concluir que la operación más significante en términ
     \hline
     \textbf{50KiB-1files} & 23.08 s & 15.37 s & 7.52 s & 6.71 s & 15.25 s \\
     \hline
-    \textbf{50KiB-10files} & 23.31 s & 13.31 s & 7.34 s & 6.86 s & 8.44 s \\
+    \textbf{50KiB-10files} & 23.36 s & 11.86 s & 6.86 s & 5.79 s & 8.61 s \\
     \hline
     \textbf{50KiB-25files} & 23.02 s & 12.17 s & 7.43 s & 5.80 s & 8.97 s \\
     \hline
@@ -125,7 +125,7 @@ De este gráfico podemos concluir que la operación más significante en términ
     \hline
     \textbf{50KiB-1files} & 42.09 s & 21.84 s & 10.79 s & 7.49 s & 20.14 s \\
     \hline
-    \textbf{50KiB-10files} & 419.87 s & 372.47 s & 327.86 s & 25.09 s & 377.78 s \\
+    \textbf{50KiB-10files} & 165.63 s & 133.95 s & 95.91 s & 18.23 s & 135.24 s \\
     \hline
     \textbf{50KiB-25files} & 412.30 s & 364.53 s & 306.15 s & 26.53 s & 366.01 s \\
     \hline
@@ -148,7 +148,7 @@ De este gráfico podemos concluir que la operación más significante en términ
     \hline
     \textbf{50KiB-1files} & 25.71 s & 13.63 s & 6.49 s & 5.26 s & 11.34 s \\
     \hline
-    \textbf{50KiB-10files} & 20.88 s & 12.86 s & 10.84 s & 3.11 s & 11.30 s \\
+    \textbf{50KiB-10files} & 35.17 s & 23.21 s & 11.47 s & 6.95 s & 25.91 s \\
     \hline
     \textbf{50KiB-25files} & 20.78 s & 12.42 s & 9.78 s & 3.47 s & 11.26 s \\
     \hline
@@ -158,7 +158,7 @@ De este gráfico podemos concluir que la operación más significante en términ
     \caption{Estadísticas para \texttt{service-provide}}
 \end{table}
 
-Teniendo en cuenta esto, se puede observar cuál es la causa de la variación del tiempo de providing ajustando las dos variables mencionadas.
+Teniendo en cuenta esto, se puede observar cuál es la causa de la variación del tiempo de \textit{providing} ajustando las dos variables mencionadas.
 
 \begin{figure}[H]
     \centering
@@ -195,7 +195,7 @@ Esta métrica fue obtenida tomando medidas del tiempo que tarda un nodo en crear
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{img/metricas-ipfs/tiempo-para-crear-articulo.png}
+    \includegraphics[width=0.75\linewidth]{img/metricas-ipfs/tiempo-para-crear-articulo.png}
     \caption{Tiempo para crear artículos}
     \label{fig:ipfs-create-message-graphic.png}
 \end{figure}
@@ -225,7 +225,7 @@ La presencia de picos altos se debe a la pérdida de conexión esporádica de lo
 
 Las siguientes métricas se obtuvieron con un nodo colaborador y un nodo común. Se levantaron ambos nodos en la misma máquina para poder coordinar ambos nodos y facilitar la obtención de métricas.
 
-Se asume una conexión existente entre el nodo colaborador y el nodo común. Para agilizar la obtención de métricas la conexión directamente mediante las multiaddresses de los nodos, aunque en un caso real se debería encontrar utilizando la DHT. Una vez establecida la conexión el uso es el mismo, por lo que estas métricas no dependen del tipo de mecanismo utilizado para el establecimiento de la conexión.
+Se asume una conexión existente entre el nodo colaborador y el nodo común. Para agilizar la obtención de métricas la conexión directamente mediante las \textit{multiaddresses} de los nodos, aunque en un caso real se debería encontrar utilizando la DHT. Una vez establecida la conexión el uso es el mismo, por lo que estas métricas no dependen del tipo de mecanismo utilizado para el establecimiento de la conexión.
 
 \subparagraph{Tiempo en enviar un mensaje}
 
@@ -250,7 +250,7 @@ Algo a notar son los máximos para cada medición. Estos se deben a una pérdida
 
 El gráfico presenta cómo varía el tiempo de respuesta, medido en milisegundos, a medida que crece la cantidad de mensajes en un chat, desde 0 hasta 1000 mensajes en el chat. Se consideran tres tipos de mensajes, y se observa un incremento progresivo en el tiempo necesario para obtenerlos. Esta métrica se obtuvo midiendo el tiempo requerido para recuperar todos los mensajes en chats con diferentes tamaño de contenido. Además, se eliminaron los \textit{outliers} por pérdida de conexión para poder visualizar mejor la tendencia en general.
 
-\begin{figure}[h!]
+\begin{figure}[H]
     \centering
     \includegraphics[width=1\linewidth]{img/metricas-ipfs/tiempo-para-obtener-por-cant-msjs.png}
     \caption{Tiempo para obtener mensajes de un chat según el tamaño del chat}
@@ -258,7 +258,7 @@ El gráfico presenta cómo varía el tiempo de respuesta, medido en milisegundos
 \end{figure}
 
 \setlength\tabcolsep{10pt}
-\begin{table}[!htbp]
+\begin{table}[H]
     \centering
     \begin{tabular}{|l|c|c|c|c|c|}
         \hline
@@ -272,7 +272,7 @@ El gráfico presenta cómo varía el tiempo de respuesta, medido en milisegundos
 
 \subparagraph{Tiempo entre enviar y recibir un mensaje}
 
-Esta métrica calcula el tiempo que tarda el nodo común en recibir un mensaje enviado por el nodo colaborador. Para ello se utiliza el \texttt{EventEmitter} integrado en Astrachat, logrando una medición exacta del trayecto de un mensaje para una conexión ya establecida. Al igual que en los demás casos, existen outliers provenientes de pérdidas de conexión, los cuáles se pueden observar en los máximos obtenidos. Sin embargo, la desviación estándar y el valor promedio y mediano indican que estos no son frecuentes.
+Esta métrica calcula el tiempo que tarda el nodo común en recibir un mensaje enviado por el nodo colaborador. Para ello se utiliza el \texttt{EventEmitter} integrado en Astrachat, logrando una medición exacta del trayecto de un mensaje para una conexión ya establecida. Al igual que en los demás casos, existen \textit{outliers} provenientes de pérdidas de conexión, los cuáles se pueden observar en los máximos obtenidos. Sin embargo, la desviación estándar y el valor promedio y mediano indican que estos no son frecuentes.
 
 \setlength\tabcolsep{10pt}
 \begin{table}[!htbp]

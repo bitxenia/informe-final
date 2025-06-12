@@ -4,31 +4,31 @@ Durante el desarrollo de los casos de uso sobre el ecosistema IPFS, se fue conso
 
 Se distinguen dos infraestructuras principales en funcionamiento: la infraestructura de despliegue y la infraestructura de aplicación.
 
-La \textbf{infraestructura de despliegue} se encarga del alojamiento de las aplicaciones web. Es responsable de distribuir el \textit{front-end} de las aplicaciones, así como también el código necesario para su ejecución, en caso de que incluyan componentes dinámicos. Toda aplicación que deba ser accesible desde la web hace uso de esta infraestructura, como ocurre con el sitio web estático.
+La \textbf{infraestructura de despliegue} se encarga del alojamiento de las aplicaciones web. Es responsable de distribuir el \textit{front-end} de las aplicaciones, así como también el código necesario para su ejecución en caso de que incluyan componentes dinámicos. Toda aplicación que deba ser accesible desde la web hace uso de esta infraestructura, como ocurre con el sitio web estático.
 
 Por otro lado, la \textbf{infraestructura de aplicación} gestiona la lógica de la aplicación, incluyendo el almacenamiento de datos y la conexión entre pares. Esta infraestructura es fundamental para aplicaciones que requieren mantener un estado compartido entre usuarios y permitir su modificación, como en el caso del repositorio de conocimiento y el mensajero en tiempo real.
 
-La identificación de estas abstracciones permitió encapsular gran parte de la complejidad asociada al ecosistema subyacente, lo que facilitó el desarrollo tanto de los casos de uso implementados como de posibles desarrollos futuros. Gracias a esta separación, es posible concentrarse exclusivamente en los requisitos funcionales de cada nuevo caso de uso, sin necesidad de interactuar directamente con los detalles técnicos de IPFS y sus herramientas subyacentes.
+La identificación de estas abstracciones permitió encapsular gran parte de la complejidad asociada al ecosistema subyacente, lo que simplificó el desarrollo tanto de los casos de uso implementados como de futuros desarrollos. Gracias a esta separación, es posible concentrarse exclusivamente en los requisitos funcionales de cada nuevo caso de uso, sin necesidad de interactuar directamente con los detalles técnicos de IPFS y sus herramientas subyacentes.
 
 A continuación, se detalla la composición y el funcionamiento de ambas infraestructuras.
 
 \subsubsection{Infraestructura de despliegue}
 
-El objetivo de la infraestructura de despliegue fue alojar los archivos estáticos de un sitio web en IPFS, y acceder a ellos mediante un navegador, manteniendo su correcta interpretación por el navegador. Además, se priorizó una filosofía de aplicaciones estrictamente comunitarias a la hora de elegir tecnologías y herramientas del ecosistema a utilizar.
+El objetivo de la infraestructura de despliegue fue alojar los archivos estáticos de un sitio web en IPFS y garantizar su acceso mediante un navegador, asegurando su correcta interpretación. Asimismo, se priorizó una filosofía basada en aplicaciones estrictamente comunitarias para la selección de las tecnologías y herramientas del ecosistema empleadas.
 
-Para empezar, se debe explicar brevemente el concepto de \textit{pinning}. Al subir un archivo a IPFS, este se procesa mediante una función de hash, y así se obtiene un \textit{Content Identifier} (CID) único. Desde ese momento, cualquier nodo que desee obtener el archivo puede encontrarlo utilizando dicho CID. Sin embargo, no se asegura la persistencia del archivo, y dejará de ser accesible luego de un tiempo. Por esta razón existe el concepto de \textit{pinning} \cite{pinning}, que consiste en fijar un archivo o directorio para tratar dicha información como esencial y, por lo tanto, evitar que el nodo lo descarte eventualmente. Este concepto es central para la solución implementada.
+Para empezar, se debe explicar brevemente el concepto de \textit{pinning}. Al subir un archivo a IPFS, este se procesa mediante una función de \textit{hash}, y así se obtiene un \textit{Content Identifier} (CID) único. Desde ese momento, cualquier nodo que desee obtener el archivo puede encontrarlo utilizando dicho CID. Sin embargo, no se asegura la persistencia del archivo, y dejará de ser accesible luego de un tiempo. Por esta razón existe el concepto de \textit{pinning} \cite{pinning}, que consiste en fijar un archivo o directorio para tratar dicha información como esencial y, por lo tanto, evitar que el nodo lo descarte eventualmente. Este concepto es central para la solución implementada.
 
 A continuación se describen brevemente las herramientas utilizadas.
 
-\paragraph{Clústeres colaborativos en IPFS} Un \textit{clúster} es un grupo de nodos de IPFS que actúan en conjunto para fijar contenidos. Funcionan sincronizando su \textit{pin set}, o sea, su lista de archivos y directorios fijados en un momento dado. Un clúster \textit{colaborativo} sigue esta premisa, pero permite que los usuarios colaboren con su nodo local sin posibilidad de modificar los archivos, lo cuál se delega a nodos especiales con la capacidad de orquestar el clúster en conjunto. Así, se logra que la misma comunidad mantenga operativo el mecanismo de despliegue de la aplicación, en línea con la filosofía de aplicaciones comunitarias.
+\paragraph{Clústeres colaborativos en IPFS} Un \textit{clúster} es un grupo de nodos de IPFS que actúan en conjunto para fijar contenidos. Funcionan sincronizando su \textit{pin set}, o sea, su lista de archivos y directorios fijados en un momento dado. Un clúster \textit{colaborativo} sigue esta premisa, pero permite que los usuarios colaboren con su nodo local sin posibilidad de modificar los archivos, lo cuál se delega a nodos especiales con la capacidad de orquestar el clúster en conjunto \cite{collaborative-clusters}. Así, se logra que la misma comunidad mantenga operativo el mecanismo de despliegue de la aplicación, en línea con la filosofía de aplicaciones comunitarias.
 
 % Actualmente, esta alternativa es poco explorada, por lo tanto no existe una forma fácil de creación, seguimiento y descubrimiento de estos clústeres. IPFS cuenta con una página con clústeres conocidos con los cuales se puede colaborar \cite{collaborative-clusters}, pero la cantidad es limitada.
 
 % Por otro lado, el principal problema es que los clústeres obligan a los nodos a fijar la totalidad de sus archivos, lo cuál puede significar un uso excesivo de almacenamiento necesario para colaborar. Hacer \textit{sharding} sobre el pin set, o sea, fijar parte del contenido de un clúster, es posible utilizando los parámetros de \texttt{replicator\_min} y \texttt{replicator\_max} al agregar un pin, que fijan un límite mínimo y máximo sobre la cantidad de nodos que tienen ese pin. Sin embargo, no es recomendado para clústeres colaborativos debido a la falta de \textit{proof of storage} \cite{cluster-sharding} \cite{collaborative-clusters-setup}. Esto se debe a que, debido a la manera en la que fue diseñada la arquitectura de IPFS, un nodo no confiable puede falsificar la lista de archivos que está fijando, por lo que hay una posibilidad de que una parte del contenido no esté en ninguno de los nodos, y por ende el contenido esté incompleto.
 
-\paragraph{IPNS} El CID cambiará si el contenido del sitio web o aplicación web cambia. Este problema puede ser resuelto con la ayuda de \textit{punteros mutables}, objetos de IPFS que apuntan a un CID específico y pueden ser modificados. Esto permite compartir la dirección del puntero una única vez y actualizar el CID al que apunta cada vez que se haga un cambio. InterPlanetary Name System (IPNS) \cite{ipns} es un sistema que permite crear  punteros mutables y obtener una dirección conocida como \textit{nombre de IPNS}. Estos nombres de IPNS pueden considerarse como enlaces que pueden actualizarse, conservando al mismo tiempo la verificabilidad del content addressing. El titular de la clave privada puede firmar y publicar nuevos registros en cualquier momento.
+\paragraph{IPNS} El CID cambiará si el contenido del sitio web o aplicación web cambia. Este problema puede ser resuelto con la ayuda de \textit{punteros mutables}, objetos de IPFS que apuntan a un CID específico y pueden ser modificados. Esto permite compartir la dirección del puntero una única vez y actualizar el CID al que apunta cada vez que se haga un cambio. \textbf{IPNS} (InterPlanetary Name System) es un sistema que permite crear  punteros mutables y obtener una dirección conocida como \textit{nombre de IPNS} \cite{ipns}. Estos nombres de IPNS pueden considerarse como enlaces que pueden actualizarse, conservando al mismo tiempo la verificabilidad del \textit{content addressing}. El titular de la clave privada puede firmar y publicar nuevos registros en cualquier momento.
 
-Una vez que se aloja un contenido en IPFS y se apunta a él mediante un \textit{nombre} de IPNS, el mayor problema pasa a ser la manera de acceder a IPNS en sí. El hecho de que los nombres sean hashes alfanuméricos, y no nombres legibles o memorables para humanos, dificulta el acceso de los usuarios a un sitio web memorable y fácil de compartir. A continuación se analizará la alternativa elegida para solucionar este problema.
+Una vez que se aloja un contenido en IPFS y se apunta a él mediante un \textit{nombre} de IPNS, el mayor problema pasa a ser la manera de acceder a IPNS en sí. El hecho de que los nombres sean \textit{hashes} alfanuméricos, y no nombres legibles o memorables para humanos, dificulta el acceso de los usuarios a un sitio web memorable y fácil de compartir. A continuación se analizará la alternativa elegida para solucionar este problema.
 
 \begin{figure}[h]
 \centering
@@ -40,17 +40,17 @@ Dado que el valor al que apunta el nombre de IPNS cambia con cada modificación 
 
 IPFS Cluster tiene en cuenta esto, y hace la distinción entre un nodo \textit{trusted} y un nodo \textit{follower} para su implementación de clústeres \textit{colaborativos} \cite{ipfs-cluster-collaborative}. Para esta herramienta, se utiliza las denominaciones de nodo confiable y nodo colaborador, respectivamente.
 
-\subparagraph{Nodo confiable} Este nodo tiene la capacidad de modificar el nombre IPNS, como también actualizar la configuración del mismo, y el \textit{pin set}. Son una parte esencial del clúster, ya que ellos no es posible modificar el contenido. Esto no implica centralización, ya la comunidad pueden formar sus propios grupos de nodos confiables y actualizar el contenido por su cuenta, similar a realizar un \textit{fork} en un proyecto de Github.
+\subparagraph{Nodo confiable} Este nodo tiene la capacidad de modificar el nombre IPNS, como también actualizar la configuración del mismo, y el \textit{pin set}. Son una parte esencial del clúster, ya que ellos no es posible modificar el contenido. Esto no implica centralización, ya que la comunidad puede formar sus propios grupos de nodos confiables y actualizar el contenido por su cuenta, similar a realizar un \textit{fork} en un proyecto de Github.
 
 \subparagraph{Nodo colaborador} Únicamente se encarga de fijar los archivos establecidos por los nodos confiables, y actualizar su \textit{pin set} cuando se lo indique. Al igual que los nodos confiables, debe fijar la totalidad de los archivos. Su finalidad es aumentar la disponibilidad del contenido y evitar que la información se pierda.
 
-En un escenario ideal, existen varios nodos confiables disponibles en simultáneo. Esto previene un posible \textit{single point of failure}, y asegura la continuidad y validez del clúster.
+En un escenario ideal, existen varios nodos confiables disponibles simultáneamente. Esto previene un posible \textit{single point of failure} y asegura la continuidad y validez del clúster. Además, aunque los nodos confiables no estén en línea, los nodos colaboradores mantienen la última actualización del clúster, garantizando así la disponibilidad y persistencia del contenido.
 
-\paragraph{ENS} \textbf{Ethereum Name Service (ENS)} \cite{ens} es un protocolo de nombres descentralizado que se basa en la blockchain \textit{Ethereum}. Funciona de manera similar a DNS, en el sentido de que traduce identificadores como nombres y hases a formatos legibles para humanos. Al operar sobre la blockchain de Ethereum, es seguro, descentralizado y transparente. Está diseñado específicamente para traducir identificadores como direcciones de billeteras, hashes y metadatos, entre otros, incluyendo direcciones de IPFS. Es posible configurar un registro ENS que resuelva automáticamente una dirección IPNS. Esto permite usar nombres legibles, más fáciles de compartir y acceder, y soluciona el principal problema de IPNS hasta este punto. Además, cuando se quiera actualizar el contenido, no será necesario modificar el registro ENS en sí, ya que el registro siempre apuntará al mismo nombre de IPNS.
+\paragraph{ENS} Ethereum Name Service (ENS) es un protocolo de nombres descentralizado que se basa en la \textit{blockchain} \textit{Ethereum} \cite{ens}. Funciona de manera similar a DNS, en el sentido de que traduce identificadores como nombres y \textit{hashes} a formatos legibles para humanos. Al operar sobre la \textit{blockchain} de Ethereum, es seguro, descentralizado y transparente. Está diseñado específicamente para traducir identificadores como direcciones de billeteras, \textit{hashes} y metadatos, entre otros, incluyendo direcciones de IPFS. Es posible configurar un registro ENS que resuelva automáticamente una dirección IPNS. Esto permite usar nombres legibles, más fáciles de compartir y acceder, y soluciona el principal problema de IPNS hasta este punto. Además, cuando se quiera actualizar el contenido, no será necesario modificar el registro ENS en sí, ya que el registro siempre apuntará al mismo nombre de IPNS.
 
-\paragraph{Gateways} Los navegadores modernos no siempre soportan IPFS o ENS de forma nativa. Algunos, como Opera \cite{opera-ipfs} o Brave \cite{brave-ipfs}, permiten acceder directamente a direcciones IPFS o dominios .eth. Sin embargo, la mayoría no ofrece esta funcionalidad, lo que limita el acceso a contenido descentralizado.
+\paragraph{Gateways} Los navegadores modernos no siempre soportan IPFS o ENS de forma nativa. Algunos, como Opera \cite{opera-ipfs} o Brave \cite{brave-ipfs}, permiten acceder directamente a direcciones IPFS o dominios \texttt{.eth}. Sin embargo, la mayoría no ofrece esta funcionalidad, lo que limita el acceso a contenido descentralizado.
 
-Para superar esta limitación, se emplean gateways de Ethereum e IPFS. Un gateway de Ethereum traduce un dominio .eth a una dirección IPNS, mientras que un gateway de IPFS recupera el contenido asociado desde la red distribuida a través de solicitudes HTTP. Algunas gateways tienen la funcionalidad de mostrar una página web de manera correcta cuando un directorio tiene la estructura indicada. Esto resulta particularmente útil para poder mostrar una página moderna de la misma manera que se haría utilizando un servidor HTTP.
+Para superar esta limitación, se emplean \textit{gateways} de Ethereum e IPFS. Un \textit{gateway} de Ethereum traduce un dominio \texttt{.eth} a una dirección IPNS, mientras que un \textit{gateway} de IPFS recupera el contenido asociado desde la red distribuida a través de solicitudes HTTP. Algunas \textit{gateways} tienen la funcionalidad de mostrar una página web de manera correcta cuando un directorio tiene la estructura indicada. Esto resulta particularmente útil para poder mostrar una página moderna de la misma manera que se haría utilizando un servidor HTTP.
 
 \begin{figure}[H]
     \centering
@@ -59,17 +59,17 @@ Para superar esta limitación, se emplean gateways de Ethereum e IPFS. Un gatewa
     \label{fig:traduccion-ipfs}
 \end{figure}
 
-Para nuestro caso, se utilizó el servicio de Limo \cite{limo}, que soporta direcciones de ENS, y recupera archivos de IPFS, actuando como gateway para ambos servicios. Para utilizarlo, simplemente se requiere agregar un sufijo \texttt{.link} al nombre de ENS. Por ejemplo, \texttt{dominio.eth} puede accederse a través de \texttt{dominio.eth.link}. A su vez, resuelve \texttt{dominio.eth} a una dirección de IPFS, y por lo tanto obtiene los archivos de esa dirección automáticamente.
+Para nuestro caso, se utilizó el servicio de Limo \cite{limo}, que soporta direcciones de ENS, y recupera archivos de IPFS, actuando como \textit{gateway} para ambos servicios. Para utilizarlo, simplemente se requiere agregar un sufijo \texttt{.link} al nombre de ENS. Por ejemplo, \texttt{dominio.eth} puede accederse a través de \texttt{dominio.eth.link}. A su vez, resuelve \texttt{dominio.eth} a una dirección de IPFS, y por lo tanto obtiene los archivos de esa dirección automáticamente.
 
-Si bien las gateways mejoran la accesibilidad desde navegadores tradicionales, también introducen un grado de centralización. Sin embargo, existen múltiples servicios de gateways, tanto de IPFS como de Ethereum, que se pueden utilizar si una de ellas falla.
+Si bien las \textit{gateways} mejoran la accesibilidad desde navegadores tradicionales, también introducen un grado de centralización. Sin embargo, existen múltiples servicios de \textit{gateways}, tanto de IPFS como de Ethereum, que se pueden utilizar si una de ellas falla.
 
 \paragraph{Despliegue continuo}
 
-Para lograr un despliegue continuo que integre automáticamente un repositorio Git, se diseñó un script que se ejecuta de forma autónoma en cada nodo del clúster. En esta arquitectura mayormente horizontal, no existe un servidor central que orqueste las actualizaciones. Esto elimina un punto único de falla y favorece la resiliencia del sistema. Por lo tanto, cualquier nodo confiable debe poder actualizar su contenido e instruir a los nodos colaboradores para que actualicen su contenido de manera equivalente. Además, el sistema debe funcionar correctamente incluso si los nodos no reciben las actualizaciones simultáneamente, evitando así \textit{race conditions}), es decir, situaciones donde varios procesos intentan modificar un recurso al mismo tiempo.
+Para lograr un despliegue continuo que integre automáticamente un repositorio Git, se diseñó un \textit{script} que se ejecuta de forma autónoma en cada nodo confiable del clúster. En esta arquitectura mayormente horizontal, no existe un servidor central que orqueste las actualizaciones. Esto elimina un punto único de falla y favorece la resiliencia del sistema. Por lo tanto, cualquier nodo confiable debe poder actualizar su contenido e instruir a los nodos colaboradores para que actualicen su contenido de manera equivalente. Además, el sistema debe funcionar correctamente incluso si los nodos no reciben las actualizaciones simultáneamente, evitando así \textit{race conditions}, es decir, situaciones donde varios procesos intentan modificar un recurso al mismo tiempo.
 
-Como se mencionó anteriormente, debido a la naturaleza del direccionamiento basado en contenido de IPFS, si dos nodos suben el mismo contenido, obtendrán el mismo Content Identifier (CID). Esta propiedad permite que cualquier nodo confiable actualice el contenido y el nombre de IPNS de forma independiente a los demás nodos confiables. Cuando un nodo detecta un cambio nuevo, obtiene el código estático actualizado y, acto seguido, indica a los nodos colaboradores que fijen el CID correspondiente. Si el nodo es el primero en detectar dicha actualización, también instruye al resto del clúster para que dejen de fijar el CID antiguo.
+Como se mencionó anteriormente, debido a la naturaleza del direccionamiento basado en contenido de IPFS, si dos nodos suben el mismo contenido, obtendrán el mismo CID. Esta propiedad permite que cualquier nodo confiable actualice el contenido y el nombre de IPNS de forma independiente a los demás nodos confiables. Cuando un nodo detecta un cambio nuevo, obtiene el código estático actualizado y, acto seguido, indica a los nodos colaboradores que fijen el CID correspondiente. Si el nodo es el primero en detectar dicha actualización, también instruye al resto del clúster para que dejen de fijar el CID antiguo.
 
-\paragraph{Compilado} Las herramientas de compilación no siempre generan archivos idénticos en compilaciones sucesivas a partir del mismo código fuente, debido a factores como la inclusión de marcas temporales o hashes internos. Por ejemplo, \texttt{Next.js} produce archivos estáticos diferentes incluso cuando el código fuente no cambia, lo cual representa un problema para el enfoque propuesto, ya que dos nodos que compilen localmente el mismo código podrían obtener CIDs distintos y, por ende, no sincronizar correctamente el contenido.
+\paragraph{Compilado} Las herramientas de compilación no siempre generan archivos idénticos en compilaciones sucesivas a partir del mismo código fuente, debido a factores como la inclusión de marcas temporales o \textit{hashes} internos. Por ejemplo, \texttt{Next.js} produce archivos estáticos diferentes incluso cuando el código fuente no cambia, lo cual representa un problema para el enfoque propuesto, ya que dos nodos que compilen localmente el mismo código podrían obtener CIDs distintos y, por ende, no sincronizar correctamente el contenido.
 
 Para mitigar esta situación, se implementó un \textit{hook} automatizado, integrado en el flujo de trabajo del repositorio, que compila el código una única vez por cada \textit{commit} en la rama principal. De este modo, los nodos confiables pueden detectar los cambios en la rama que contiene los archivos compilados, realizar un \textit{pull} de esos archivos ya generados y garantizar que todos obtengan el mismo CID.
 
@@ -88,7 +88,7 @@ Este enfoque, si bien permite un despliegue descentralizado y gestionado por la 
 
 \subparagraph{Actualización completa del contenido} Cada vez que se realice un cambio en el directorio de la aplicación, se deberá fijar una nueva versión completa del contenido. Esto obliga a los nodos colaboradores a descargar nuevamente todo el directorio, lo que puede implicar un costo elevado en términos de ancho de banda y tiempo, especialmente para archivos de gran tamaño.
 
-\subparagraph{Problemas de cacheo en IPNS} El parámetro TTL de IPNS determina cuánto tiempo permanece un valor en la caché de un nodo antes de consultarse nuevamente en la DHT. Si se configura un TTL alto, los cambios recientes pueden demorar en propagarse. En cambio, un TTL bajo reduce la latencia de actualización pero incrementa el número de consultas a la red, lo cual puede afectar el rendimiento. No obstante, cada nodo mantiene siempre la última versión del nombre que haya resuelto correctamente.
+\subparagraph{Problemas de cacheo en IPNS} El parámetro TTL o \textit{time-to-live} de IPNS determina cuánto tiempo permanece un valor en la caché de un nodo antes de consultarse nuevamente en la \textit{Distributed Hash Table} (DHT). Si se configura un TTL alto, los cambios recientes pueden demorar en propagarse. En cambio, un TTL bajo reduce la latencia de actualización pero incrementa el número de consultas a la red, lo cual puede afectar el rendimiento. No obstante, cada nodo mantiene siempre la última versión del nombre que haya resuelto correctamente.
 
 \subparagraph{Distribución de claves privadas} Como las actualizaciones de IPNS requieren estar firmadas con una clave privada, todos los nodos confiables deben compartir la misma clave para poder emitir registros válidos. Esto elimina el punto único de falla, pero al mismo tiempo incrementa el riesgo de exposición si la clave es comprometida.
 
@@ -116,33 +116,33 @@ La comunicación entre contenedores se realiza a través de sus respectivas APIs
     \label{fig:contenedores-trusted-peer}
 \end{figure}
 
-\subparagraph{Pipeline de despliegue} El contenedor watcher compara periódicamente el último commit de una rama remota con una copia local clonada al iniciar. Al detectar un cambio en el contenido o en el archivo \texttt{service.json}, ejecuta el siguiente flujo:
+\subparagraph{Pipeline de despliegue} El contenedor \textit{watcher} compara periódicamente el último \textit{commit} de una rama remota con una copia local clonada al iniciar. Al detectar un cambio en el contenido o en el archivo \texttt{service.json}, ejecuta el siguiente flujo:
 \begin{enumerate}
     \item Sube el contenido y el archivo \texttt{service.json} al clúster, obteniendo sus respectivos CIDs.
     \item Publica manualmente ambos CIDs en la red IPFS usando Kubo.
     \item Verifica que todos los nodos del clúster hayan fijado los nuevos CIDs.
     \item Actualiza los registros IPNS correspondientes.
-    \item Elimina los pins antiguos del clúster para liberar recursos.
+    \item Elimina los \textit{pins} antiguos del clúster para liberar recursos.
 \end{enumerate}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\linewidth]{img/solucion-ipfs/ds-trusted-peer.png}
-    \caption{Diagrama de secuencia para el caso en que watcher detecta un cambio. Notar que para mayor claridad se omite los pasos para desplegar el nombre de IPNS del \texttt{service.json}, al ser exactamente los mismos que en el caso de un contenido.}
+    \caption{Diagrama de secuencia para el caso en que \textit{watcher} detecta un cambio. Notar que para mayor claridad se omite los pasos para desplegar el nombre de IPNS del \texttt{service.json}, al ser exactamente los mismos que en el caso de un contenido.}
     \label{fig:ds-contenedores-trusted-peer}
 \end{figure}
 
 \subparagraph{Gestión de claves de IPNS}
 
-Cada nodo confiable requiere una identidad persistente, definida por un PeerID y su clave privada, que debe conservarse entre ejecuciones. Esta identidad es la que figura en el archivo \texttt{service.json}, el cual los nodos colaboradores utilizan para unirse al clúster.
+Cada nodo confiable requiere una identidad persistente, definida por un identificador de nodo o \texttt{PeerID} y su clave privada, que debe conservarse entre ejecuciones. Esta identidad es la que figura en el archivo \texttt{service.json}, el cual los nodos colaboradores utilizan para unirse al clúster.
 
-Además, todos los nodos confiables deben compartir las mismas claves privadas de IPNS para poder actualizar los registros. Se utilizan dos claves distintas: una para el contenido estático y otra para \texttt{service.json}. Un script interactivo facilita la generación inicial de estas configuraciones, incluyendo identidad, claves IPNS, direcciones de repositorios y demás parámetros necesarios.
+Además, todos los nodos confiables deben compartir las mismas claves privadas de IPNS para poder actualizar los registros. Se utilizan dos claves distintas: una para el contenido estático y otra para \texttt{service.json}. Un \textit{script} interactivo facilita la generación inicial de estas configuraciones, incluyendo identidad, claves IPNS, direcciones de repositorios y demás parámetros necesarios.
 
 \subparagraph{Disponibilidad} Dos factores pueden afectar la disponibilidad del contenido:
 
 \begin{itemize}
     \item \textbf{Propagación del IPNS:} Un nuevo valor puede no estar aún distribuido en toda la DHT. Por ello, se garantiza primero la publicación exitosa del nuevo valor antes de eliminar el contenido anterior del clúster.
-    \item \textbf{Indexación del nuevo CID:} Publicar el contenido manualmente mediante Kubo antes de actualizar el IPNS asegura que esté accesible de forma inmediata desde gateways o nodos externos.
+    \item \textbf{Indexación del nuevo CID:} Publicar el contenido manualmente mediante Kubo antes de actualizar el IPNS asegura que esté accesible de forma inmediata desde \textit{gateways} o nodos externos.
 \end{itemize}
 
 Este enfoque añade una latencia al proceso de actualización, pero asegura la disponibilidad continua de al menos una versión válida del contenido.
@@ -169,7 +169,7 @@ A continuación, describiremos los componentes y la arquitectura de \textbf{Astr
 
 \paragraph{AstraDB}
 
-AstraDB es una infraestructura diseñada para facilitar el desarrollo de aplicaciones comunitarias, distribuidas y descentralizadas que requieren mantener un estado mutable. Construida como una capa superior a \textbf{OrbitDB} \cite{orbitdb}, abstrae muchos de los aspectos de bajo nivel necesarios para operar bases de datos en redes peer-to-peer.
+AstraDB es una infraestructura diseñada para facilitar el desarrollo de aplicaciones comunitarias, distribuidas y descentralizadas que requieren mantener un estado mutable. Construida como una capa superior a \textbf{OrbitDB} \cite{orbitdb}, abstrae muchos de los aspectos de bajo nivel necesarios para operar bases de datos en redes \textit{peer-to-peer}.
 
 Su diseño prioriza la colaboración entre múltiples usuarios, permitiendo que cualquier persona pueda contribuir activamente al sostenimiento de la aplicación sin depender de servidores centrales ni infraestructura dedicada. Para ello, automatiza tareas fundamentales como la sincronización, el descubrimiento de nodos y la replicación de datos entre colaboradores.
 
@@ -177,7 +177,7 @@ AstraDB expone una interfaz simple inspirada en el modelo de pares \textit{clave
 
 \paragraph{Representación de los datos}
 
-AstraDB utiliza OrbitDB para la representación de sus datos. OrbitDB es una base de datos distribuida peer-to-peer que utiliza IPFS para el almacenamiento y \textbf{libp2p} \cite{libp2p} para la sincronización entre nodos. Es una base de datos \textit{eventualmente consistente}, diseñada específicamente para operar en redes descentralizadas sin depender de servidores centrales, lo que la hace especialmente adecuada para aplicaciones distribuidas.
+AstraDB utiliza OrbitDB para la representación de sus datos. OrbitDB es una base de datos distribuida \textit{peer-to-peer} que utiliza IPFS para el almacenamiento y \textbf{libp2p} \cite{libp2p} para la sincronización entre nodos. Es una base de datos \textit{eventualmente consistente}, diseñada específicamente para operar en redes descentralizadas sin depender de servidores centrales, lo que la hace especialmente adecuada para aplicaciones distribuidas.
 
 OrbitDB ofrece distintos tipos de bases de datos, adaptadas a diversos modelos y casos de uso, como bases de documentos o estructuras de eventos secuenciales.
 
@@ -201,7 +201,7 @@ Para registrar qué claves existen dentro de una instancia de AstraDB —por eje
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.6\linewidth]{img/solucion-ipfs/bdd-wiki.png}
-\caption{Base de datos de eventos que funciona como índice global de claves.}
+\caption{Base de datos de eventos que actúa como índice global de claves.}
 \label{fig:bdd-wiki}
 \end{figure}
 
@@ -209,7 +209,7 @@ Para registrar qué claves existen dentro de una instancia de AstraDB —por eje
 
 Cada base de datos en AstraDB se identifica a través de una dirección única generada por OrbitDB. Esta dirección está compuesta por tres elementos: el tipo de base, su controlador de acceso y un nombre identificador. Dado que AstraDB utiliza siempre el mismo tipo (eventos) y un controlador abierto —que permite a cualquier usuario agregar información—, la dirección final queda determinada únicamente por el nombre elegido.
 
-Esta propiedad resulta fundamental para el funcionamiento del sistema. Permite que cualquier nodo, con solo conocer el nombre de una entidad, pueda acceder a la base de datos y sincronizarse con el resto de los nodos que ya la están replicando. Esto se debe a que crear una base de datos con el mismo nombre no genera una nueva, sino que devuelve la misma dirección y, por lo tanto, accede a la misma base.
+Esta propiedad resulta fundamental para el funcionamiento del sistema. Permite que cualquier nodo, con solo conocer el nombre de una entidad, pueda acceder a la base de datos y sincronizarse con el resto de los nodos que ya la están replicando. Esto se debe a que crear una base de datos con el mismo nombre no genera una nueva, sino que devuelve la misma dirección y, por lo tanto, la misma base.
 
 
 
@@ -228,7 +228,7 @@ AstraDB extiende este mecanismo de identificación para construir jerarquías l�
 \label{fig:bdd-names}
 \end{figure}
 
-Este enfoque también permite que múltiples instancias de AstraDB convivan de forma completamente independientes. La identidad de cada instancia —es decir, el conjunto de claves y sus respectivas bases de valores— queda determinada por el nombre identificador utilizado para crear su base de datos central. De este modo, es trivial crear nuevas aplicaciones, wikis o sistemas colaborativos simplemente utilizando nombres distintos, sin generar colisiones ni interferencias con otras instancias.
+Este enfoque también permite que múltiples instancias de AstraDB convivan de forma completamente independientes. La identidad de cada instancia —es decir, el conjunto de claves y sus respectivas bases de valores— queda determinada por el nombre identificador utilizado para crear su base de datos principal. De este modo, es trivial crear nuevas aplicaciones, wikis o sistemas colaborativos simplemente utilizando nombres distintos, sin generar colisiones ni interferencias con otras instancias.
 
 \begin{figure}[H]
 \centering
@@ -239,7 +239,7 @@ Este enfoque también permite que múltiples instancias de AstraDB convivan de f
 
 \paragraph{Sincronización y manejo de eventualidad}
 
-En OrbitDB la sincronización entre nodos ocurre de forma eventual, lo que significa que, con el tiempo, todas las instancias de una misma base de datos tenderán a contener la misma información, pero no necesariamente en el mismo orden o al mismo tiempo.
+En OrbitDB la sincronización entre nodos ocurre de forma eventual, lo que significa que, con el tiempo, todas las instancias de una misma base de datos tenderán a contener la misma información, pero no necesariamente al mismo tiempo. 
 
 OrbitDB emite eventos cuando una base de datos es actualizada, lo cual resulta crucial para AstraDB, especialmente al sincronizarse con otros nodos y recibir nuevas entradas. Sin embargo, debido a la naturaleza eventual de la consistencia que caracteriza a OrbitDB, y aunque se esté utilizando una base de datos de tipo evento secuencial, la entrada que desencadena el evento de actualización no siempre representa la última inserción cronológica. Es posible que, tras la sincronización, contenido aparezca antes o después de entradas más recientes en la estructura interna de la base de datos.
 
@@ -270,7 +270,7 @@ A diferencia de otros enfoques distribuidos basados en incentivos económicos, A
 
 Para que la sincronización entre distintas bases de datos de OrbitDB ocurra, primero deben estar ambos pares conectados. Dada la naturaleza de consistencia eventual con la que trabaja OrbitDB, este no se responsabiliza por el establecimiento ni el mantenimiento de las conexiones entre nodos, simplemente asume que, si dos nodos están conectados, eventualmente sincronizarán sus réplicas.  Por eso, en su lugar, delega completamente esta tarea a la capa subyacente de red, que en este caso está conformada por \textbf{LibP2P} \cite{libp2p}, a través de la implementación provista por \textbf{Helia} \cite{helia}. Esto implica que es nuestra responsabilidad definir cómo se comunican los nodos, seleccionando explícitamente qué protocolos de transporte utilizar según el entorno en el que se ejecutan.
 
-LibP2P es una biblioteca modular diseñada para construir redes peer-to-peer. No define una única forma de conexión, sino que ofrece un conjunto de componentes intercambiables —como transporte, cifrado, multiplexación o descubrimiento de pares— que pueden combinarse según las necesidades del entorno. Esta flexibilidad es clave para nuestra infraestructura, ya que nos permite adaptar el comportamiento de los nodos a las restricciones del entorno web o aprovechar las capacidades completas de un proceso independiente.
+LibP2P es una biblioteca modular diseñada para construir redes \textit{peer-to-peer}. No define una única forma de conexión, sino que ofrece un conjunto de componentes intercambiables —como transporte, cifrado, multiplexación o descubrimiento de pares— que pueden combinarse según las necesidades del entorno. Esta flexibilidad es clave para nuestra infraestructura, ya que nos permite adaptar el comportamiento de los nodos a las restricciones del entorno web o aprovechar las capacidades completas de un proceso independiente.
 
 LibP2P proporciona distintos protocolos de transporte que permiten que dos nodos mantengan una conexión persistente. Cada nodo puede configurarse con múltiples protocolos, y la elección depende de dónde se ejecuta ese nodo. En nuestra infraestructura, distinguimos entre:
 
@@ -283,7 +283,7 @@ Los nodos independientes utilizan \textbf{TCP} como protocolo principal. Es esta
 
 Por otro lado, los nodos web presentan mayores restricciones. Los navegadores modernos no permiten conexiones TCP o UDP directas por razones de seguridad, y limitan las conexiones a protocolos seguros que cumplan con políticas de contexto seguro (\textit{Secure Context}), como HTTPS.
 
-Para resolver esta limitación, la infraestructura utiliza \textbf{WebRTC-Direct}, un protocolo de transporte compatible con navegadores que permite conexiones directas entre un nodo web y un nodo independiente. WebRTC es una tecnología estándar para aplicaciones en tiempo real, como llamadas de video o intercambio de archivos. LibP2P lo adapta para lograr una conexión peer-to-peer entre nodos, sin depender de certificados ni servidores intermediarios.
+Para resolver esta limitación, la infraestructura utiliza \textbf{WebRTC-Direct}, un protocolo de transporte compatible con navegadores que permite conexiones directas entre un nodo web y un nodo independiente. \textbf{WebRTC}\cite{webrtc} es una tecnología estándar para aplicaciones en tiempo real, como llamadas de video o intercambio de archivos. LibP2P lo adapta para lograr una conexión peer-to-peer entre nodos, sin depender de certificados ni servidores intermediarios.
 
 Gracias a esta combinación de protocolos \textbf{—TCP para nodos independientes y WebRTC-Direct para nodos web—}, se logra una red completamente funcional en la que cualquier nodo puede conectarse con otros, incluso desde el navegador, sin comprometer la descentralización de la arquitectura.
 
@@ -298,9 +298,9 @@ Gracias a esta combinación de protocolos \textbf{—TCP para nodos independient
 
 En la infraestructura de AstraDB, además de definir los protocolos de transporte y la forma en que los nodos se conectan, es fundamental abordar el mecanismo mediante el cual un nodo identifica a qué otros nodos debe conectarse para sincronizar y obtener la base de datos, es decir, cómo se realiza el descubrimiento de colaboradores.
 
-Para preservar la naturaleza descentralizada del sistema, esta función se implementa aprovechando el modelo de descubrimiento de contenido que utiliza IPFS. IPFS se basa en un esquema de \textit{content addressing} \cite{content-addressing}, donde los datos son identificados y accedidos a través de un identificador único basado en su contenido, conocido como Content Identifier (CID), en lugar de su ubicación física.
+Para preservar la naturaleza descentralizada del sistema, esta función se implementa aprovechando el modelo de descubrimiento de contenido que utiliza IPFS. IPFS se basa en un esquema de \textit{content addressing} \cite{content-addressing}, donde los datos son identificados y accedidos a través de un identificador único basado en su contenido, conocido como \textit{Content Identifier} (CID), en lugar de su ubicación física.
 
-La localización del contenido en IPFS se efectúa mediante una Distributed Hash Table (DHT), que funciona como una base de datos distribuida. Cada nodo mantiene una porción del índice global que asocia cada CID con los nodos proveedores de dicho contenido. Cuando un nodo desea acceder a un contenido específico, consulta la DHT para identificar los proveedores activos correspondientes \cite{dht}.
+La localización del contenido en IPFS se efectúa mediante una \textit{Distributed Hash Table} (DHT), que funciona como una base de datos distribuida. Cada nodo mantiene una porción del índice global que asocia cada CID con los nodos proveedores de dicho contenido. Cuando un nodo desea acceder a un contenido específico, consulta la DHT para identificar los proveedores activos correspondientes \cite{dht}.
 
 Este mecanismo se adopta directamente en AstraDB para el descubrimiento de colaboradores. Al considerar que el CID representa la base de datos —derivada de su nombre identificador— y que los colaboradores son los nodos que proveen ese CID, un nodo interesado realiza una consulta en la DHT para obtener una lista de nodos activos replicando la base. De esta forma, se establece un enfoque completamente descentralizado en el que los colaboradores anuncian su disponibilidad y los nodos nuevos pueden descubrirlos y sincronizarse sin depender de nodos preconfigurados ni puntos centrales.
 
@@ -333,19 +333,19 @@ En nodos configurados como colaboradores, al recibir actualizaciones sobre nueva
 
 Todas las bases de datos gestionadas por este módulo —tanto la central como las asociadas a cada clave— están representadas mediante una abstracción denominada \textit{Database}, la cual encapsula toda la interacción con OrbitDB.
 
-Durante la inicialización, se define si la base debe sincronizarse o no. En caso afirmativo, el sistema espera conectarse con algún colaborador para obtener todas las actualizaciones disponibles. Una vez sincronizada, la base de datos queda habilitada para su uso, incluyendo la incorporación de nuevo contenido y la recuperación completa del mismo.
+Durante la inicialización de una instancia de \textit{Database}, se debe definir si la base de datos requiere sincronización. En caso afirmativo, el sistema espera conectarse con algún colaborador para obtener todas las actualizaciones disponibles. Una vez sincronizada, la base queda habilitada para su uso, incluyendo la incorporación de nuevo contenido y la recuperación completa del mismo.
 
-Además, toda actualización recibida en una base de datos gestionada por este módulo genera automáticamente un evento que puede ser escuchado por otros componentes del sistema. Esto permite implementar funcionalidades reactivas, como interfaces en tiempo real o disparadores personalizados, facilitando la integración de lógica adicional basada en los cambios del estado distribuido.
+Además, toda actualización recibida en una base de datos gestionada por este módulo genera automáticamente un evento que puede ser escuchado por otros componentes del sistema. Esto permite implementar funcionalidades reactivas, como interfaces en tiempo real, facilitando la integración de lógica adicional basada en los cambios del estado distribuido.
 
 \paragraph{Connection Manager}
 
 El \textit{Connection Manager} se encarga del manejo de conexiones entre nodos, incluyendo la búsqueda y establecimiento de conexiones con colaboradores que proveen la base de datos, así como la publicación del nodo como proveedor cuando este actúa como colaborador.
 
-Al iniciarse, el módulo construye el \textbf{CID} (Content Identifier) correspondiente a la base de datos central. Para ello, utiliza \textbf{Helia} \cite{helia}, la implementación de IPFS en JavaScript, para calcular el identificador a partir del nombre recibido. Este CID es común a todas las instancias de AstraDB que utilizan dicho nombre, y permite que los nodos se identifiquen y sincronicen de forma coherente.
+Al iniciarse, el módulo construye el CID correspondiente a la base de datos central. Para ello, utiliza \textbf{Helia} \cite{helia}, la implementación de IPFS en JavaScript, para calcular el identificador a partir del nombre recibido. Este CID es común a todas las instancias de AstraDB que utilizan dicho nombre, y permite que los nodos se identifiquen y sincronicen de forma coherente.
 
 Luego, se inicializan tres servicios que operan concurrentemente durante la ejecución del sistema: \textit{SearchForProviders}, \textit{ProvideDB} y \textit{ReconnectToProviders}.
 
-El servicio \textit{SearchForProviders} realiza búsquedas continuas de nuevos proveedores de la base de datos utilizando la DHT (Distributed Hash Table) de IPFS mediante \textbf{LibP2P} \cite{libp2p}. Cuando encuentra uno, intenta establecer conexión para iniciar la sincronización.
+El servicio \textit{SearchForProviders} realiza búsquedas continuas de nuevos proveedores de la base de datos utilizando la DHT de IPFS mediante LibP2P. Cuando encuentra uno, intenta establecer conexión para iniciar la sincronización.
 
 El servicio \textit{ProvideDB}, activo únicamente en nodos colaboradores, anuncia en la DHT que el nodo puede proveer la base de datos, facilitando su descubrimiento por parte de otros.
 
@@ -368,13 +368,13 @@ Como resultado, no solo se cumplió con los requisitos funcionales de ambos caso
 
 \subsubsection{Colaboración}
 
-Se creó una herramienta para facilitar la colaboración a nuestra wiki. El nodo es capaz de fijar los contenidos de Astraweb, nuestro front-end, y también mantener todas las bases de datos utilizadas por Astrawiki y Astrachat en la capa de aplicación. Para lograr esto, se diseñó un sistema con cuatro contenedores, cada uno asignado a uno de los tres casos de uso.
+Se creó una herramienta para facilitar la colaboración a nuestra principal interfaz de usuario. El nodo es capaz de fijar los contenidos de \textbf{Astrawiki-web} —nuestra interfaz de usuario—, y también mantener todas las bases de datos utilizadas por \textbf{Astrawiki} y \textbf{Astrachat} en la capa de aplicación. Para lograr esto, se diseñó un sistema con cuatro contenedores, cada uno asignado a uno de los tres casos de uso.
 
-Para el pinning del sitio web en si, se utilizó el contenedor de IPFS Cluster con la instrucción de colaborar con el clúster dado por parámetro. Este parámetro es la dirección IPFS del archivo \texttt{service.json} que identifica a un clúster. Además, IPFS Cluster requiere de un contenedor de Kubo para manejar el manejo de archivos en la red de IPFS.
+Para el \textit{pinning} del sitio web en si, se utilizó el contenedor de \textbf{IPFS Cluster} con la instrucción de colaborar con el clúster dado por parámetro. Este parámetro es la dirección IPFS del archivo \texttt{service.json} que identifica a un clúster. Además, IPFS Cluster requiere de un contenedor de \textbf{Kubo} para manejar el manejo de archivos en la red de IPFS.
 
-Para Astrawiki, se hizo uso del contenedor ofrecido por Astrawiki CLI, front-end que se verá más adelante. Con este contenedor, se puede actuar como colaborador fácilmente sin necesidad de interactuar con él.
+Para \textbf{Astrawiki}, se hizo uso del contenedor ofrecido por Astrawiki CLI, interfaz de usuario que se verá más adelante. Con este contenedor, se puede actuar como colaborador fácilmente sin necesidad de interactuar con él.
 
-Por último, Astrachat se levanta con un simple proyecto de Node que crea un nodo colaborativo y lo ejecuta en segundo plano.
+Por último, \textbf{Astrachat} se levanta con un simple proyecto de Node.js que crea un nodo colaborativo y lo ejecuta en segundo plano.
 
 \begin{figure}[H]
     \centering
@@ -383,4 +383,6 @@ Por último, Astrachat se levanta con un simple proyecto de Node que crea un nod
     \label{fig:collaborator-architecture}
 \end{figure}
 
-Cada uno de estos casos se puede seleccionar o deseleccionar desde un archivo de configuración \texttt{.env}, para que el usuario pueda elegir en que parte del proyecto contribuir. El resultado es una herramienta que, si bien fue diseñada para Astraweb, puede utilizarse para cualquier tipo de front-end que utilice Astrawiki y/o Astrachat.
+Cada uno de estos casos se puede habilitar o deshabilitar desde un archivo de configuración \texttt{.env}, lo que permite al usuario elegir en qué parte del proyecto desea colaborar.
+
+Además, el sistema de colaboración fue diseñado con un enfoque flexible: su configuración puede adaptarse fácilmente para apuntar a otras instancias de los distintos casos de uso, lo que permite que el nodo colaborador se integre sin dificultad a diferentes aplicaciones de \textbf{Astrawiki} o \textbf{Astrachat}.
