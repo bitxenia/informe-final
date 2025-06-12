@@ -20,11 +20,7 @@ Aunque este enfoque era prometedor, su implementación en JavaScript aún era in
 
 Frente a estas limitaciones, surgió durante el desarrollo el soporte experimental para una nueva alternativa: \textbf{AutoTLS} \cite{autotls}. Este mecanismo permite obtener automáticamente un certificado TLS asociado al ID del nodo, utilizando el protocolo ACME \cite{acme}. LibP2P provee además un servicio DNS público que resuelve los dominios requeridos para todos los nodos participantes, lo que permite establecer conexiones WebSocket seguras sin intervención del usuario.
 
-Esta solución fue adoptada inicialmente y permitió avanzar con el desarrollo y pruebas. Sin embargo, AutoTLS presentó dos inconvenientes críticos:
-\begin{itemize}
-  \item Su funcionamiento era inestable, al tratarse de una funcionalidad aún experimental.
-  \item Dependía de un servicio centralizado para la emisión de certificados, lo cual contradecía el principio de descentralización del proyecto. Si dicho servicio quedara fuera de línea, los nodos no podrían conectarse.
-\end{itemize}
+Esta solución fue adoptada inicialmente y permitió avanzar con el desarrollo y las pruebas. No obstante, AutoTLS presentó dos inconvenientes críticos. Por un lado, su funcionamiento resultó inestable, ya que se trata de una funcionalidad aún experimental. Por otro, depende de un servicio centralizado para la emisión de certificados, lo cual contradice el principio de descentralización del proyecto. En caso de que dicho servicio quedara fuera de línea, los nodos no podrían conectarse entre sí.
 
 \paragraph{WebRTC-Direct}
 
