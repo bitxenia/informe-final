@@ -134,7 +134,7 @@
 	\end{minipage}\\[1cm]
     \begin{minipage}{0.4\textwidth}
         \begin{center}
-            \large{\textbf{Tutor} \\ Ariel Scarpinelli \\ \href{mailto:ascarpinelli@fi.uba.ar}{ascarpinelli@fi.uba.ar}}
+            \large{\textbf{Tutor} \\ Ing. Ariel Scarpinelli \\ \href{mailto:ascarpinelli@fi.uba.ar}{ascarpinelli@fi.uba.ar}}
         \end{center}
 	\end{minipage}
  \end{center}

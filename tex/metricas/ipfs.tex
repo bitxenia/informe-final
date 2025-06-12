@@ -22,6 +22,19 @@ Afortunadamente, gracias al activo mantenimiento y la receptividad de los desarr
 
 \subsubsection{Aplicabilidad al caso de uso}
 
+Uno de los desafíos para desarrollar y mantener una aplicación en IPFS es asegurar que el contenido se mantenga disponible. Nuestras implementaciones cuentan con la posibilidad de que los usuarios puedan colaborar. Estos nodos colaboradores, que se diferencian del resto de los usuarios, contribuyen a este objetivo: fijan el contenido para que otros nodos puedan recuperarlo a través de ellos. Esto representa un esfuerzo adicional que no existe en el ecosistema blockchain. Además, debido a la ausencia de \textit{sharding} del contenido, fijar todo el contenido puede implicar una gran cantidad de almacenamiento dedicado exclusivamente a este fin.
+
+\paragraph{Sitio web estático}
+
+El despliegue de un sitio web estático es un caso ideal para IPFS. Esto se debe a que, al ser un sistema de archivos distribuido, IPFS permite almacenar páginas web de forma eficiente y acceder a ellas fácilmente mediante identificadores únicos. Estas características lo hacen especialmente adecuado para este uso.
+Otra ventaja importante es el tamaño relativamente pequeño y estable del sitio web. Como no crece de manera significativa, los colaboradores pueden fijar los archivos sin preocuparse por un aumento considerable en el espacio requerido.
+
+\paragraph{Repositorio de conocimiento}
+En este caso, la alta disponibilidad y el acceso confiable a los artículos son fundamentales. Por lo tanto, IPFS no resulta tan óptimo, ya que para lograr una alta disponibilidad sería necesario contar con muchos nodos colaboradores conectados de forma constante.
+
+\paragraph{Mensajero en tiempo real}
+En una aplicación de mensajería, aunque el historial de chats es útil, no es esencial para su funcionamiento principal. Esto reduce la necesidad de contar con múltiples nodos colaboradores. Por otro lado, OrbitDB se desempeña bien en contextos de tiempo real una vez establecida la conexión entre nodos, lo que lo convierte en una opción adecuada para este caso de uso.
+
 \subsubsection{Performance}
 
 La performance en IPFS se ve afectada por algunas variables. Entre ellas se encuentran:
